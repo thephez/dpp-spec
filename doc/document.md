@@ -2,7 +2,7 @@
 
 Data contracts define the schema (structure) of data an application will store on Dash Platform. Contracts are described using [JSON Schema](https://json-schema.org/understanding-json-schema/) which allows the platform to validate the contract-related data submitted to it.
 
-The following sections provide details that developers need to construct valid contracts: [documents](#section-documents) and [definitions](#section-definitions). All data contracts must define one or more documents, whereas definitions are optional and may not be used for simple contracts.
+The following sections provide details that developers need to construct valid contracts: [documents](#documents) and [definitions](#definitions). All data contracts must define one or more documents, whereas definitions are optional and may not be used for simple contracts.
 
 # General Constraints
 
@@ -30,7 +30,7 @@ Additionally, there are several constraints limiting the overall size of data co
 | Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.0-dev.3/lib/util/serializer.js#L5) (https://github.com/dashevo/js-dpp/pull/114) |
 
 # Documents
-The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#section-document-indices) and a list of [required properties](#section-required-properties).
+The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties).
 
 The following example shows a minimal `documents` object defining a single document (`note`) that has one property (`message`).
 

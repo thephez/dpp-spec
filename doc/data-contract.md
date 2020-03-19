@@ -26,8 +26,8 @@ Additionally, there are several constraints limiting the overall size of data co
 
 | Description | Constraint |
 | - | - |
-| Maximum size of serialized data contract | 15 KB (https://github.com/dashevo/js-dpp/pull/117) |
-| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) (https://github.com/dashevo/js-dpp/pull/114) |
+| Maximum size of serialized data contract | [15 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxByteSizeExceededError.js#L23) |
+| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
 
 
 

@@ -163,11 +163,9 @@ function signHash(hash, privateKey) {
 	return ecdsa.sig.toCompact();
 }
 ```
-# Identity Balance
-Incomplete implementation?
-
 
 # Non-implemented topics
+ - Balance
  - Topup
  - Update/Reset Key/Close Id
  - Recovery mechanisms

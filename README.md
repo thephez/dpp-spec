@@ -3,9 +3,9 @@
 [Identities](doc/identity.md)
  - Type (remove in 0.12)
  - Create
- - Topup
- - Balance
  - Non-implemented stuff
+	 - Topup
+	 - Balance
 	 - Update/Reset Key/Close Id
 	 - Recovery mechanisms
 

@@ -10,10 +10,10 @@
 	 - Recovery mechanisms
 
 [Data Contracts](doc/data-contract.md)
- - [Documents](doc/document.md)
+ - [Documents](doc/document.md#document-overview)
    - Properties
    - Indices
- - Definitions
+ - [Definitions](doc/document.md#definition-overview)
 
 State Transitions
  - Overview / general structure

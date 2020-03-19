@@ -108,7 +108,7 @@ Identities are registered on the platform by submitting the identity information
 | lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
 | identityType | integer | [Type of identity](#identity-type) |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
-| ~~signaturePublicKeyId~~ | ~~number~~ | ~~The id of the public key that signed the state transition~~ (not part of the identity create state transition) |
+| signaturePublicKeyId | number | The id of the public key that signed the state transition (not part of the identity create state transition) |
 | signature | string | Signature of state transition data |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.

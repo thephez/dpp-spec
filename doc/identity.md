@@ -55,7 +55,7 @@ Each public key in an identity's `publicKeys` array must be assigned a unique in
 
 **Note:** In the current implementation, each `id` must be `=> 1`. In future releases, indexing may change to begin at `0` instead of `1`.
 
-### Public Key type
+### Public Key `type`
 
 The `type` field indicates the algorithm used to derive the key.
 

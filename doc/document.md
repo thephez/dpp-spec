@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/master/schema/meta/data-contract.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json)).
 
 ## Keyword
 
@@ -27,7 +27,7 @@ Additionally, there are several constraints limiting the overall size of data co
 | Description | Constraint |
 | - | - |
 | Maximum size of serialized data contract | 15 KB (https://github.com/dashevo/js-dpp/pull/117) |
-| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.0-dev.3/lib/util/serializer.js#L5) (https://github.com/dashevo/js-dpp/pull/114) |
+| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) (https://github.com/dashevo/js-dpp/pull/114) |
 
 # Documents
 The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties).
@@ -230,7 +230,7 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Raw Document Interface
 
-Defined in [https://github.com/dashevo/js-dpp/blob/master/lib/document/RawDocumentInterface.js](https://github.com/dashevo/js-dpp/blob/master/lib/document/RawDocumentInterface.js)
+Defined in [https://github.com/dashevo/js-dpp/blob/master/lib/document/RawDocumentInterface.js](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)
 
 | Property | Type | Description |
 | - | - | - |

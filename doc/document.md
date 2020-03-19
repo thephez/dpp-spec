@@ -30,7 +30,7 @@ Additionally, there are several constraints limiting the overall size of data co
 | Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) (https://github.com/dashevo/js-dpp/pull/114) |
 
 # Documents
-The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties).
+The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties-optional).
 
 The following example shows a minimal `documents` object defining a single document (`note`) that has one property (`message`).
 

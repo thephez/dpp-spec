@@ -201,7 +201,7 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Raw Document Interface
 
-Defined in [https://github.com/dashevo/js-dpp/blob/master/lib/document/RawDocumentInterface.js](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)
+Defined in [https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)
 
 | Property | Type | Description |
 | - | - | - |

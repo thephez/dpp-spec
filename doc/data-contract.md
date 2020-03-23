@@ -42,6 +42,33 @@ Data contracts are registered on the platform by submitting the contract informa
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
+**Example (unsigned state transition)**
+
+```json
+{
+  "signaturePublicKeyId": null,
+  "signature": null,
+  "dataContract": [
+    {
+      "contractId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
+      "version": 1,
+      "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+      "documents": {
+        "note": {
+          "properties": {
+            "message": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "definitions": {}
+    }
+  ]
+}
+```
+
 
 ## Data Contract Object
 
@@ -49,8 +76,29 @@ The `dataContract` object in the state transition consists of the following fiel
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| $schema | string | Yes  | (a valid URL) (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $contractId | string | Yes | Identity that registered the data contract defining the document (Base58, 42-44 characters) |
+| $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
+| $contractId | string | Yes | [Identity](identity.md) that registered the data contract defining the document (Base58, 42-44 characters) |
 | version | integer | Yes | Data Contract version (>= 1) (default: 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
-| documents | Object | Yes | Document definitions (see [Documents](document.md) for details) |
-| definitions | Object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
+| documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
+| definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
+
+**Example**
+
+```json
+{
+  "contractId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
+  "version": 1,
+  "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+  "documents": {
+    "note": {
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {}
+}
+```

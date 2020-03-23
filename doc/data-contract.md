@@ -30,16 +30,27 @@ Additionally, there are several constraints limiting the overall size of data co
 | Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
 
 
+# Data Contract Registration
+
+Data contracts are registered on the platform by submitting the contract information in a data contract state transition.
+
+| Field | Type | Description|
+| - | - | - |
+| protocolVersion | integer | The platform protocol version (currently `0`) |
+| type | integer | State transition type (`2` for data contract) |
+| dataContract | data contract object | Object containing the data contract details
+| signaturePublicKeyId | number | The id of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
+| signature | string | Signature of state transition data |
 
 
-# Raw Data Contract Interface
+## Raw Data Contract Interface
 
 Defined in [https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/RawDataContractInterface.js](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/RawDataContractInterface.js)
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| $schema | string | Yes  | (a valid URL)
+| $schema | string | Yes  | (a valid URL) (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
 | $contractId | string | Yes | Identity that registered the data contract defining the document (Base58, 42-44 characters) |
-| version | integer | Yes | Data Contract version (>= 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
-| documents | Object | Yes | Document definitions (see Documents for details) |
+| version | integer | Yes | Data Contract version (>= 1) (default: 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
+| documents | Object | Yes | Document definitions (see [Documents](document.md) for details) |
 | definitions | Object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |

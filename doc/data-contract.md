@@ -37,7 +37,7 @@ Data contracts are registered on the platform by submitting the contract informa
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type (`2` for data contract) |
+| type | integer | State transition type (`1` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |

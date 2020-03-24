@@ -195,18 +195,52 @@ Include the following at the same level as the `properties` keyword to ensure pr
 "additionalProperties": false
 ```
 
+# Document Submission
 
+Documents are sent to the platform by submitting the them in a documents state transition consisting of:
 
-
-
-# Raw Document Interface
-
-Defined in [https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)
-
-| Property | Type | Description |
+| Field | Type | Description|
 | - | - | - |
-| $type | string | Type of document |
-| $contractId | string | Identity that registered the data contract defining the document |
-| $userId | string | Identity submitting the document |
-| $entropy | string | Randomness to ensure document uniqueness |
-| $rev | integer | Document revision |
+| protocolVersion | integer | The platform protocol version (currently `0`) |
+| type | integer | State transition type (`2` for documents) |
+| actions | array of integers |
+| documents | array of [document objects](#document-object) |
+| signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
+| signature | string | Signature of state transition data |
+
+**Example State Transition (unsigned)**
+
+```json
+{
+  "protocolVersion": 0,
+  "type": 2,
+  "actions": [
+    // To be added
+  ],
+  "documents": [
+    // To be added
+  ],
+  "signaturePublicKeyId": null,
+  "signature": null,  
+}
+```
+
+## Document Object
+
+The `document` objects in the state transition's `documents` array consist of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)):
+
+| Property | Type | Required | Description |
+| - | - | - | - |
+| $type | string | Yes  | Document type defined in the referenced contract |
+| $contractId | string | Yes | [Identity](identity.md) that registered the data contract defining the document (Base58, 42-44 characters) |
+| $userId | integer | Yes | [Identity](identity.md) of the user submitting the document |
+| $entropy | object | Yes | Randomness to ensure document uniqueness |
+| $rev | object | No | Document revision  |
+
+**Example**
+
+```json
+{
+  // To be added
+}
+```

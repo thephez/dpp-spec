@@ -203,8 +203,8 @@ Documents are sent to the platform by submitting the them in a documents state t
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type (`2` for documents) |
-| actions | array of integers |
-| documents | array of [document objects](#document-object) |
+| actions | array of integers | [Action](#document-actions) the platform should take for the associated document in the `documents` array |
+| documents | array of [document objects](#document-object) | [Document(s)](#document-object) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
@@ -224,6 +224,17 @@ Documents are sent to the platform by submitting the them in a documents state t
   "signature": null,  
 }
 ```
+
+## Document Actions
+
+| Action | Name | Description |
+| :-: | - | - |
+| 1 | Create | Create a new document with the provided data |
+| 2 | Replace | Replace an existing document with the provided data |
+| 3 | `RESERVED` | Unused action |
+| 4 | Delete | Delete the referenced document |
+
+**Note:** In the current implementation, actions start at `1`. In future releases, indexing may change to begin at `0` instead of `1`.
 
 ## Document Object
 

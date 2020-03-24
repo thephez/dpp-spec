@@ -71,7 +71,6 @@ Data contracts are registered on the platform by submitting the contract informa
 }
 ```
 
-
 ## Data Contract Object
 
 The `dataContract` object in the state transition consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/RawDataContractInterface.js)):
@@ -104,3 +103,13 @@ The `dataContract` object in the state transition consists of the following fiel
   "definitions": {}
 }
 ```
+
+## Data Contract State Transition Signing
+
+Data contract state transitions must be signed by a private key associated with the contract's identity.
+
+The process to sign a data contract state transition consists of the following steps:
+1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
+2. Sign the encoded data with a private key associated with the `contractId`
+3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
+4. Set the state transition`signaturePublicKeyId` to the [public key `id`](#public-key-id) corresponding to the key used to sign

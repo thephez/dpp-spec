@@ -113,6 +113,27 @@ Identities are registered on the platform by submitting the identity information
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
+**Example State Transition**
+
+```json
+{
+  "protocolVersion": 0,
+  "type": 3,
+  "lockedOutPoint": "6NnSpFNGO9RmTl/joS9Bow64fE1YASEV+nv/4DnH0RsAAAAA",
+  "identityType": 1,  
+  "publicKeys": [
+    {
+      "id": 1,
+      "type": 1,
+      "data": "A6AJAfRJyKuNoNvt33ygYfYh6OIYA8tF1s2BQcRA9RNg",
+      "isEnabled": true
+    }
+  ],
+  "signaturePublicKeyId": 1,  
+  "signature": "IAN3MdbBZAU9Llpt8scGj11fAlJVOHj1Cfc/HAZrlE/Uf2IeD9nweGkUC3SULAnF1oIxfK7yndoOwLuvP8TLCwc=",
+}
+```
+
 ## Identity Create State Transition Signing
 
 **Note:** The identity create state transition signature is unique in that it must be signed by the private key used in the layer 1 locking transaction. All other state transitions will be signed by a private key of the identity submitting them.

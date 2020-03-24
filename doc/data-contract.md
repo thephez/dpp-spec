@@ -42,12 +42,12 @@ Data contracts are registered on the platform by submitting the contract informa
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
-**Example (unsigned state transition)**
+**Example State Transition (unsigned)**
 
 ```json
 {
-  "signaturePublicKeyId": null,
-  "signature": null,
+  "protocolVersion": 0,
+  "type": 2,
   "dataContract": [
     {
       "contractId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
@@ -65,7 +65,9 @@ Data contracts are registered on the platform by submitting the contract informa
       },
       "definitions": {}
     }
-  ]
+  ],
+  "signaturePublicKeyId": null,
+  "signature": null,  
 }
 ```
 

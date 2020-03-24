@@ -17,8 +17,8 @@
 
 State Transitions
  - Overview / general structure
- - Identity ST
- - Data Contract ST
+ - [Identity ST](doc/identity.md#identity-registration)
+ - [Data Contract ST](doc/data-contract.md#data-contract-registration)
  - Document ST
 
 Serialization

@@ -53,7 +53,7 @@ Each item in the `publicKeys` array consists an object containing:
 
 Each public key in an identity's `publicKeys` array must be assigned a unique index number (`id`).
 
-**Note:** In the current implementation, each `id` must be `=> 1`. In future releases, indexing may change to begin at `0` instead of `1`.
+**Note:** In the current implementation, each `id` must be `=> 1`.
 
 ### Public Key `type`
 

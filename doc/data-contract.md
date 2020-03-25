@@ -42,32 +42,29 @@ Data contracts are registered on the platform by submitting the contract informa
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
-**Example State Transition (unsigned)**
+**Example State Transition**
 
 ```json
 {
   "protocolVersion": 0,
-  "type": 2,
-  "dataContract": [
-    {
-      "contractId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
-      "version": 1,
-      "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-      "documents": {
-        "note": {
-          "properties": {
-            "message": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
-        }
-      },
-      "definitions": {}
+  "type": 1,
+  "dataContract": {
+    "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+    "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
+    "version": 1,
+    "documents": {
+      "note": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
     }
-  ],
-  "signaturePublicKeyId": null,
-  "signature": null,  
+  },
+  "signaturePublicKeyId": 1,
+  "signature": "H8INAUHtjfW3sL/Z7JQC+915QrVUb6eqpXzaB/21N3i2GOESqvrEVgUbAZNm0wh6BXFJScNKkQG6TLHknViWXWA=",
 }
 ```
 
@@ -87,9 +84,9 @@ The `dataContract` object in the state transition consists of the following fiel
 
 ```json
 {
-  "contractId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
+  "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+  "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
   "version": 1,
-  "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "documents": {
     "note": {
       "properties": {

@@ -208,20 +208,27 @@ Documents are sent to the platform by submitting the them in a documents state t
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
-**Example State Transition (unsigned)**
+**Example State Transition**
 
 ```json
 {
   "protocolVersion": 0,
   "type": 2,
   "actions": [
-    // To be added
+    1
   ],
   "documents": [
-    // To be added
+    {
+      "$type": "note",
+      "$contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
+      "$userId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
+      "$entropy": "ydQUKu7QxqPxt4tytY7dtKM7uKPGzWG9Az",
+      "$rev": 1,
+      "message": "Tutorial Test @ Thu, 26 Mar 2020 20:19:49 GMT"
+    }
   ],
-  "signaturePublicKeyId": null,
-  "signature": null,  
+  "signaturePublicKeyId": 1,
+  "signature": "IFue3isoXSuYd0Ky8LvYjOMExwq69XaXPvi+IE+YT0sSD6N22P75xWZNFqO8RkZRqtmO7+EwyMX7NVETcD2HTmw=",  
 }
 ```
 
@@ -248,10 +255,15 @@ The `document` objects in the state transition's `documents` array consist of th
 | $entropy | object | Yes | Randomness to ensure document uniqueness |
 | $rev | object | No | Document revision  |
 
-**Example**
+**Example Document Object**
 
 ```json
 {
-  // To be added
+  "$type": "note",
+  "$contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
+  "$userId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
+  "$entropy": "ydQUKu7QxqPxt4tytY7dtKM7uKPGzWG9Az",
+  "$rev": 1,
+  "message": "Tutorial Test @ Thu, 26 Mar 2020 20:19:49 GMT"
 }
 ```

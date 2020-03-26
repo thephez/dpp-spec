@@ -9,6 +9,39 @@ Identities consist of three components that are described in further detail in f
 | type | integer | Type of identity (`user` or `application`) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 
+
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json):
+
+```json
+{
+  "$id": "https://schema.dash.org/dpp-0-4-0/identity/identity",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "type": {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "publicKeys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "publicKeys"
+  ]
+}
+```
+
 ## Identity id
 
 The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) used to fund the identity creation.
@@ -48,6 +81,43 @@ Each item in the `publicKeys` array consists an object containing:
 | type | integer | Type of key (default: 1 - ECDSA) |
 | data | string (base64) | Public key |
 | isEnabled | boolean | Status of key |
+
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json):
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://schema.dash.org/dpp-0-4-0/identity/public-key",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 1
+    },
+    "type": {
+      "type": "number",
+      "enum": [1]
+    },
+    "data": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+    },
+    "isEnabled": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "id",
+    "type",
+    "data",
+    "isEnabled"
+  ],
+  "additionalProperties": false
+}
+```
 
 ### Public Key `id`
 
@@ -112,6 +182,38 @@ Identities are created on the platform by submitting the identity information in
 | signature | string | Signature of state transition data |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
+
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+
+```json
+{
+  "$id": "https://schema.dash.org/dpp-0-4-0/idenitity/state-transitions/identity-create",
+  "properties": {
+    "lockedOutPoint": {
+      "type": "string",
+      "minLength": 48,
+      "maxLength": 48,
+      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+    },
+    "identityType": {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 0,
+      "maximum": 65535
+    },
+    "publicKeys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10
+    }
+  },
+  "required": [
+    "lockedOutPoint",
+    "identityType",
+    "publicKeys"
+  ]
+}
+```
 
 **Example State Transition**
 

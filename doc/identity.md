@@ -11,7 +11,7 @@ Identities consist of three components that are described in further detail in f
 
 ## Identity id
 
-The identity `id` is calculated by Base58 encoding the double sha256 hash of the output used to fund the identity creation.
+The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) used to fund the identity creation.
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
@@ -33,7 +33,7 @@ Identities are separated into multiple types depending on their purpose.
 | Value | Identity Type | Description |
 | :-: | :-: | - |
 | 1 | User | Standard identity type for using the platform |
-| 2 | Application | Used to register data contracts |
+| 2 | Application | Used to create data contracts |
 | 3 -<br>32767 | N/A | Reserved |
 
 ## Identity publicKeys
@@ -97,9 +97,9 @@ The `isEnabled` field indicates whether or not the key is an active, valid key. 
 **Note:** Keys are disabled (rather than deleted) to ensure that signature verification is possible for any data they signed.
 
 
-# Identity Registration
+# Identity Creation
 
-Identities are registered on the platform by submitting the identity information in an identity create state transition.
+Identities are created on the platform by submitting the identity information in an identity create state transition.
 
 | Field | Type | Description|
 | - | - | - |

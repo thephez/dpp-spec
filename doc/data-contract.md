@@ -30,9 +30,9 @@ Additionally, there are several constraints limiting the overall size of data co
 | Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
 
 
-# Data Contract Registration
+# Data Contract Creation
 
-Data contracts are registered on the platform by submitting the contract information in a data contract state transition consisting of:
+Data contracts are created on the platform by submitting the contract information in a data contract state transition consisting of:
 
 | Field | Type | Description|
 | - | - | - |
@@ -41,6 +41,25 @@ Data contracts are registered on the platform by submitting the contract informa
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
+
+Each data contract must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/data-contract.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+
+```json
+{
+  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/data-contract",
+  "properties": {
+    "dataContract": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "dataContract"
+  ]
+}
+```
+
+Details regarding the `dataContract` object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json).
+
 
 **Example State Transition**
 

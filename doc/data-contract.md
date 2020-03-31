@@ -58,7 +58,54 @@ Each data contract must comply with this JSON-Schema definition established in [
 }
 ```
 
-Details regarding the `dataContract` object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json).
+Details regarding the `dataContract` object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json). A truncated version is shown below for reference:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+  "type": "object",
+  "definitions": {
+    // Truncated ...
+  },
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
+    },
+    "contractId":{
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "version": {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 1
+    },
+    "documents": {
+      "type": "object",
+      // Truncated ...
+      "propertyNames": {
+        "pattern": "^((?!-|_)[a-zA-Z0-9-_]{0,62}[a-zA-Z0-9])$"
+      },
+      "minProperties": 1,
+      "maxProperties": 100
+    },
+    "definitions": {
+      "$ref": "#/definitions/documentProperties"
+    }
+  },
+  "required": [
+    "$schema",
+    "contractId",
+    "version",
+    "documents"
+  ],
+  "additionalProperties": false
+}
+```
 
 
 **Example State Transition**

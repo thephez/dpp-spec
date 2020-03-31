@@ -12,7 +12,7 @@ The following example shows a minimal `documents` object defining a single docum
         "type": "string"
       }
     },
-    "additionalProperties": "false"
+    "additionalProperties": false
   }
 }
 ```

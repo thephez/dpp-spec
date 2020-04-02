@@ -293,11 +293,11 @@ The platform protocol performs several forms of validation on identity create st
  - Structure validation - only checks the content of the state transition
  - Data validation - takes the overall platform state into consideration
 
-**Example:** A identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
+**Example:** An identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way.
+Structure validation verifies that the content of state transition fields comply with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way.
 
 ### Identity Type Validation
 

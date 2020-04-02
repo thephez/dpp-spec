@@ -287,6 +287,44 @@ function signHash(hash, privateKey) {
 }
 ```
 
+# Identity Validation
+
+The platform protocol performs several forms of validation on identity create state transitions: structure validation and data validation.
+ - Structure validation - only checks the content of the state transition
+ - Data validation - takes the overall platform state into consideration
+
+**Example:** A identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
+
+## State Transition Structure
+
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way.
+
+### Identity Type Validation
+
+The `type` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js)) verifies that it is:
+
+1. In the range of reserved types (`< 32767`) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js#L15))
+2. A [registered type](#identity-type) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js#L16-L22))
+
+### Identity Public Keys Validation
+
+The `publickeys` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validatePublicKeysFactory.js)) verifies that each public key:
+
+1. Is a valid public key structure (validated against the [public key schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json))
+2. Has a unique `id` within the state transition
+3. Is unique
+4. Contains a valid key in the `data` field
+
+## State Transition Data
+
+Data validation verifies that the data in the state transition is valid in the context of the current platform state.
+
+### Identity `id` Validation
+
+Performs minimal validation to verify that an identity with the `id` does not already exist (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/stateTransitions/identityCreateTransition/validateIdentityCreateSTDataFactory.js#L27-L33)).
+
+**Note:** Additional validation rules will be added in future versions.
+
 # Non-implemented topics
  - Balance
  - Topup

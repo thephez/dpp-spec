@@ -37,7 +37,7 @@ The data contract object consists of the following fields as defined in the Java
 | Property | Type | Required | Description |
 | - | - | - | - |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $contractId | string | Yes | [Identity](identity.md) that registered the data contract defining the document (Base58, 42-44 characters) |
+| $contractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 | version | integer | Yes | Data Contract version (>= 1) (default: 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
 | documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |

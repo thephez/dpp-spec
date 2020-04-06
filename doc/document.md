@@ -250,10 +250,10 @@ The `document` objects in the state transition's `documents` array consist of th
 | Property | Type | Required | Description |
 | - | - | - | - |
 | $type | string | Yes  | Document type defined in the referenced contract |
-| $contractId | string | Yes | [Identity](identity.md) that registered the data contract defining the document (Base58, 42-44 characters) |
-| $userId | integer | Yes | [Identity](identity.md) of the user submitting the document |
-| $entropy | object | Yes | Randomness to ensure document uniqueness |
-| $rev | object | No | Document revision  |
+| $contractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
+| $userId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
+| $entropy | string | Yes | Randomness to ensure document uniqueness (34 characters)|
+| $rev | integer | No | Document revision (=>1) |
 
 **Example Document Object**
 

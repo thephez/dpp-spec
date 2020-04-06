@@ -5,7 +5,7 @@ Identities consist of three components that are described in further detail in f
 
 | Field | Type | Description|
 | - | - | - |
-| id | string | The identity id |
+| id | string (base58) | The identity id |
 | type | integer | Type of identity (`user` or `application`) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 

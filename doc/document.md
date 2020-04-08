@@ -16,6 +16,7 @@ The following example shows a minimal `documents` object defining a single docum
   }
 }
 ```
+
 ## Document Properties
 
 The `properties` object defines each field that will be used by a document. Each field consists of an object that, at a minimum, must define its data `type` (`string`, `number`, `integer`, `boolean`, `array`, `object`). Fields may also apply a variety of optional JSON Schema constraints related to the format, range, length, etc. of the data.
@@ -23,6 +24,7 @@ The `properties` object defines each field that will be used by a document. Each
 **Note:** A full explanation of the capabilities of JSON Schema is beyond the scope of this document. For more information regarding its data types and the constraints that can be applied, please refer to the [JSON Schema reference](https://json-schema.org/understanding-json-schema/reference/index.html) documentation.
 
 ### Property Constraints
+
 There are a variety of constraints currently defined for performance and security reasons.
 
 | Description | Value |
@@ -155,6 +157,7 @@ This example syntax shows the structure of a documents object that defines two d
 ```
 
 # Additional Properties
+
 Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined.
 
 Include the following at the same level as the `properties` keyword to ensure proper validation:

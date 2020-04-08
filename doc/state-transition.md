@@ -69,6 +69,8 @@ Each data contract state transition must include the [base schema](#base-schema)
 }
 ```
 
+More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
+
 # Document Schema
 
 | Field | Type | Description|
@@ -107,7 +109,10 @@ Each document state transition must include the [base schema](#base-schema) alon
 }
 ```
 
-# Identity Schema
+More detailed information about the `actions` and `documents` objects can be found in the [document section](document.md).
+
+
+# Identity Create Schema
 
 | Field | Type | Description|
 | - | - | - |
@@ -146,3 +151,6 @@ Each identity create state transition must include the [base schema](#base-schem
   ]
 }
 ```
+
+More detailed information about the `id`, `type`, and `publicKeys` objects can be found in the [identity section](identity.md).
+

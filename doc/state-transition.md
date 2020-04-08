@@ -2,7 +2,7 @@
 
  State transitions are the means for submitting data that creates, updates, or deletes platform data and results in a change to a new state. Each one must contain:
  - All fields defined in the [base schema](#base-schema)
- - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](#identity-create-schema))
+ - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](identity.md#identity-create-schema))
 
 # Base Schema
 
@@ -12,7 +12,7 @@ All state transitions are built on the base schema and include the following fie
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type:<br>`1` - data contract<br>`2` - document<br>`3` - identity create |
-| signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (=> 1)|
+| signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 1`)|
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 
 Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json):
@@ -122,8 +122,8 @@ More detailed information about the `actions` and `documents` objects can be fou
 | Field | Type | Description|
 | - | - | - |
 | lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
-| identityType | integer | [Type of identity](identity.md#identity-type) (range: 0- 65535) |
-| publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: 10)|
+| identityType | integer | [Type of identity](identity.md#identity-type) (range: `0- 65535`) |
+| publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
 
 Each identity create state transition must include the [base schema](#base-schema) along with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/identity.json):
 

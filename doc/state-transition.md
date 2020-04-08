@@ -1,5 +1,9 @@
 # State Transition Overview
 
+ State transitions are the means for submitting data that creates, updates, or deletes platform data and results in a change to a new state. Each one must contain:
+ - All fields defined in the [base schema](#base-schema)
+ - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](#identity-create-schema))
+
 # Base Schema
 
 All state transitions are built on the base schema and include the following fields:
@@ -9,7 +13,7 @@ All state transitions are built on the base schema and include the following fie
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type:<br>`1` - data contract<br>`2` - document<br>`3` - identity create |
 | signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (=> 1)|
-| signature | string (base64)| Signature of state transition data (86 characters) |
+| signature | string (base64)| Signature of state transition data (86-88 characters) |
 
 Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json):
 
@@ -46,7 +50,9 @@ Each state transition must comply with the state transition [base schema](https:
 }
 ```
 
-# Data Contract Schema
+# State Transition Types
+
+## Data Contract
 
 | Field | Type | Description|
 | - | - | - |
@@ -71,7 +77,7 @@ Each data contract state transition must include the [base schema](#base-schema)
 
 More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
 
-# Document Schema
+## Document Schema
 
 | Field | Type | Description|
 | - | - | - |
@@ -111,8 +117,7 @@ Each document state transition must include the [base schema](#base-schema) alon
 
 More detailed information about the `actions` and `documents` objects can be found in the [document section](document.md).
 
-
-# Identity Create Schema
+## Identity Create Schema
 
 | Field | Type | Description|
 | - | - | - |
@@ -153,4 +158,15 @@ Each identity create state transition must include the [base schema](#base-schem
 ```
 
 More detailed information about the `id`, `type`, and `publicKeys` objects can be found in the [identity section](identity.md).
+
+
+# State Transition Signing
+
+State transitions must be signed by a private key associated with the identity creating the state transition.
+
+The process to sign a state transition consists of the following steps:
+1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
+2. Sign the encoded data with a private key associated with the identity creating the state transition
+3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
+4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 

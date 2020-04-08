@@ -20,6 +20,7 @@ The following sections provide details that developers need to construct valid c
 | `$ref: <something>` | `$ref` can only reference `definitions` - <br> remote references not supported |
 
 ## Data Size
+
 Additionally, there are several constraints limiting the overall size of data contracts and related data as defined here:
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
@@ -29,6 +30,14 @@ Additionally, there are several constraints limiting the overall size of data co
 | Maximum size of serialized data contract | [15 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxByteSizeExceededError.js#L23) |
 | Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
 
+## Additional Properties
+
+Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined.
+
+Include the following at the same level as the `properties` keyword to ensure proper validation:
+```json
+"additionalProperties": false
+```
 
 # Data Contract Object
 

@@ -15,9 +15,9 @@
    - Indices
  - [Definitions](doc/document.md#definition-overview)
 
-State Transitions
+[State Transitions](doc/state-transition.md)
  - Overview / general structure
- - [Identity ST](doc/identity.md#identity-registration)
+ - [Identity ST](doc/identity.md#identity-creation)
  - [Data Contract ST](doc/data-contract.md#data-contract-registration)
  - Document ST
 

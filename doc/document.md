@@ -154,39 +154,6 @@ This example syntax shows the structure of a documents object that defines two d
 }
 ```
 
-# Definition Overview
-
-The optional `definitions` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#reuse). Items defined in `definitions` may then be referenced when defining `documents` through use of the `$ref` keyword.
-
-**Note:** Properties defined in the `definitions` object must meet the same criteria as those defined in the `documents` object.
-
-**Note:** Data contracts can only use the `$ref` keyword to reference their own `definitions`. Referencing external definitions is not supported by the platform protocol.
-
-**Example**
-The following example shows a definition for a `message` object consisting of two properties:
-
-```json
-{
-  // Preceeding content truncated ...
-  "definitions": {
-    "message": {
-      "type": "object",
-      "properties": {
-        "timestamp": {
-          "type": "number"
-        },
-        "description": {
-          "type": "string"
-        }
-      },
-      "additionalProperties": false
-    }
-  }
-}
-```
-
-**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`. This must be done prior to broadcasting the contract for registration.
-
 # Additional Properties
 Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined.
 

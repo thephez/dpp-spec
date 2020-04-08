@@ -42,6 +42,45 @@ The data contract object consists of the following fields as defined in the Java
 | documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
+## Data Contract Documents
+
+More detailed information about `documents` objects can be found in the [document section](document.md).
+
+## Data Contract Definitions
+
+The optional `definitions` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#reuse). Items defined in `definitions` may then be referenced when defining `documents` through use of the `$ref` keyword.
+
+**Note:** Properties defined in the `definitions` object must meet the same criteria as those defined in the `documents` object.
+
+**Note:** Data contracts can only use the `$ref` keyword to reference their own `definitions`. Referencing external definitions is not supported by the platform protocol.
+
+**Example**
+The following example shows a definition for a `message` object consisting of two properties:
+
+```json
+{
+  // Preceeding content truncated ...
+  "definitions": {
+    "message": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "number"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+```
+
+**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`. This must be done prior to broadcasting the contract for registration.
+
+## Data Contract Schema
+
 Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json). A truncated version is shown below for reference:
 
 ```json

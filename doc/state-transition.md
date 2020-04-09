@@ -89,3 +89,67 @@ The process to sign a state transition consists of the following steps:
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
 4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
+# State Transition Validation
+
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+
+
+```
+validateStateTransitionStructureFactory
+    ✓ should return invalid result if ST invalid against extension schema
+    ✓ should return invalid result if ST is invalid against extension function
+
+    Base schema
+      protocolVersion
+        ✓ should be present
+        ✓ should equal to 0
+      type
+        ✓ should be present
+        ✓ should have defined extension
+      signature
+        ✓ should be present
+        ✓ should no have length < 86
+        ✓ should not have length > 88
+        ✓ should be base64 encoded
+      signaturePublicKeyId
+        ✓ should be an integer
+        ✓ should be a nullable
+        ✓ should not be < 1
+
+    Data Contract Schema
+      ✓ should be valid
+      dataContract
+        ✓ should be present
+
+    Documents Schema
+      ✓ should be valid
+      actions
+        ✓ should be present
+        ✓ should be an array
+        ✓ should have at least one element
+        ✓ should have no more than 10 elements
+        ✓ should have action types as elements
+      documents
+        ✓ should be present
+        ✓ should be an array
+        ✓ should have at least one element
+        ✓ should have no more than 10 elements
+        ✓ should have objects as elements
+
+    Identity schema
+      ✓ should be valid
+      lockedOutPoint
+        ✓ should be present
+        ✓ should not be less than 48 characters in length
+        ✓ should not be more than 48 characters in length
+        ✓ should be base64 encoded
+      identityType
+        ✓ should be present
+        ✓ should be an integer
+        ✓ should not be less than 0
+        ✓ should not be more than 65535
+      publicKeys
+        ✓ should be present
+        ✓ should not be empty
+        ✓ should not have more than 10 items
+```

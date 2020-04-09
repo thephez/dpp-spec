@@ -58,23 +58,6 @@ Each state transition must comply with the state transition [base schema](https:
 | - | - | - |
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
 
-Each data contract state transition must include the [base schema](#base-schema) along with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/data-contract.json):
-
-
-```json
-{
-  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/data-contract",
-  "properties": {
-    "dataContract": {
-      "type": "object"
-    }
-  },
-  "required": [
-    "dataContract"
-  ]
-}
-```
-
 More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
 
 ## Document
@@ -83,37 +66,6 @@ More detailed information about the `dataContract` object can be found in the [d
 | - | - | - |
 | actions | array of integers | [Action](document.md#document-actions) the platform should take for the associated document in the `documents` array |
 | documents | array of [document objects](document.md#document-object) | [Document(s)](document.md#document-object) |
-
-Each document state transition must include the [base schema](#base-schema) along with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/documents.json):
-
-```json
-{
-  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/documents",
-  "properties": {
-    "actions": {
-      "type": "array",
-      "items": {
-        "type": "number",
-        "enum": [1, 2, 4]
-      },
-      "minItems": 1,
-      "maxItems": 10
-    },
-    "documents": {
-      "type": "array",
-      "items": {
-        "type": "object"
-      },
-      "minItems": 1,
-      "maxItems": 10
-    }
-  },
-  "required": [
-    "actions",
-    "documents"
-  ]
-}
-```
 
 More detailed information about the `actions` and `documents` objects can be found in the [document section](document.md).
 
@@ -124,38 +76,6 @@ More detailed information about the `actions` and `documents` objects can be fou
 | lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
 | identityType | integer | [Type of identity](identity.md#identity-type) (range: `0- 65535`) |
 | publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
-
-Each identity create state transition must include the [base schema](#base-schema) along with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/identity.json):
-
-```json
-{
-  "$id": "https://schema.dash.org/dpp-0-4-0/identity/identity",
-  "properties": {
-    "id": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
-    },
-    "type": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 0,
-      "maximum": 65535
-    },
-    "publicKeys": {
-      "type": "array",
-      "minItems": 1,
-      "maxItems": 100
-    }
-  },
-  "required": [
-    "id",
-    "type",
-    "publicKeys"
-  ]
-}
-```
 
 More detailed information about the `id`, `type`, and `publicKeys` objects can be found in the [identity section](identity.md).
 

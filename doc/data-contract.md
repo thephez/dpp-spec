@@ -235,7 +235,7 @@ The platform protocol performs several forms of validation on data contract stat
 
 ## State Transition Structure
 
-[Structure validation](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/stateTransition/validation/validateDataContractSTStructureFactory.js#L37-L55) verifies that the content of state transition fields comply with the requirements for the field. The `contractId` and `signature` fields are validated in this way.
+[Structure validation](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/stateTransition/validation/validateDataContractSTStructureFactory.js#L37-L55) verifies that the content of state transition fields complies with the requirements for the field. The `contractId` and `signature` fields are validated in this way.
 
 ### Contract ID Validation
 

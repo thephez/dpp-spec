@@ -353,7 +353,7 @@ PublicKeys
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields comply with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateSTStructureFactory

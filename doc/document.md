@@ -178,6 +178,37 @@ Documents are sent to the platform by submitting the them in a documents state t
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
+Each document state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/documents.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+
+```json
+{
+  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/documents",
+  "properties": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "enum": [1, 2, 4]
+      },
+      "minItems": 1,
+      "maxItems": 10
+    },
+    "documents": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 1,
+      "maxItems": 10
+    }
+  },
+  "required": [
+    "actions",
+    "documents"
+  ]
+}
+```
+
 **Example State Transition**
 
 ```json
@@ -224,6 +255,53 @@ The `document` objects in the state transition's `documents` array consist of th
 | $userId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
 | $entropy | string | Yes | Randomness to ensure document uniqueness (34 characters)|
 | $rev | integer | No | Document revision (=>1) |
+
+Each document objectmust comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/base/document.json):
+
+Document base:
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://schema.dash.org/dpp-0-4-0/base/document",
+  "type": "object",
+  "properties": {
+    "$type": {
+      "type": "string"
+    },
+    "$rev": {
+      "type": "number",
+      "multipleOf": 1.0,
+      "minimum": 1
+    },
+    "$contractId": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "$userId": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "$entropy": {
+      "type": "string",
+      "minLength": 34,
+      "maxLength": 34
+    }
+  },
+  "required": [
+    "$type",
+    "$rev",
+    "$contractId",
+    "$userId",
+    "$entropy"
+  ],
+  "additionalProperties": false
+}
+```
 
 **Example Document Object**
 

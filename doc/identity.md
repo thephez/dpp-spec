@@ -1,4 +1,5 @@
 # Identity Overview
+
 Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data.
 
 Identities consist of three components that are described in further detail in following sections:
@@ -77,7 +78,7 @@ Each item in the `publicKeys` array consists an object containing:
 
 | Field | Type | Description|
 | - | - | - |
-| id | integer | The key id (=> 1, unique among keys in `publicKeys` array) |
+| id | integer | The key id (`=> 1`, unique among keys in `publicKeys` array) |
 | type | integer | Type of key (default: 1 - ECDSA) |
 | data | string (base64) | Public key |
 | isEnabled | boolean | Status of key |
@@ -295,33 +296,83 @@ The platform protocol performs several forms of validation on identity create st
 
 **Example:** An identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
 
+## Model Validation
+
+### Identity Model
+
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+Identity
+  ✓ should return invalid result if there are duplicate keys
+  ✓ should return invalid result if identity type is unknown
+  id
+    ✓ should be present
+    ✓ should be a string
+    ✓ should not be less than 42 characters
+    ✓ should not be more than 44 characters
+    ✓ should be base58 encoded
+  type
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should be greater than 0
+    ✓ should be less than 65535
+  publicKeys
+    ✓ should be present
+    ✓ should be an array
+    ✓ should not be empty
+    ✓ should throw an error if publicKeys have more than 100 keys
+```
+
+### Public Key Model
+
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+PublicKeys
+    ✓ should return invalid result if there are duplicate key ids
+    ✓ should return invalid result if there are duplicate keys
+    ✓ should return invalid result if key data is not a valid DER
+    id
+      ✓ should be present
+      ✓ should be a number
+      ✓ should be an integer
+      ✓ should be greater or equal to one
+    type
+      ✓ should be present
+      ✓ should be a number
+    data
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 1 character
+      ✓ should be no longer than 2048 character
+      ✓ should be in base64 format
+    isEnabled
+      ✓ should be present
+      ✓ should be a number
+```
+
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields comply with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way.
+Structure validation verifies that the content of state transition fields comply with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-### Identity Type Validation
+```
+validateIdentityCreateSTStructureFactory
+  ✓ should return invalid result if there are duplicate keys
+  ✓ should return invalid result if identity type is unknown
+```
 
-The `type` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js)) verifies that it is:
-
-1. In the range of reserved types (`< 32767`) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js#L15))
-2. A [registered type](#identity-type) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validateIdentityType.js#L16-L22))
-
-### Identity Public Keys Validation
-
-The `publickeys` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/validation/validatePublicKeysFactory.js)) verifies that each public key:
-
-1. Is a valid public key structure (validated against the [public key schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json))
-2. Has a unique `id` within the state transition
-3. Is unique
-4. Contains a valid key in the `data` field
+* See the [identity type section](#identity-type) for details regarding known identity types.
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state.
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
 
-### Identity `id` Validation
-
-Performs minimal validation to verify that an identity with the `id` does not already exist (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/identity/stateTransitions/identityCreateTransition/validateIdentityCreateSTDataFactory.js#L27-L33)).
+```
+validateIdentityCreateSTDataFactory
+   ✓ should return invalid result if identity already exists
+   ✓ should return valid result if state transition is valid
+```
 
 **Note:** Additional validation rules will be added in future versions.
 

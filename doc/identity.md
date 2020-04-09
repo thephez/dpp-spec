@@ -290,15 +290,14 @@ function signHash(hash, privateKey) {
 
 # Identity Validation
 
-The platform protocol performs several forms of validation on identity create state transitions: structure validation and data validation.
- - Structure validation - only checks the content of the state transition
- - Data validation - takes the overall platform state into consideration
+The platform protocol performs several forms of validation related to identities: model validation, structure validation, and data validation.
+ - Model validation - ensures object models are correct
+ - State transition structure validation - only checks the content of the state transition
+ - State transition data validation - takes the overall platform state into consideration
 
 **Example:** An identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
 
-## Model Validation
-
-### Identity Model
+## Identity Model
 
 The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -324,7 +323,7 @@ Identity
     ✓ should throw an error if publicKeys have more than 100 keys
 ```
 
-### Public Key Model
+## Public Key Model
 
 The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 

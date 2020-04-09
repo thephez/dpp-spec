@@ -156,6 +156,10 @@ This example syntax shows the structure of a documents object that defines two d
 }
 ```
 
+## Document Schema
+
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json#L314-L451).
+
 # Additional Properties
 
 Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined.
@@ -233,7 +237,7 @@ Each document state transition must comply with this JSON-Schema definition esta
 }
 ```
 
-## Document Actions
+## State Transition Action
 
 | Action | Name | Description |
 | :-: | - | - |
@@ -244,7 +248,7 @@ Each document state transition must comply with this JSON-Schema definition esta
 
 **Note:** In the current implementation, actions start at `1`. In future releases, indexing may change to begin at `0` instead of `1`.
 
-## Document Object
+## State Transition Document Object
 
 The `document` objects in the state transition's `documents` array consist of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)):
 
@@ -256,9 +260,7 @@ The `document` objects in the state transition's `documents` array consist of th
 | $entropy | string | Yes | Randomness to ensure document uniqueness (34 characters)|
 | $rev | integer | No | Document revision (=>1) |
 
-Each document objectmust comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/base/document.json):
-
-Document base:
+Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/base/document.json):
 
 ```json
 {
@@ -315,3 +317,44 @@ Document base:
   "message": "Tutorial Test @ Thu, 26 Mar 2020 20:19:49 GMT"
 }
 ```
+
+# Document Validation
+
+## State Transition Structure
+
+State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDocumentFactory
+  ✓ should validate against base Document schema if `action` option is DELETE
+  ✓ should throw validation error if additional fields are defined and `action` option is DELETE
+  ✓ should return invalid result if a document contractId is not equal to Data Contract ID
+  Base schema
+    $type
+      ✓ should be present
+      ✓ should be defined in Data Contract
+      ✓ should throw an error if getDocumentSchemaRef throws error
+    $rev
+      ✓ should be present
+      ✓ should be a number
+      ✓ should be an integer
+      ✓ should be greater or equal to one
+    $contractId
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 42 chars
+      ✓ should be no longer than 44 chars
+      ✓ should be base58 encoded
+    $userId
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 42 chars
+      ✓ should be no longer than 44 chars
+      ✓ should be base58 encoded
+    $entropy
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 34 chars
+      ✓ should be no longer than 34 chars
+      ✓ should be valid entropy
+```      

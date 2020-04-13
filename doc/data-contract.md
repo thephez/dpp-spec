@@ -226,19 +226,109 @@ The process to sign a data contract state transition consists of the following s
 
 # Data Contract Validation
 
-The platform protocol performs several forms of validation on data contract state transitions: structure validation and data validation.
-
-- Structure validation - only checks the content of the state transition
-- Data validation - takes the overall platform state into consideration
+The platform protocol performs several forms of validation related to data contracts: model validation, structure validation, and data validation.
+ - Model validation - ensures object models are correct
+ - State transition structure validation - only checks the content of the state transition
+ - State transition data validation - takes the overall platform state into consideration
 
 **Example:** A data contract state transition for an existing application could pass structure validation; however, it would fail data validation if it used an application identity that has already created a data contract.
 
-## State Transition Structure
+## Data Contract Model
 
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/validateDataContractFactory.js). The test output below shows the necessary criteria:
 
+```
+ validateDataContractFactory
+   ✓ should return an invalid result if data contract byte size is bigger than 15 Kb
+   ✓ should return invalid result with circular $ref pointer
 
+   $schema
+     ✓ should be present
+     ✓ should be a string
+     ✓ should be a particular url
+   contractId
+     ✓ should be present
+     ✓ should be a string
+     ✓ should be no less than 42 chars
+     ✓ should be no longer than 44 chars
+     ✓ should be base58 encoded
+   version
+     ✓ should be present
+     ✓ should be a number
+     ✓ should be an integer
+     ✓ should be greater or equal to one
+   definitions
+     ✓ may not be present
+     ✓ should be an object
+     ✓ should not be empty
+     ✓ should have no non-alphanumeric properties
+     ✓ should have no more than 100 properties
+     ✓ should have valid property names
+     ✓ should return an invalid result if a property has invalid format
 
+   documents
+     ✓ should be present
+     ✓ should be an object
+     ✓ should not be empty
+     ✓ should have valid property names (document types)
+     ✓ should return an invalid result if a property (document type) has invalid format
+     ✓ should have no more than 100 properties
+     Document schema
+       ✓ should not be empty
+       ✓ should have type "object"
+       ✓ should have "properties"
+       ✓ should have nested "properties"
+       ✓ should have valid property names
+       ✓ should have valid nested property names
+       ✓ should return an invalid result if a property has invalid format
+       ✓ should return an invalid result if a nested property has invalid format
+       ✓ should have "additionalProperties" defined
+       ✓ should have "additionalProperties" defined to false
+       ✓ should have nested "additionalProperties" defined
+       ✓ should return invalid result if there are additional properties
+       ✓ should have no more than 100 properties
+       ✓ should have defined items for arrays
+       ✓ should not have additionalItems for arrays if items is subschema
+       ✓ should have additionalItems for arrays
+       ✓ should have additionalItems disabled for arrays
+       ✓ should not have additionalItems enabled for arrays
+       ✓ should return invalid result if "default" keyword is used
+       ✓ should return invalid result if remote `$ref` is used
+       ✓ should not have `propertyNames`
+       ✓ should have `maxItems` if `uniqueItems` is used
+       ✓ should have `maxItems` no bigger than 100000 if `uniqueItems` is used
+       ✓ should return invalid result if document JSON Schema is not valid
+       ✓ should have `maxLength` if `pattern` is used
+       ✓ should have `maxLength` no bigger than 50000 if `pattern` is used
+       ✓ should have `maxLength` if `format` is used
+       ✓ should have `maxLength` no bigger than 50000 if `format` is used
 
+   indices
+     ✓ should be an array
+     ✓ should have at least one item
+     ✓ should return invalid result if there are duplicated indices
+     index
+       ✓ should be an object
+       ✓ should have properties definition
+       ✓ should have "unique" flag to be of a boolean type
+       ✓ should have no more than 10 indices
+       ✓ should have no more than 3 unique indices
+       ✓ should return invalid result if indices has undefined property
+       ✓ should return invalid result if index property is object
+       ✓ should return invalid result if index property is array of objects
+       ✓ should return invalid result if index property is array of arrays
+       ✓ should return invalid result if index property is array with many item definitions
+       ✓ should return invalid result if index property is a single $id
+       properties definition
+         ✓ should be an array
+         ✓ should have at least one property defined
+         ✓ should have no more than 10 property definitions
+         property definition
+           ✓ should be an object
+           ✓ should have at least one property
+           ✓ should have no more than one property
+           ✓ should have property values only "asc" or "desc"
+```
 
 ## State Transition Structure
 

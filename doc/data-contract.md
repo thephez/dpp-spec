@@ -235,30 +235,43 @@ The platform protocol performs several forms of validation on data contract stat
 
 ## State Transition Structure
 
-[Structure validation](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/stateTransition/validation/validateDataContractSTStructureFactory.js#L37-L55) verifies that the content of state transition fields complies with the requirements for the field. The `contractId` and `signature` fields are validated in this way.
 
-### Contract ID Validation
 
-The `contractId` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/stateTransition/validation/validateIdentityExistenceAndTypeFactory.js)) verifies that:
 
-1. The identity exists
-2. The identity is of type `application`
 
-### Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/stateTransition/validation/validateStateTransitionSignatureFactory.js)) verifies that:
+## State Transition Structure
 
-1. The identity has a public key
-2. The identity's public key is of type `ECDSA`
-3. The state transition signature is valid
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDataContractSTStructureFactory
+  ✓ should return invalid result if Data Contract Identity is invalid
+  ✓ should return invalid result if data contract is invalid
+  ✓ should return invalid result on invalid signature
+```
+
+* See the [state transition document](state-transition.md) for signature validation details.
 
 ## State Transition Data
 
-Performs minimal validation to verify that a data contract with the `contractId` does not already exist (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/stateTransition/validation/validateDataContractSTDataFactory.js#L22-L29)).
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractSTDataFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDataContractSTDataFactory
+  ✓ should return invalid result if Data Contract with specified contractId is already exist
+```
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.js#L72-L78)).
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
+```
+validateDataContractMaxDepthFactory
+  ✓ should throw error if depth > MAX_DEPTH
+  ✓ should return valid result if depth = MAX_DEPTH
+  ✓ should throw error if contract contains array with depth > MAX_DEPTH
+  ✓ should return error if refParser throws an error
+```
 
 **Note:** Additional validation rules will be added in future versions.

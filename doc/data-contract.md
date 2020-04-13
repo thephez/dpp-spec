@@ -235,7 +235,7 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/validateDataContractFactory.js). The test output below shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/validateDataContractFactory.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
 ```
  validateDataContractFactory
@@ -265,7 +265,10 @@ The data contract model must pass validation tests as defined in [js-dpp](https:
      ✓ should have no more than 100 properties
      ✓ should have valid property names
      ✓ should return an invalid result if a property has invalid format
+```
 
+### Document Validation
+```
    documents
      ✓ should be present
      ✓ should be an object
@@ -302,7 +305,10 @@ The data contract model must pass validation tests as defined in [js-dpp](https:
        ✓ should have `maxLength` no bigger than 50000 if `pattern` is used
        ✓ should have `maxLength` if `format` is used
        ✓ should have `maxLength` no bigger than 50000 if `format` is used
+```
 
+### Index Validation
+```
    indices
      ✓ should be an array
      ✓ should have at least one item

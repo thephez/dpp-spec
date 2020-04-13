@@ -246,7 +246,7 @@ Each document state transition must comply with this JSON-Schema definition esta
 | 3 | `RESERVED` | Unused action |
 | 4 | Delete | Delete the referenced document |
 
-**Note:** In the current implementation, actions start at `1`. In future releases, indexing may change to begin at `0` instead of `1`.
+**Note:** In the current implementation, actions start at `1`. In future releases, indexing will change to begin at `0` instead of `1`.
 
 ## State Transition Document Object
 
@@ -320,9 +320,16 @@ Each document object must comply with this JSON-Schema definition established in
 
 # Document Validation
 
-## State Transition Structure
+The platform protocol performs several forms of validation related to documents: model validation, structure validation, and data validation.
+ - Model validation - ensures object models are correct
+ - State transition structure validation - only checks the content of the state transition
+ - State transition data validation - takes the overall platform state into consideration
 
-State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+**Example:** A document state transition for an existing document could pass structure validation; however, it would fail data validation since the document already exists.
+
+## Document Model
+
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentFactory
@@ -357,4 +364,39 @@ validateDocumentFactory
       ✓ should be no less than 34 chars
       ✓ should be no longer than 34 chars
       ✓ should be valid entropy
-```      
+```
+
+## State Transition Structure
+
+State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/document/stateTransition/structure/validateDocumentsSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDocumentsSTStructureFactory
+  ✓ should return invalid result if userId is not valid
+  ✓ should return invalid result if actions and documents count are not equal
+  ✓ should return invalid result if there are documents with different $contractId
+  ✓ should return invalid result if Documents are invalid
+  ✓ should return invalid result if Documents are invalid
+  ✓ should return invalid result if there are duplicate Documents with the same ID
+  ✓ should return invalid result if there are duplicate unique index values
+  ✓ should return invalid result if there are documents with different User IDs
+  ✓ should return invalid result with invalid signature
+```
+
+## State Transition Data
+
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/document/stateTransition/data/validateDocumentsSTDataFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDocumentsSTDataFactory
+  ✓ should return invalid result if Data Contract is not present
+  ✓ should return invalid result if Document with action "create" is already present
+  ✓ should return invalid result if Document with action "update" is not present
+  ✓ should return invalid result if Document with action "delete" is not present
+  ✓ should return invalid result if Document with action "update" has wrong revision
+  ✓ should return invalid result if Document with action "delete" has wrong revision
+  ✓ should throw an error if Document has invalid action
+  ✓ should return invalid result if there are duplicate documents according to unique indices
+  ✓ should return invalid result if data triggers execution failed
+
+```

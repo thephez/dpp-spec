@@ -11,15 +11,17 @@
 
 [Data Contracts](doc/data-contract.md)
  - [Documents](doc/document.md#document-overview)
-   - Properties
-   - Indices
+   - [Properties](doc/document.md#document-properties)
+   - [Indices](doc/document.md#document-indices)
  - [Definitions](doc/document.md#definition-overview)
 
 [State Transitions](doc/state-transition.md)
- - Overview / general structure
- - [Identity ST](doc/identity.md#identity-creation)
- - [Data Contract ST](doc/data-contract.md#data-contract-registration)
- - Document ST
+ - [Overview / general structure](doc/state-transition.md)
+ - Types
+   - [Identity Create ST](doc/identity.md#identity-creation)
+   - [Data Contract ST](doc/data-contract.md#data-contract-creation)
+   - [Document ST](doc/document.md#document-submission)
+ - [Signing](doc/state-transition.md#state-transition-signing)
 
 Serialization
  - Base 64

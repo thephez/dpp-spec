@@ -11,7 +11,7 @@ All state transitions are built on the base schema and include the following fie
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type:<br>`1` - data contract<br>`2` - document<br>`3` - identity create |
+| type | integer | State transition type:<br>`1` - [data contract](data-contract.md#data-contract-creation)<br>`2` - [document](document.md#document-submission)<br>`3` - [identity create](identity.md#identity-creation) |
 | signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 1`)|
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 

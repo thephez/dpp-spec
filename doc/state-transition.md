@@ -89,10 +89,27 @@ The process to sign a state transition consists of the following steps:
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
 4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
+
+## Signature Validation
+
+The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
+
+1. The identity has a public key
+2. The identity's public key is of type `ECDSA`
+3. The state transition signature is valid
+
+The example test output below shows the necessary criteria:
+
+```
+validateStateTransitionSignatureFactory
+  ✓ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✓ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✓ should return InvalidStateTransitionSignatureError if signature is invalid
+```
+
 # State Transition Validation
 
 The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
-
 
 ```
 validateStateTransitionStructureFactory
@@ -115,12 +132,20 @@ validateStateTransitionStructureFactory
         ✓ should be an integer
         ✓ should be a nullable
         ✓ should not be < 1
+```
 
+## Data Contract State Transition
+
+```
     Data Contract Schema
       ✓ should be valid
       dataContract
         ✓ should be present
+```
 
+### Document State Transition
+
+```
     Documents Schema
       ✓ should be valid
       actions
@@ -135,7 +160,11 @@ validateStateTransitionStructureFactory
         ✓ should have at least one element
         ✓ should have no more than 10 elements
         ✓ should have objects as elements
+```
 
+## Identity State Transition
+
+```
     Identity schema
       ✓ should be valid
       lockedOutPoint

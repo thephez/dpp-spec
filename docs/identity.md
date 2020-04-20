@@ -2,20 +2,19 @@
 
 Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data.
 
-Identities consist of three components that are described in further detail in following sections:
+Identities consist of two components that are described in further detail in following sections:
 
 | Field | Type | Description|
 | - | - | - |
 | id | string (base58) | The identity id |
-| type | integer | Type of identity (`user` or `application`) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/identity/identity.json):
 
 ```json
 {
-  "$id": "https://schema.dash.org/dpp-0-4-0/identity/identity",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
     "id": {
       "type": "string",
@@ -23,22 +22,20 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
-    "type": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 0,
-      "maximum": 65535
-    },
     "publicKeys": {
       "type": "array",
       "minItems": 1,
       "maxItems": 100
+    },
+    "balance": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
     "id",
-    "type",
-    "publicKeys"
+    "publicKeys",
+    "balance"
   ]
 }
 ```
@@ -57,18 +54,6 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
       hash(Buffer.from(lockedOutPoint, 'base64')),
     );
 ```
-
-## Identity type
-
-**Note:** Identity types will be deprecated in a future release
-
-Identities are separated into multiple types depending on their purpose.
-
-| Value | Identity Type | Description |
-| :-: | :-: | - |
-| 1 | User | Standard identity type for using the platform |
-| 2 | Application | Used to create data contracts |
-| 3 -<br>32767 | N/A | Reserved |
 
 ## Identity publicKeys
 
@@ -177,30 +162,23 @@ Identities are created on the platform by submitting the identity information in
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity create) |
 | lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
-| identityType | integer | [Type of identity](#identity-type) |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signaturePublicKeyId | number | The `id` of the public key that signed the state transition (not part of the identity create state transition) |
 | signature | string | Signature of state transition data |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/identity/stateTransition/identityCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
-  "$id": "https://schema.dash.org/dpp-0-4-0/idenitity/state-transitions/identity-create",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
     "lockedOutPoint": {
       "type": "string",
       "minLength": 48,
       "maxLength": 48,
       "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
-    },
-    "identityType": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 0,
-      "maximum": 65535
     },
     "publicKeys": {
       "type": "array",
@@ -210,7 +188,6 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   },
   "required": [
     "lockedOutPoint",
-    "identityType",
     "publicKeys"
   ]
 }
@@ -223,7 +200,6 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "protocolVersion": 0,
   "type": 3,
   "lockedOutPoint": "6NnSpFNGO9RmTl/joS9Bow64fE1YASEV+nv/4DnH0RsAAAAA",
-  "identityType": 1,  
   "publicKeys": [
     {
       "id": 1,

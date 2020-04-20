@@ -74,10 +74,9 @@ More detailed information about the `actions` and `documents` objects can be fou
 | Field | Type | Description|
 | - | - | - |
 | lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
-| identityType | integer | [Type of identity](identity.md#identity-type) (range: `0- 65535`) |
 | publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
 
-More detailed information about the `id`, `type`, and `publicKeys` objects can be found in the [identity section](identity.md).
+More detailed information about the `publicKeys` object can be found in the [identity section](identity.md).
 
 # State Transition Signing
 

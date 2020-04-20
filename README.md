@@ -1,7 +1,6 @@
 # Dash Platform Protocol Specification
 
 [Identities](docs/identity.md)
- - Type (remove in 0.12)
  - Create
  - Non-implemented stuff
 	 - Topup

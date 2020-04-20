@@ -11,7 +11,7 @@ Identities consist of three components that are described in further detail in f
 | publicKeys | array of keys | Public key(s) associated with the identity |
 
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/identity.json):
 
 ```json
 {

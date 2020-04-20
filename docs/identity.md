@@ -276,19 +276,19 @@ The identity model must pass validation tests as defined in [js-dpp](https://git
 
 ```
 Identity
-  ✓ should return invalid result if there are duplicate keys
-  ✓ should return invalid result if identity type is unknown
+validateIdentityFactory
+  ✓ should return valid result if a raw identity is valid
+  ✓ should return valid result if an identity model is valid
   id
     ✓ should be present
     ✓ should be a string
     ✓ should not be less than 42 characters
     ✓ should not be more than 44 characters
     ✓ should be base58 encoded
-  type
+  balance
     ✓ should be present
     ✓ should be an integer
-    ✓ should be greater than 0
-    ✓ should be less than 65535
+    ✓ should be greater or equal 0
   publicKeys
     ✓ should be present
     ✓ should be an array
@@ -302,26 +302,27 @@ The public key model must pass validation tests as defined in [js-dpp](https://g
 
 ```
 PublicKeys
-    ✓ should return invalid result if there are duplicate key ids
-    ✓ should return invalid result if there are duplicate keys
-    ✓ should return invalid result if key data is not a valid DER
-    id
-      ✓ should be present
-      ✓ should be a number
-      ✓ should be an integer
-      ✓ should be greater or equal to one
-    type
-      ✓ should be present
-      ✓ should be a number
-    data
-      ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 1 character
-      ✓ should be no longer than 2048 character
-      ✓ should be in base64 format
-    isEnabled
-      ✓ should be present
-      ✓ should be a number
+validatePublicKeysFactory
+  ✓ should return invalid result if there are duplicate key ids
+  ✓ should return invalid result if there are duplicate keys
+  ✓ should return invalid result if key data is not a valid DER
+  id
+    ✓ should be present
+    ✓ should be a number
+    ✓ should be an integer
+    ✓ should be greater or equal to one
+  type
+    ✓ should be present
+    ✓ should be a number
+  data
+    ✓ should be present
+    ✓ should be a string
+    ✓ should be no less than 1 character
+    ✓ should be no longer than 2048 character
+    ✓ should be in base64 format
+  isEnabled
+    ✓ should be present
+    ✓ should be a number      
 ```
 
 ## State Transition Structure

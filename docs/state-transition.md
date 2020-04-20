@@ -4,6 +4,10 @@
  - All fields defined in the [base schema](#base-schema)
  - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](identity.md#identity-create-schema))
 
+## Fees
+
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/identity/creditsConverter.js#L1).
+
 # Base Schema
 
 All state transitions are built on the base schema and include the following fields:
@@ -11,11 +15,17 @@ All state transitions are built on the base schema and include the following fie
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type:<br>`1` - [data contract](data-contract.md#data-contract-creation)<br>`2` - [document](document.md#document-submission)<br>`3` - [identity create](identity.md#identity-creation) |
-| signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 1`)|
+| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [document](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation) |
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 
-Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json):
+Additionally, all state transitions except the identity create state transition include:
+
+| Field | Type | Description|
+| - | - | - |
+| signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 0`)|
+
+
+Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json):
 
 
 ```json
@@ -27,12 +37,12 @@ Each state transition must comply with the state transition [base schema](https:
       "const": 0
     },
     "type": {
-      "type": "number",
-      "enum": [1, 2, 3]
+      "type": "integer",
+      "enum": [0, 1, 2]
     },
     "signaturePublicKeyId": {
       "type": ["integer", "null"],
-      "minimum": 1
+      "minimum": 0
     },
     "signature": {
       "type": "string",
@@ -86,8 +96,7 @@ The process to sign a state transition consists of the following steps:
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the identity creating the state transition
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
-4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
-
+4. For all state transitions _other than identity create_, set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 ## Signature Validation
 

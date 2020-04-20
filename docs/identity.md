@@ -63,27 +63,25 @@ Each item in the `publicKeys` array consists an object containing:
 
 | Field | Type | Description|
 | - | - | - |
-| id | integer | The key id (`=> 1`, unique among keys in `publicKeys` array) |
-| type | integer | Type of key (default: 1 - ECDSA) |
+| id | integer | The key id (`=> 0`, unique among keys in `publicKeys` array) |
+| type | integer | Type of key (default: 0 - ECDSA) |
 | data | string (base64) | Public key |
 | isEnabled | boolean | Status of key |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/identity/public-key.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/identity/publicKey.json):
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://schema.dash.org/dpp-0-4-0/identity/public-key",
   "type": "object",
   "properties": {
     "id": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 1
+      "type": "integer",
+      "minimum": 0
     },
     "type": {
-      "type": "number",
-      "enum": [1]
+      "type": "integer",
+      "enum": [0]
     },
     "data": {
       "type": "string",
@@ -109,7 +107,6 @@ Each identity public key must comply with this JSON-Schema definition establishe
 
 Each public key in an identity's `publicKeys` array must be assigned a unique index number (`id`).
 
-**Note:** In the current implementation, each `id` must be `=> 1`.
 
 ### Public Key `type`
 
@@ -117,8 +114,8 @@ The `type` field indicates the algorithm used to derive the key.
 
 | Type | Description |
 | :-: | - |
-| 1 | ECDSA (default) |
-| 2 | BLS |
+| 0 | ECDSA (default) |
+| 1 | BLS (currently unused)|
 
 ### Public Key `data`
 

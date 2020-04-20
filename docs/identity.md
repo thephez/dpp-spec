@@ -163,7 +163,6 @@ Identities are created on the platform by submitting the identity information in
 | type | integer | State transition type (`3` for identity create) |
 | lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
-| signaturePublicKeyId | number | The `id` of the public key that signed the state transition (not part of the identity create state transition) |
 | signature | string | Signature of state transition data |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
@@ -208,7 +207,6 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "isEnabled": true
     }
   ],
-  "signaturePublicKeyId": 1,  
   "signature": "IAN3MdbBZAU9Llpt8scGj11fAlJVOHj1Cfc/HAZrlE/Uf2IeD9nweGkUC3SULAnF1oIxfK7yndoOwLuvP8TLCwc=",
 }
 ```
@@ -218,10 +216,9 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 **Note:** The identity create state transition signature is unique in that it must be signed by the private key used in the layer 1 locking transaction. All other state transitions will be signed by a private key of the identity submitting them.
 
 The process to sign an identity create state transition consists of the following steps:
-1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
+1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature`
 2. Sign the encoded data with private key associated with a lock transaction public key
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
-4. Set the state transition`signaturePublicKeyId` to the [public key `id`](#public-key-id) corresponding to the key used to sign
 
 ### Code snipits related to signing
 ```javascript

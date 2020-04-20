@@ -4,7 +4,6 @@
  - Create
  - Non-implemented stuff
 	 - Topup
-	 - Balance
 	 - Update/Reset Key/Close Id
 	 - Recovery mechanisms
 

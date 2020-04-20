@@ -1,10 +1,9 @@
-# Dash Platform Protocol Specification
+# Dash Platform Protocol Specification v0.12.0
 
 [Identities](docs/identity.md)
  - Create
  - Non-implemented stuff
 	 - Topup
-	 - Balance
 	 - Update/Reset Key/Close Id
 	 - Recovery mechanisms
 

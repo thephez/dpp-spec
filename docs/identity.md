@@ -2,7 +2,7 @@
 
 Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data.
 
-Identities consist of two components that are described in further detail in following sections:
+Identities consist of three components that are described in further detail in following sections:
 
 | Field | Type | Description|
 | - | - | - |
@@ -126,7 +126,7 @@ The `data` field contains the compressed public key encoded as base64.
 **Encode**
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
-// AbstractStateTransition.js
+// AbstractStateTransitionIdentitySigned.js
   /* We store compressed public key in the identity as a base64 string... */
   pubKeyBase = new PublicKey({
     ...privateKeyModel.toPublicKey().toObject(),
@@ -194,11 +194,14 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 **Example State Transition**
 
+**_TODO: Update with v0.12.0 example_**
+
 ```json
 {
   "protocolVersion": 0,
   "type": 3,
   "lockedOutPoint": "6NnSpFNGO9RmTl/joS9Bow64fE1YASEV+nv/4DnH0RsAAAAA",
+  "identityType": 1,  
   "publicKeys": [
     {
       "id": 1,
@@ -207,6 +210,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "isEnabled": true
     }
   ],
+  "signaturePublicKeyId": 1,  
   "signature": "IAN3MdbBZAU9Llpt8scGj11fAlJVOHj1Cfc/HAZrlE/Uf2IeD9nweGkUC3SULAnF1oIxfK7yndoOwLuvP8TLCwc=",
 }
 ```
@@ -226,6 +230,8 @@ The process to sign an identity create state transition consists of the followin
 // AbstractStateTransition.js
 // Serialize encodes the object (excluding the signature-related fields) with canonical CBOR
 const data = this.serialize({ skipSignature: true });
+const privateKeyModel = new PrivateKey(privateKey);
+
 this.signature = sign(data, privateKeyModel).toString('base64');
 
 // From dashcore-lib
@@ -272,7 +278,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 Identity
@@ -298,7 +304,7 @@ validateIdentityFactory
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 PublicKeys
@@ -327,30 +333,23 @@ validatePublicKeysFactory
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateSTStructureFactory
-  ✓ should return invalid result if there are duplicate keys
-  ✓ should return invalid result if identity type is unknown
+  ✓ should pass valid raw state transition
+  ✓ should pass valid state transition  
 ```
-
-* See the [identity type section](#identity-type) for details regarding known identity types.
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateSTDataFactory
-   ✓ should return invalid result if identity already exists
-   ✓ should return valid result if state transition is valid
+  ✓ should return invalid result if identity already exists
+  ✓ should return valid result if state transition is valid
+  ✓ should return invalid result if lock transaction is invalid
 ```
 
 **Note:** Additional validation rules will be added in future versions.
-
-# Non-implemented topics
- - Balance
- - Topup
- - Update/Reset Key/Close Id
- - Recovery mechanisms

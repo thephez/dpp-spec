@@ -8,7 +8,7 @@ Identities consist of two components that are described in further detail in fol
 | - | - | - |
 | id | string (base58) | The identity id |
 | publicKeys | array of keys | Public key(s) associated with the identity |
-
+| balance | integer | Credit balance associated with the identity |
 
 Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/identity/identity.json):
 
@@ -149,6 +149,9 @@ The `isEnabled` field indicates whether or not the key is an active, valid key. 
 
 **Note:** Keys are disabled (rather than deleted) to ensure that signature verification is possible for any data they signed.
 
+## Identity balance
+
+Each identity has a balance of credits established by value locked via a layer 1 lock transaction. This credit balance is used to pay the fees associated with state transitions.
 
 # Identity Creation
 

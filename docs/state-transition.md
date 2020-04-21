@@ -134,6 +134,8 @@ The state transition schema must pass validation tests as defined in [js-dpp](ht
 validateStateTransitionStructureFactory
     ✓ should return invalid result if ST invalid against extension schema
     ✓ should return invalid result if ST is invalid against extension function
+    ✓ should return invalid result if ST size is more than 16 kb (115ms)
+    ✓ should return valid result
 
     Base schema
       protocolVersion
@@ -150,7 +152,7 @@ validateStateTransitionStructureFactory
       signaturePublicKeyId
         ✓ should be an integer
         ✓ should be a nullable
-        ✓ should not be < 1
+        ✓ should not be < 0        
 ```
 
 ## Data Contract State Transition
@@ -160,20 +162,25 @@ validateStateTransitionStructureFactory
       ✓ should be valid
       dataContract
         ✓ should be present
-```
-
-### Document State Transition
-
-```
-    Documents Schema
-      ✓ should be valid
-      actions
+      entropy
         ✓ should be present
-        ✓ should be an array
-        ✓ should have at least one element
-        ✓ should have no more than 10 elements
-        ✓ should have action types as elements
-      documents
+        ✓ should be a string
+        ✓ should be no less than 34 chars
+        ✓ should be no longer than 34 chars
+```
+
+### Documents Batch State Transition
+
+```
+    Documents Batch Schema
+      ✓ should be valid
+      ownerId
+        ✓ should be present
+        ✓ should be a string
+        ✓ should be no less than 42 chars
+        ✓ should be no longer than 44 chars
+        ✓ should be base58 encoded
+      transitions
         ✓ should be present
         ✓ should be an array
         ✓ should have at least one element
@@ -191,11 +198,6 @@ validateStateTransitionStructureFactory
         ✓ should not be less than 48 characters in length
         ✓ should not be more than 48 characters in length
         ✓ should be base64 encoded
-      identityType
-        ✓ should be present
-        ✓ should be an integer
-        ✓ should not be less than 0
-        ✓ should not be more than 65535
       publicKeys
         ✓ should be present
         ✓ should not be empty

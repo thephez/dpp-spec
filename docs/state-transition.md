@@ -69,6 +69,10 @@ Each state transition must comply with the state transition [base schema](https:
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
 | entropy | string | Entropy used to generate the data contract ID |
 
+More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
+
+### Entropy Generation
+
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // entropy.js
@@ -79,8 +83,6 @@ generate() {
 }
 ```
 
-More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
-
 ## Documents Batch
 
 | Field | Type | Description|
@@ -88,7 +90,7 @@ More detailed information about the `dataContract` object can be found in the [d
 | ownerId | string (base58) | [Identity](identity.md) submitting the document(s) |
 | transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 
-More detailed information about the `tranistions` array can be found in the [document section](document.md).
+More detailed information about the `transitions` array can be found in the [document section](document.md).
 
 ## Identity Create
 
@@ -132,74 +134,74 @@ The state transition schema must pass validation tests as defined in [js-dpp](ht
 
 ```
 validateStateTransitionStructureFactory
-    ✓ should return invalid result if ST invalid against extension schema
-    ✓ should return invalid result if ST is invalid against extension function
-    ✓ should return invalid result if ST size is more than 16 kb (115ms)
-    ✓ should return valid result
+  ✓ should return invalid result if ST invalid against extension schema
+  ✓ should return invalid result if ST is invalid against extension function
+  ✓ should return invalid result if ST size is more than 16 kb
+  ✓ should return valid result
 
-    Base schema
-      protocolVersion
-        ✓ should be present
-        ✓ should equal to 0
-      type
-        ✓ should be present
-        ✓ should have defined extension
-      signature
-        ✓ should be present
-        ✓ should no have length < 86
-        ✓ should not have length > 88
-        ✓ should be base64 encoded
-      signaturePublicKeyId
-        ✓ should be an integer
-        ✓ should be a nullable
-        ✓ should not be < 0        
+  Base schema
+    protocolVersion
+      ✓ should be present
+      ✓ should equal to 0
+    type
+      ✓ should be present
+      ✓ should have defined extension
+    signature
+      ✓ should be present
+      ✓ should no have length < 86
+      ✓ should not have length > 88
+      ✓ should be base64 encoded
+    signaturePublicKeyId
+      ✓ should be an integer
+      ✓ should be a nullable
+      ✓ should not be < 0
 ```
 
 ## Data Contract State Transition
 
 ```
-    Data Contract Schema
-      ✓ should be valid
-      dataContract
-        ✓ should be present
-      entropy
-        ✓ should be present
-        ✓ should be a string
-        ✓ should be no less than 34 chars
-        ✓ should be no longer than 34 chars
+Data Contract Schema
+  ✓ should be valid
+  dataContract
+    ✓ should be present
+  entropy
+    ✓ should be present
+    ✓ should be a string
+    ✓ should be no less than 34 chars
+    ✓ should be no longer than 34 chars
 ```
 
 ### Documents Batch State Transition
 
 ```
-    Documents Batch Schema
-      ✓ should be valid
-      ownerId
-        ✓ should be present
-        ✓ should be a string
-        ✓ should be no less than 42 chars
-        ✓ should be no longer than 44 chars
-        ✓ should be base58 encoded
-      transitions
-        ✓ should be present
-        ✓ should be an array
-        ✓ should have at least one element
-        ✓ should have no more than 10 elements
-        ✓ should have objects as elements
+Documents Batch Schema
+  ✓ should be valid
+  ownerId
+    ✓ should be present
+    ✓ should be a string
+    ✓ should be no less than 42 chars
+    ✓ should be no longer than 44 chars
+    ✓ should be base58 encoded
+  transitions
+    ✓ should be present
+    ✓ should be an array
+    ✓ should have at least one element
+    ✓ should have no more than 10 elements
+    ✓ should have objects as elements
 ```
 
 ## Identity State Transition
 
 ```
-    Identity schema
-      ✓ should be valid
-      lockedOutPoint
-        ✓ should be present
-        ✓ should not be less than 48 characters in length
-        ✓ should not be more than 48 characters in length
-        ✓ should be base64 encoded
-      publicKeys
-        ✓ should be present
-        ✓ should not be empty
-        ✓ should not have more than 10 items
+Identity schema
+  ✓ should be valid
+  lockedOutPoint
+    ✓ should be present
+    ✓ should not be less than 48 characters in length
+    ✓ should not be more than 48 characters in length
+    ✓ should be base64 encoded
+  publicKeys
+    ✓ should be present
+    ✓ should not be empty
+    ✓ should not have more than 10 items
 ```

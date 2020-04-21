@@ -1,12 +1,12 @@
 # State Transition Overview
 
  State transitions are the means for submitting data that creates, updates, or deletes platform data and results in a change to a new state. Each one must contain:
- - All fields defined in the [base schema](#base-schema)
+ - Required fields from the [base schema](#base-schema)
  - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](identity.md#identity-create-schema))
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/identity/creditsConverter.js#L1).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
 # Base Schema
 
@@ -15,7 +15,7 @@ All state transitions are built on the base schema and include the following fie
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [document](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation) |
+| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation) |
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 
 Additionally, all state transitions except the identity create state transition include:
@@ -67,17 +67,28 @@ Each state transition must comply with the state transition [base schema](https:
 | Field | Type | Description|
 | - | - | - |
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
+| entropy | string | Entropy used to generate the data contract ID |
+
+```javascript
+// From the JavaScript reference implementation (js-dpp)
+// entropy.js
+generate() {
+  const privateKey = new PrivateKey();
+  const publicKey = privateKey.toPublicKey();
+  return publicKey.toAddress(Networks.testnet).toString();
+}
+```
 
 More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
 
-## Document
+## Documents Batch
 
 | Field | Type | Description|
 | - | - | - |
-| actions | array of integers | [Action](document.md#document-actions) the platform should take for the associated document in the `documents` array |
-| documents | array of [document objects](document.md#document-object) | [Document(s)](document.md#document-object) |
+| ownerId | string (base58) | [Identity](identity.md) submitting the document(s) |
+| transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 
-More detailed information about the `actions` and `documents` objects can be found in the [document section](document.md).
+More detailed information about the `tranistions` array can be found in the [document section](document.md).
 
 ## Identity Create
 

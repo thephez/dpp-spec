@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -21,14 +21,9 @@ The following sections provide details that developers need to construct valid c
 
 ## Data Size
 
-Additionally, there are several constraints limiting the overall size of data contracts and related data as defined here:
-
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-| Description | Constraint |
-| - | - |
-| Maximum size of serialized data contract | [15 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxByteSizeExceededError.js#L23) |
-| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
@@ -46,10 +41,29 @@ The data contract object consists of the following fields as defined in the Java
 | Property | Type | Required | Description |
 | - | - | - | - |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $contractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
-| version | integer | Yes | Data Contract version (>= 1) (default: 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
+| $id | string (base58) | Yes | Contract ID generated from `ownerId` and entropy (42-44 characters) |
+| ownerId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 | documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
+
+## Data Contract id
+
+The data contract `$id` is created by base58 encoding the hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/dataContract/generateDataContractId.js).
+
+```javascript
+// From the JavaScript reference implementation (js-dpp)
+// generateDataContractId.js
+function generateDataContractId(ownerId, entropy) {
+  return bs58.encode(
+    hash(
+      Buffer.concat([
+        bs58.decode(ownerId),
+        bs58.decode(entropy),
+      ]),
+    ),
+  );
+}
+```
 
 ## Data Contract Documents
 

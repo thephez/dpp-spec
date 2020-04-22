@@ -8,6 +8,10 @@
 
 State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
+## Size
+
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/util/serializer.js#L5).
+
 # Base Schema
 
 All state transitions are built on the base schema and include the following fields:

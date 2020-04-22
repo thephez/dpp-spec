@@ -36,7 +36,7 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/RawDataContractInterface.js)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -104,7 +104,7 @@ The following example shows a definition for a `message` object consisting of tw
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -119,16 +119,17 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "type": "string",
       "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
     },
-    "contractId":{
+    "$id":{
       "type": "string",
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
-    "version": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 1
+    "ownerId":{
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
     "documents": {
       "type": "object",
@@ -145,8 +146,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
   },
   "required": [
     "$schema",
-    "contractId",
-    "version",
+    "$id",
+    "ownerId",
     "documents"
   ],
   "additionalProperties": false
@@ -154,6 +155,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 ```
 
 **Example**
+
+**_TODO: Update with v0.12.0 example_**
 
 ```json
 {

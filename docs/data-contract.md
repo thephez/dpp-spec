@@ -100,7 +100,7 @@ The following example shows a definition for a `message` object consisting of tw
 }
 ```
 
-**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`. This must be done prior to broadcasting the contract for registration.
+**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`). This must be done prior to broadcasting the contract for registration.
 
 ## Data Contract Schema
 
@@ -188,7 +188,7 @@ Data contracts are created on the platform by submitting the [data contract obje
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
-| entropy | string (base58) |  |
+| entropy | string (base58) | Entropy used to generate the data contract ID |
 
 Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/stateTransition/dataContractCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
@@ -249,7 +249,7 @@ The process to sign a data contract state transition consists of the following s
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the `contractId`
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
-4. Set the state transition`signaturePublicKeyId` to the [public key `id`](#public-key-id) corresponding to the key used to sign
+4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 # Data Contract Validation
 

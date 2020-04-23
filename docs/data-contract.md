@@ -179,33 +179,43 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 # Data Contract Creation
 
-Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract state transition consisting of:
+Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract create state transition consisting of:
 
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type (`1` for data contract) |
+| type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
+| entropy | string (base58) |  |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/data-contract.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/stateTransition/dataContractCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
-  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/data-contract",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
     "dataContract": {
       "type": "object"
+    },
+    "entropy": {
+      "type": "string",
+      "minLength": 26,
+      "maxLength": 35,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     }
   },
   "required": [
-    "dataContract"
+    "dataContract",
+    "entropy"
   ]
 }
 ```
 
 **Example State Transition**
+
+**_TODO: Update with v0.12.0 example_**
 
 ```json
 {

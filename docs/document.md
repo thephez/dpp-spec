@@ -262,6 +262,14 @@ Each document transition must comply with the document transition [base schema](
 
 ## Document Create Transition
 
+The document create transition extends the base schema to include the following additional field:
+
+| Field | Type | Description|
+| - | - | - |
+| entropy | string |  |
+
+Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
@@ -282,6 +290,14 @@ Each document transition must comply with the document transition [base schema](
 
 ## Document Replace Transition
 
+The document replace transition extends the base schema to include the following additional field:
+
+| Field | Type | Description|
+| - | - | - |
+| $revision | integer |  |
+
+Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
@@ -301,6 +317,7 @@ Each document transition must comply with the document transition [base schema](
 
 ## Document Delete Transition
 
+The document delete transition only requires the fields found in the [base document transition](#document-base-transition).
 
 **Example State Transition**
 

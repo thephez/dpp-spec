@@ -156,13 +156,11 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 **Example**
 
-**_TODO: Update with v0.12.0 example_**
-
 ```json
 {
-  "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-  "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-  "version": 1,
+  "id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
+  "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
+  "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "documents": {
     "note": {
       "properties": {
@@ -173,7 +171,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "additionalProperties": false
     }
   },
-  "definitions": {}
+  "definitions": {},
+  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC"
 }
 ```
 
@@ -215,16 +214,14 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 **Example State Transition**
 
-**_TODO: Update with v0.12.0 example_**
-
 ```json
 {
   "protocolVersion": 0,
-  "type": 1,
+  "type": 0,
   "dataContract": {
+    "$id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
     "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-    "version": 1,
+    "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
     "documents": {
       "note": {
         "properties": {
@@ -236,8 +233,9 @@ Each data contract state transition must comply with this JSON-Schema definition
       }
     }
   },
-  "signaturePublicKeyId": 1,
-  "signature": "H8INAUHtjfW3sL/Z7JQC+915QrVUb6eqpXzaB/21N3i2GOESqvrEVgUbAZNm0wh6BXFJScNKkQG6TLHknViWXWA=",
+  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC",
+  "signaturePublicKeyId": 0,
+  "signature": "H9Z4mWQNzJWLkMlih450FiMDLybLZeyzbJT95ubyYIQfZcVFqEnABtLcoHb4Fi+AAhUUtHG0AaGmSiLgjQxjo8k=",
 }
 ```
 

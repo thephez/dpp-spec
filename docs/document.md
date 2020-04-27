@@ -210,7 +210,99 @@ Each document batch state transition must comply with this JSON-Schema definitio
 }
 ```
 
+## Document Base Transition
+
+All document transitions in a document batch state transition are built on the base schema and include the following fields:
+
+| Field | Type | Description|
+| - | - | - |
+| $id | string (base58) | The document ID  |
+| type | string | Name of a document type found in the data contract associated with the `dataContractId` |
+| action | array of integers | [Action](#document-actions) the platform should take for the associated document |
+| $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
+
+Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json):
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "$type": {
+      "type": "string"
+    },
+    "$action": {
+      "type": "integer",
+      "enum": [0, 1, 3]
+    },
+    "$dataContractId": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    }
+  },
+  "required": [
+    "$id",
+    "$type",
+    "$action",
+    "$dataContractId"
+  ],
+  "additionalProperties": false
+}
+```
+
+## Document Create Transition
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "$entropy": {
+      "type": "string",
+      "minLength": 26,
+      "maxLength": 35
+    }
+  },
+  "required": [
+    "$entropy"
+  ],
+  "additionalProperties": false
+}
+```
+
+## Document Replace Transition
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "$revision": {
+      "type": "integer",
+      "minimum": 1
+    }
+  },
+  "required": [
+    "$revision"
+  ],
+  "additionalProperties": false
+}
+```
+
+## Document Delete Transition
+
+
 **Example State Transition**
+
+**_TODO: Update with v0.12.0 example_**
 
 ```json
 {

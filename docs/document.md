@@ -158,7 +158,7 @@ This example syntax shows the structure of a documents object that defines two d
 
 ## Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json#L314-L451).
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json#L315-L452).
 
 # Additional Properties
 
@@ -171,33 +171,30 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Document Submission
 
-Documents are sent to the platform by submitting the them in a documents state transition consisting of:
+Documents are sent to the platform by submitting the them in a document batch state transition consisting of:
 
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type (`2` for documents) |
-| actions | array of integers | [Action](#document-actions) the platform should take for the associated document in the `documents` array |
-| documents | array of [document objects](#document-object) | [Document(s)](#document-object) |
+| type | integer | State transition type (`1` for document batch) |
+| ownerId | string (base58) | [Identity](identity.md) submitting the document(s) |
+| transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
 
-Each document state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/documents.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentsBatch.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
-  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/documents",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
-    "actions": {
-      "type": "array",
-      "items": {
-        "type": "number",
-        "enum": [1, 2, 4]
-      },
-      "minItems": 1,
-      "maxItems": 10
+    "ownerId": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
-    "documents": {
+    "transitions": {
       "type": "array",
       "items": {
         "type": "object"
@@ -207,8 +204,8 @@ Each document state transition must comply with this JSON-Schema definition esta
     }
   },
   "required": [
-    "actions",
-    "documents"
+    "ownerId",
+    "transitions"
   ]
 }
 ```
@@ -241,12 +238,10 @@ Each document state transition must comply with this JSON-Schema definition esta
 
 | Action | Name | Description |
 | :-: | - | - |
-| 1 | Create | Create a new document with the provided data |
-| 2 | Replace | Replace an existing document with the provided data |
-| 3 | `RESERVED` | Unused action |
-| 4 | Delete | Delete the referenced document |
-
-**Note:** In the current implementation, actions start at `1`. In future releases, indexing will change to begin at `0` instead of `1`.
+| 0 | Create | Create a new document with the provided data |
+| 1 | Replace | Replace an existing document with the provided data |
+| 2 | `RESERVED` | Unused action |
+| 3 | Delete | Delete the referenced document |
 
 ## State Transition Document Object
 

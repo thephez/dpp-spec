@@ -220,7 +220,7 @@ All document transitions in a document batch state transition are built on the b
 | - | - | - |
 | $id | string (base58) | The document ID  |
 | type | string | Name of a document type found in the data contract associated with the `dataContractId` |
-| action | array of integers | [Action](#document-actions) the platform should take for the associated document |
+| action | array of integers | [Action](#document-transition-actions) the platform should take for the associated document |
 | $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 
 Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json):
@@ -304,31 +304,35 @@ Each document transition must comply with the document transition [base schema](
 
 **Example State Transition**
 
-**_TODO: Update with v0.12.0 example_**
-
 ```json
 {
   "protocolVersion": 0,
-  "type": 2,
-  "actions": [
-    1
-  ],
-  "documents": [
+  "type": 1,
+  "signature": "HwIqrNQmfpvu7wYbpHwEOSfmXlkImt1oBQBCweUVhsWtW6cjIl3CJ/qANrU3UoJlo2jnQKITUjIbhjcaoB7iHug=",
+  "signaturePublicKeyId": 0,
+  "ownerId": "5Zqim5LkL76dBMqa1kE2AFRng2yqpgyVTKK6kTqWbYmu",
+  "transitions": [
     {
+      "$action": 0,
+      "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
+      "$id": "6oCKUeLVgjr7VZCyn1LdGbrepqKLmoabaff5WQqyTKYP",
       "$type": "note",
-      "$contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-      "$userId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
-      "$entropy": "ydQUKu7QxqPxt4tytY7dtKM7uKPGzWG9Az",
-      "$rev": 1,
-      "message": "Tutorial Test @ Thu, 26 Mar 2020 20:19:49 GMT"
+      "$entropy": "yfo6LnZfJ5koT2YUwtd8PdJa8SXzfQMVDz",
+      "message": "Tutorial Test @ Mon, 27 Apr 2020 20:23:35 GMT"
+    },
+    {
+      "$action": 0,
+      "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
+      "$id": "E8NftpxhvBmSg9wsTVDNUFXEw774Gb4ioFtT5YWuKvcn",
+      "$type": "note",
+      "$entropy": "yeGZVSYACVPPdNrSkwc2shKDWpHFKvmmww",
+      "message": "Tutorial Test 2 @ Mon, 27 Apr 2020 20:23:35 GMT"
     }
-  ],
-  "signaturePublicKeyId": 1,
-  "signature": "IFue3isoXSuYd0Ky8LvYjOMExwq69XaXPvi+IE+YT0sSD6N22P75xWZNFqO8RkZRqtmO7+EwyMX7NVETcD2HTmw=",  
+  ]
 }
 ```
 
-## State Transition Action
+## Document Transition Action
 
 | Action | Name | Description |
 | :-: | - | - |

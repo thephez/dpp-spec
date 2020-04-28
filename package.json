@@ -1,0 +1,26 @@
+{
+  "name": "dpp-spec",
+  "version": "0.12.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "convert": "node_modules/.bin/docsify-pdf-converter"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thephez/dpp-spec.git"
+  },
+  "author": "thephez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thephez/dpp-spec/issues"
+  },
+  "homepage": "https://github.com/thephez/dpp-spec#readme",
+  "devDependencies": {
+    "docsify-pdf-converter": "^2.0.7"
+  }
+}

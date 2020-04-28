@@ -395,7 +395,7 @@ The following example document create transition and subsequent table demonstrat
 
 The document delete transition only requires the fields found in the [base document transition](#document-base-transition).
 
-**Example Document Batch State Transition**
+## Example Document Batch State Transition
 
 ```json
 {
@@ -425,73 +425,72 @@ The document delete transition only requires the fields found in the [base docum
 }
 ```
 
-## State Transition Document Object
+## Document Object
 
-The `document` objects in the state transition's `documents` array consist of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/document/RawDocumentInterface.js)):
+The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/documentBase.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
+| $id | string (base58) | Yes |  |
 | $type | string | Yes  | Document type defined in the referenced contract |
-| $contractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
-| $userId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
-| $entropy | string | Yes | Randomness to ensure document uniqueness (34 characters)|
-| $rev | integer | No | Document revision (=>1) |
+| $revision | integer | No | Document revision (=>1) |
+| $dataContractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
+| $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
 
-Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/base/document.json):
+Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/documentBase.json):
 
 ```json
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://schema.dash.org/dpp-0-4-0/base/document",
   "type": "object",
   "properties": {
+    "$id": {
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
     "$type": {
       "type": "string"
     },
-    "$rev": {
-      "type": "number",
-      "multipleOf": 1.0,
+    "$revision": {
+      "type": "integer",
       "minimum": 1
     },
-    "$contractId": {
+    "$dataContractId": {
       "type": "string",
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
-    "$userId": {
+    "$ownerId": {
       "type": "string",
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
-    },
-    "$entropy": {
-      "type": "string",
-      "minLength": 34,
-      "maxLength": 34
     }
   },
   "required": [
+    "$id",
     "$type",
-    "$rev",
-    "$contractId",
-    "$userId",
-    "$entropy"
+    "$revision",
+    "$dataContractId",
+    "$ownerId"
   ],
   "additionalProperties": false
 }
 ```
 
-**Example Document Object**
+### Example Document Object
 
 ```json
 {
+  "$id": "2oGW6opwxKoJnb7KtLR8VZL2yPqk7jztgRMaa1mxMCnt",
   "$type": "note",
-  "$contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-  "$userId": "At44pvrZXLwjbJp415E2kjav49goGosRF3SB1WW1QJoG",
-  "$entropy": "ydQUKu7QxqPxt4tytY7dtKM7uKPGzWG9Az",
-  "$rev": 1,
-  "message": "Tutorial Test @ Thu, 26 Mar 2020 20:19:49 GMT"
+  "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
+  "$ownerId": "5Zqim5LkL76dBMqa1kE2AFRng2yqpgyVTKK6kTqWbYmu",
+  "$revision": 1,
+  "message": "Tutorial Test @ Mon, 27 Apr 2020 15:30:17 GMT"
 }
 ```
 

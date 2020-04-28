@@ -543,35 +543,55 @@ validateDocumentFactory
 
 ## State Transition Structure
 
-State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/document/stateTransition/structure/validateDocumentsSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateDocumentsSTStructureFactory
-  ✓ should return invalid result if userId is not valid
-  ✓ should return invalid result if actions and documents count are not equal
-  ✓ should return invalid result if there are documents with different $contractId
-  ✓ should return invalid result if Documents are invalid
-  ✓ should return invalid result if Documents are invalid
-  ✓ should return invalid result if there are duplicate Documents with the same ID
+validateDocumentsBatchTransitionStructureFactory
+  ✓ should return invalid result if data contract was not found
+  ✓ should return invalid result if there are duplicate document transitions with the same ID
   ✓ should return invalid result if there are duplicate unique index values
-  ✓ should return invalid result if there are documents with different User IDs
+  ✓ should return invalid result if there are no identity found
   ✓ should return invalid result with invalid signature
+
+  create
+    ✓ should return invalid result if there are documents with wrong generated $id
+    ✓ should return invalid result if there are documents with wrong $entropy
+    schema
+      $entropy
+        ✓ should be present
+        ✓ should be a string
+        ✓ should be no less than 26 chars
+        ✓ should be no longer than 35 chars
+  replace
+    schema
+      $revision
+        ✓ should be present
+        ✓ should be a number
+        ✓ should be multiple of 1.0
+        ✓ should have a minimum value of 1
+  base schema
+    $id
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 42 chars
+      ✓ should be no longer than 44 chars
+      ✓ should be base58 encoded
 ```
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/document/stateTransition/data/validateDocumentsSTDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateDocumentsSTDataFactory
-  ✓ should return invalid result if Data Contract is not present
-  ✓ should return invalid result if Document with action "create" is already present
-  ✓ should return invalid result if Document with action "update" is not present
-  ✓ should return invalid result if Document with action "delete" is not present
-  ✓ should return invalid result if Document with action "update" has wrong revision
-  ✓ should return invalid result if Document with action "delete" has wrong revision
-  ✓ should throw an error if Document has invalid action
-  ✓ should return invalid result if there are duplicate documents according to unique indices
+validateDocumentsBatchTransitionDataFactory
+  ✓ should return invalid result if data contract was not found
+  ✓ should return invalid result if document transition with action "create" is already present
+  ✓ should return invalid result if document transition with action "replace" is not present
+  ✓ should return invalid result if document transition with action "delete" is not present
+  ✓ should return invalid result if document transition with action "replace" has wrong revision
+  ✓ should return invalid result if document transition with action "replace" has mismatch of ownerId with previous revision
+  ✓ should throw an error if document transition has invalid action
+  ✓ should return invalid result if there are duplicate document transitions according to unique indices
   ✓ should return invalid result if data triggers execution failed
-
+  ✓ should return valid result if document transitions are valid  
 ```

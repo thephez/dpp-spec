@@ -220,7 +220,7 @@ All document transitions in a document batch state transition are built on the b
 | - | - | - |
 | $id | string (base58) | The document ID  |
 | type | string | Name of a document type found in the data contract associated with the `dataContractId` |
-| action | array of integers | [Action](#document-transition-actions) the platform should take for the associated document |
+| action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 
 Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json):
@@ -259,6 +259,15 @@ Each document transition must comply with the document transition [base schema](
   "additionalProperties": false
 }
 ```
+
+### Document Transition Action
+
+| Action | Name | Description |
+| :-: | - | - |
+| 0 | Create | Create a new document with the provided data |
+| 1 | Replace | Replace an existing document with the provided data |
+| 2 | `RESERVED` | Unused action |
+| 3 | Delete | Delete the referenced document |
 
 ## Document Create Transition
 
@@ -319,7 +328,7 @@ Each document replace transition must comply with this JSON-Schema definition es
 
 The document delete transition only requires the fields found in the [base document transition](#document-base-transition).
 
-**Example State Transition**
+**Example Document Batch State Transition**
 
 ```json
 {
@@ -348,15 +357,6 @@ The document delete transition only requires the fields found in the [base docum
   ]
 }
 ```
-
-## Document Transition Action
-
-| Action | Name | Description |
-| :-: | - | - |
-| 0 | Create | Create a new document with the provided data |
-| 1 | Replace | Replace an existing document with the provided data |
-| 2 | `RESERVED` | Unused action |
-| 3 | Delete | Delete the referenced document |
 
 ## State Transition Document Object
 

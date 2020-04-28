@@ -294,7 +294,7 @@ The document create transition extends the base schema to include the following 
 
 | Field | Type | Description|
 | - | - | - |
-| entropy | string |  |
+| entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
 
 Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 

@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -21,14 +21,9 @@ The following sections provide details that developers need to construct valid c
 
 ## Data Size
 
-Additionally, there are several constraints limiting the overall size of data contracts and related data as defined here:
-
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-| Description | Constraint |
-| - | - |
-| Maximum size of serialized data contract | [15 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxByteSizeExceededError.js#L23) |
-| Maximum size of CBOR-encoded data | [16 KB](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/util/serializer.js#L5) |
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
@@ -41,15 +36,34 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/RawDataContractInterface.js)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $contractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
-| version | integer | Yes | Data Contract version (>= 1) (default: 1) (remove in 0.12 - see [https://github.com/dashevo/js-dpp/pull/128/](https://github.com/dashevo/js-dpp/pull/128)) |
+| $id | string (base58) | Yes | Contract ID generated from `ownerId` and entropy (42-44 characters) |
+| ownerId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 | documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
+
+## Data Contract id
+
+The data contract `$id` is created by base58 encoding the hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/dataContract/generateDataContractId.js).
+
+```javascript
+// From the JavaScript reference implementation (js-dpp)
+// generateDataContractId.js
+function generateDataContractId(ownerId, entropy) {
+  return bs58.encode(
+    hash(
+      Buffer.concat([
+        bs58.decode(ownerId),
+        bs58.decode(entropy),
+      ]),
+    ),
+  );
+}
+```
 
 ## Data Contract Documents
 
@@ -86,11 +100,11 @@ The following example shows a definition for a `message` object consisting of tw
 }
 ```
 
-**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`. This must be done prior to broadcasting the contract for registration.
+**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`). This must be done prior to broadcasting the contract for registration.
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/meta/data-contract.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -105,16 +119,17 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "type": "string",
       "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
     },
-    "contractId":{
+    "$id":{
       "type": "string",
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
-    "version": {
-      "type": "number",
-      "multipleOf": 1.0,
-      "minimum": 1
+    "ownerId":{
+      "type": "string",
+      "minLength": 42,
+      "maxLength": 44,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     },
     "documents": {
       "type": "object",
@@ -131,8 +146,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
   },
   "required": [
     "$schema",
-    "contractId",
-    "version",
+    "$id",
+    "ownerId",
     "documents"
   ],
   "additionalProperties": false
@@ -143,9 +158,9 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ```json
 {
-  "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-  "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-  "version": 1,
+  "id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
+  "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
+  "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "documents": {
     "note": {
       "properties": {
@@ -156,34 +171,43 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "additionalProperties": false
     }
   },
-  "definitions": {}
+  "definitions": {},
+  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC"
 }
 ```
 
 # Data Contract Creation
 
-Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract state transition consisting of:
+Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract create state transition consisting of:
 
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type (`1` for data contract) |
+| type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
+| entropy | string (base58) | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/data-contract.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.11.1/schema/stateTransition/base.json) that is required for all state transitions):
+Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/stateTransition/dataContractCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
-  "$id": "https://schema.dash.org/dpp-0-4-0/state-transition/data-contract",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
     "dataContract": {
       "type": "object"
+    },
+    "entropy": {
+      "type": "string",
+      "minLength": 26,
+      "maxLength": 35,
+      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
     }
   },
   "required": [
-    "dataContract"
+    "dataContract",
+    "entropy"
   ]
 }
 ```
@@ -193,11 +217,11 @@ Each data contract state transition must comply with this JSON-Schema definition
 ```json
 {
   "protocolVersion": 0,
-  "type": 1,
+  "type": 0,
   "dataContract": {
+    "$id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
     "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "contractId": "EzLBmQdQXYMaoeXWNaegK18iaaCDShitN3s14US3DunM",
-    "version": 1,
+    "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
     "documents": {
       "note": {
         "properties": {
@@ -209,8 +233,9 @@ Each data contract state transition must comply with this JSON-Schema definition
       }
     }
   },
-  "signaturePublicKeyId": 1,
-  "signature": "H8INAUHtjfW3sL/Z7JQC+915QrVUb6eqpXzaB/21N3i2GOESqvrEVgUbAZNm0wh6BXFJScNKkQG6TLHknViWXWA=",
+  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC",
+  "signaturePublicKeyId": 0,
+  "signature": "H9Z4mWQNzJWLkMlih450FiMDLybLZeyzbJT95ubyYIQfZcVFqEnABtLcoHb4Fi+AAhUUtHG0AaGmSiLgjQxjo8k=",
 }
 ```
 
@@ -222,7 +247,7 @@ The process to sign a data contract state transition consists of the following s
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the `contractId`
 3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
-4. Set the state transition`signaturePublicKeyId` to the [public key `id`](#public-key-id) corresponding to the key used to sign
+4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 # Data Contract Validation
 
@@ -235,28 +260,29 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/dataContract/validateDataContractFactory.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/dataContract/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
 ```
  validateDataContractFactory
-   ✓ should return an invalid result if data contract byte size is bigger than 15 Kb
    ✓ should return invalid result with circular $ref pointer
+   ✓ should return valid result if Data Contract is valid
 
    $schema
      ✓ should be present
      ✓ should be a string
      ✓ should be a particular url
-   contractId
+   ownerId
      ✓ should be present
      ✓ should be a string
      ✓ should be no less than 42 chars
      ✓ should be no longer than 44 chars
      ✓ should be base58 encoded
-   version
+   $id
      ✓ should be present
-     ✓ should be a number
-     ✓ should be an integer
-     ✓ should be greater or equal to one
+     ✓ should be a string
+     ✓ should be no less than 42 chars
+     ✓ should be no longer than 44 chars
+     ✓ should be base58 encoded
    definitions
      ✓ may not be present
      ✓ should be an object
@@ -338,29 +364,31 @@ The data contract model must pass validation tests as defined in [js-dpp](https:
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateDataContractSTStructureFactory
+validateDataContractCreateTransitionStructureFactory
   ✓ should return invalid result if Data Contract Identity is invalid
   ✓ should return invalid result if data contract is invalid
   ✓ should return invalid result on invalid signature
+  ✓ should return invalid result on invalid Data Contract id
+  ✓ should return invalid result on invalid entropy
 ```
 
 * See the [state transition document](state-transition.md) for signature validation details.
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractSTDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateDataContractSTDataFactory
+validateDataContractCreateTransitionDataFactory
   ✓ should return invalid result if Data Contract with specified contractId is already exist
 ```
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.11.1/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
 ```
 validateDataContractMaxDepthFactory

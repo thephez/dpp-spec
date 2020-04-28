@@ -1,11 +1,9 @@
-# Dash Platform Protocol Specification
+# Dash Platform Protocol Specification v0.12.0
 
 [Identities](identity.md)
- - Type (remove in 0.12)
- - Create
+ - [Create](identity.md#identity-creation)
  - Non-implemented stuff
 	 - Topup
-	 - Balance
 	 - Update/Reset Key/Close Id
 	 - Recovery mechanisms
 
@@ -20,7 +18,12 @@
  - Types
    - [Identity Create ST](identity.md#identity-creation)
    - [Data Contract ST](data-contract.md#data-contract-creation)
-   - [Document ST](document.md#document-submission)
+   - [Document Batch ST](document.md#document-submission)
+     - Document Transitions
+       - [Document Transition Base](document.md#document-base-transition)
+       - [Document Create Transition](document.md#document-create-transition)
+       - [Document Replace Transition](document.md#document-replace-transition)
+       - [Document Delete Transition](document.md#document-delete-transition)
  - [Signing](state-transition.md#state-transition-signing)
 
 Serialization

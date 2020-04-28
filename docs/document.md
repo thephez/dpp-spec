@@ -346,7 +346,7 @@ The document replace transition extends the base schema to include the following
 
 | Field | Type | Description|
 | - | - | - |
-| $revision | integer |  |
+| $revision | integer | Document revision (=> 1) |
 
 Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
@@ -425,13 +425,13 @@ The document delete transition only requires the fields found in the [base docum
 }
 ```
 
-## Document Object
+# Document Object
 
 The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/documentBase.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| $id | string (base58) | Yes |  |
+| $id | string (base58) | Yes | The [document ID](#document-id) |
 | $type | string | Yes  | Document type defined in the referenced contract |
 | $revision | integer | No | Document revision (=>1) |
 | $dataContractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |

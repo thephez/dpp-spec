@@ -8,7 +8,10 @@
     <meta name="description" content="Specification">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-changelog-plugin@latest/dist/style.css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
 </head>
+<nav></nav> <!-- For Changelog plugin -->
 <body>
 <div id="app"></div>
 <script>
@@ -31,6 +34,8 @@
     formatUpdated: '{MM}/{DD} {HH}:{mm}',
     themeColor: '#008de4',
     auto2top: true,
+    loadNavbar : false, // Required for changelog plugin
+    changelog : 'https://github.com/dashevo/js-dpp/blob/master/CHANGELOG.md',
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>
@@ -43,5 +48,6 @@
     navigator.serviceWorker.register('sw.js')
   }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/docsify-changelog-plugin@latest/dist/index.js"></script>
 </body>
 </html>

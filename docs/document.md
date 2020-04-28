@@ -505,41 +505,40 @@ The platform protocol performs several forms of validation related to documents:
 
 ## Document Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentFactory
-  ✓ should validate against base Document schema if `action` option is DELETE
-  ✓ should throw validation error if additional fields are defined and `action` option is DELETE
   ✓ should return invalid result if a document contractId is not equal to Data Contract ID
+  ✓ should return valid result is a document is valid
   Base schema
+    $id
+      ✓ should be present
+      ✓ should be a string
+      ✓ should be no less than 42 chars
+      ✓ should be no longer than 44 chars
+      ✓ should be base58 encoded
     $type
       ✓ should be present
       ✓ should be defined in Data Contract
       ✓ should throw an error if getDocumentSchemaRef throws error
-    $rev
+    $revision
       ✓ should be present
       ✓ should be a number
       ✓ should be an integer
       ✓ should be greater or equal to one
-    $contractId
+    $dataContractId
       ✓ should be present
       ✓ should be a string
       ✓ should be no less than 42 chars
       ✓ should be no longer than 44 chars
       ✓ should be base58 encoded
-    $userId
+    $ownerId
       ✓ should be present
       ✓ should be a string
       ✓ should be no less than 42 chars
       ✓ should be no longer than 44 chars
       ✓ should be base58 encoded
-    $entropy
-      ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 34 chars
-      ✓ should be no longer than 34 chars
-      ✓ should be valid entropy
 ```
 
 ## State Transition Structure

@@ -218,7 +218,7 @@ All document transitions in a document batch state transition are built on the b
 
 | Field | Type | Description|
 | - | - | - |
-| $id | string (base58) | The document ID  |
+| $id | string (base58) | The [document ID](#document-id) |
 | type | string | Name of a document type found in the data contract associated with the `dataContractId` |
 | action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
@@ -260,6 +260,25 @@ Each document transition must comply with the document transition [base schema](
 }
 ```
 
+### Document id
+
+The document `$id` is created by base58 encoding the hash of the document's `ownerId`, `type`, `dataContractId`, and `entropy` as shown [here](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/document/generateDocumentId.js).
+
+```javascript
+// From the JavaScript reference implementation (js-dpp)
+// generateDocumentId.js
+function generateDocumentId(contractId, ownerId, type, entropy) {
+  return bs58.encode(
+    hash(Buffer.concat([
+      bs58.decode(contractId),
+      bs58.decode(ownerId),
+      Buffer.from(type),
+      bs58.decode(entropy),
+    ])),
+  );
+}
+```
+
 ### Document Transition Action
 
 | Action | Name | Description |
@@ -296,6 +315,30 @@ Each document create transition must comply with this JSON-Schema definition est
   "additionalProperties": false
 }
 ```
+
+**Note:** The document create transition must also include all required properties of the document as defined in the data contract.
+
+The following example document create transition and subsequent table demonstrate how the document transition base, document create transition, and data contract document definitions are assembled into a complete transition for inclusion in a [state transition](#document-submission):
+
+```json
+{
+  "$action": 0,
+  "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
+  "$id": "6oCKUeLVgjr7VZCyn1LdGbrepqKLmoabaff5WQqyTKYP",
+  "$type": "note",
+  "$entropy": "yfo6LnZfJ5koT2YUwtd8PdJa8SXzfQMVDz",
+  "message": "Tutorial Test @ Mon, 27 Apr 2020 20:23:35 GMT"
+}
+```
+
+| Field | Required By |
+| - | - |
+| $action | Document [base transition](#document-base-transition) |
+| $dataContractId | Document [base transition](#document-base-transition) |
+| $id | Document [base transition](#document-base-transition) |
+| $type | Document [base transition](#document-base-transition) |
+| $entropy | Document [create transition](#document-create-transition) |
+| message | Data Contract (the `message` document defined in the referenced data contract (`5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8`)) |
 
 ## Document Replace Transition
 

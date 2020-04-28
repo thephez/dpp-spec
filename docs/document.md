@@ -338,7 +338,7 @@ The following example document create transition and subsequent table demonstrat
 | $id | Document [base transition](#document-base-transition) |
 | $type | Document [base transition](#document-base-transition) |
 | $entropy | Document [create transition](#document-create-transition) |
-| message | Data Contract (the `message` document defined in the referenced data contract (`5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8`)) |
+| message | Data Contract (the `message` document defined in the referenced data contract -`5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8`) |
 
 ## Document Replace Transition
 
@@ -366,6 +366,30 @@ Each document replace transition must comply with this JSON-Schema definition es
   "additionalProperties": false
 }
 ```
+
+**Note:** The document create transition must also include all required properties of the document as defined in the data contract.
+
+The following example document create transition and subsequent table demonstrate how the document transition base, document create transition, and data contract document definitions are assembled into a complete transition for inclusion in a [state transition](#document-submission):
+
+```json
+{
+  "$action": 1,
+  "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
+  "$id": "6oCKUeLVgjr7VZCyn1LdGbrepqKLmoabaff5WQqyTKYP",
+  "$type": "note",
+  "$revision": 1,
+  "message": "Tutorial Test @ Mon, 27 Apr 2020 20:23:35 GMT"
+}
+```
+
+| Field | Required By |
+| - | - |
+| $action | Document [base transition](#document-base-transition) |
+| $dataContractId | Document [base transition](#document-base-transition) |
+| $id | Document [base transition](#document-base-transition) |
+| $type | Document [base transition](#document-base-transition) |
+| $revision | Document revision |
+| message | Data Contract (the `message` document defined in the referenced data contract -`5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8`) |
 
 ## Document Delete Transition
 

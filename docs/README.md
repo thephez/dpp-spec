@@ -8,17 +8,17 @@
 	 - Recovery mechanisms
 
 [Data Contracts](data-contract.md)
- - [Documents](document.md#document-overview)
-   - [Properties](document.md#document-properties)
-   - [Indices](document.md#document-indices)
- - [Definitions](document.md#definition-overview)
+ - [Documents](data-contract-documents.md)
+   - [Properties](data-contract-documents.md#document-properties)
+   - [Indices](data-contract-documents.md#document-indices)
+ - [Definitions](data-contract.md#data-contract-definitions)
 
 [State Transitions](state-transition.md)
  - [Overview / general structure](state-transition.md)
  - Types
    - [Identity Create ST](identity.md#identity-creation)
    - [Data Contract ST](data-contract.md#data-contract-creation)
-   - [Document Batch ST](document.md#document-submission)
+   - [Document Batch ST](document.md)
      - Document Transitions
        - [Document Transition Base](document.md#document-base-transition)
        - [Document Create Transition](document.md#document-create-transition)

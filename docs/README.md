@@ -8,9 +8,9 @@
 	 - Recovery mechanisms
 
 [Data Contracts](data-contract.md)
- - [Documents](data-contract-documents.md)
-   - [Properties](data-contract-documents.md#document-properties)
-   - [Indices](data-contract-documents.md#document-indices)
+ - [Documents](data-contract.md#data-contract-documents)
+   - [Properties](data-contract.md#document-properties)
+   - [Indices](data-contract.md#document-indices)
  - [Definitions](data-contract.md#data-contract-definitions)
 
 [State Transitions](state-transition.md)

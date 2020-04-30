@@ -2,7 +2,7 @@
 
 Data contracts define the schema (structure) of data an application will store on Dash Platform. Contracts are described using [JSON Schema](https://json-schema.org/understanding-json-schema/) which allows the platform to validate the contract-related data submitted to it.
 
-The following sections provide details that developers need to construct valid contracts: [documents](document.md#document-overview) and [definitions](document.md#definition-overview). All data contracts must define one or more documents, whereas definitions are optional and may not be used for simple contracts.
+The following sections provide details that developers need to construct valid contracts: [documents](data-contract-documents.md#document-overview) and [definitions](document.md#definition-overview). All data contracts must define one or more documents, whereas definitions are optional and may not be used for simple contracts.
 
 # General Constraints
 
@@ -43,7 +43,7 @@ The data contract object consists of the following fields as defined in the Java
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
 | $id | string (base58) | Yes | Contract ID generated from `ownerId` and entropy (42-44 characters) |
 | ownerId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
-| documents | object | Yes | Document definitions (see [Documents](document.md) for details) |
+| documents | object | Yes | Document definitions (see [Documents](data-contract-documents.md) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
 ## Data Contract id
@@ -67,7 +67,7 @@ function generateDataContractId(ownerId, entropy) {
 
 ## Data Contract Documents
 
-More detailed information about `documents` objects can be found in the [document section](document.md).
+More detailed information about `documents` objects can be found in the [data contract documents section](data-contract-documents.md).
 
 ## Data Contract Definitions
 

@@ -1,4 +1,5 @@
 - [Identity](identity.md)
 - [Data Contract](data-contract.md)
+- [Data Contract Document Definition](data-contract-documents.md)
 - [Document](document.md)
 - [State Transition](state-transition.md)

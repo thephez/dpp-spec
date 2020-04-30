@@ -13,6 +13,8 @@
    - [Indices](data-contract.md#document-indices)
  - [Definitions](data-contract.md#data-contract-definitions)
 
+[Document](document.md)
+
 [State Transitions](state-transition.md)
  - [Overview / general structure](state-transition.md)
  - Types

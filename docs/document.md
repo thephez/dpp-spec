@@ -323,7 +323,7 @@ Each document object must comply with this JSON-Schema definition established in
 
 # Document Validation
 
-The platform protocol performs several forms of validation related to documents: model validation, structure validation, and data validation.
+The platform protocol performs several forms of validation related to documents: model validation, state transition structure validation, and state transition data validation.
  - Model validation - ensures object models are correct
  - State transition structure validation - only checks the content of the state transition
  - State transition data validation - takes the overall platform state into consideration

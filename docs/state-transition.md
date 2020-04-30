@@ -175,7 +175,7 @@ Data Contract Schema
     ✓ should be no longer than 34 chars
 ```
 
-### Documents Batch State Transition
+## Documents Batch State Transition
 
 ```
 Documents Batch Schema

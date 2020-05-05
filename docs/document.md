@@ -46,8 +46,8 @@ All document transitions in a document batch state transition are built on the b
 | Field | Type | Description|
 | - | - | - |
 | $id | string (base58) | The [document ID](#document-id) |
-| type | string | Name of a document type found in the data contract associated with the `dataContractId` |
-| action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
+| $type | string | Name of a document type found in the data contract associated with the `dataContractId` |
+| $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
 
 Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json):
@@ -121,7 +121,7 @@ The document create transition extends the base schema to include the following 
 
 | Field | Type | Description|
 | - | - | - |
-| entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
+| $entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
 
 Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 

@@ -48,7 +48,7 @@ All document transitions in a document batch state transition are built on the b
 | $id | string (base58) | The [document ID](#document-id) |
 | $type | string | Name of a document type found in the data contract associated with the `dataContractId` |
 | $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
-| $dataContractId | string (base58) | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
+| $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 
 Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/stateTransition/documentTransition/base.json):
 
@@ -261,7 +261,7 @@ The document object represents the data provided by the platform in response to 
 | $id | string (base58) | Yes | The [document ID](#document-id) |
 | $type | string | Yes  | Document type defined in the referenced contract |
 | $revision | integer | No | Document revision (=>1) |
-| $dataContractId | string (base58) | Yes | [Identity](identity.md) that registered the data contract defining the document (42-44 characters) |
+| $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 | $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
 
 Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/document/documentBase.json):

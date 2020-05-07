@@ -1,4 +1,4 @@
-# Dash Platform Protocol Specification v0.12.0
+# Dash Platform Protocol Specification v0.12.0 (Draft)
 
 [Identities](identity.md)
  - [Create](identity.md#identity-creation)

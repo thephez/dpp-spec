@@ -14,7 +14,7 @@ When document state transitions are received, DPP checks if there is a trigger a
 
 As an example, DPP contains several data triggers for DPNS. The preorder document has no extra constraints, but the domain document requires additional validation:
 
-| Data Contract | Document | Action | Trigger Description |
+| Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
 | DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | DPNS | `domain` | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/updateDomainDataTrigger.js) | Prevents updates to existing domains |
@@ -26,7 +26,7 @@ As an example, DPP contains several data triggers for DPNS. The preorder documen
 
 The following table details the DPNS constraints applied via data triggers. These constraints are in addition to the ones applied directly by the DPNS data contract.
 
-| Document | Action(s) | Constraint |
+| Document | Action | Constraint |
 | - | - | - |
 | `domain` | `CREATE` | Full domain length <= 253 characters |
 | `domain` | `CREATE` | `nameHash` is a valid [multihash](https://github.com/multiformats/multihash) (DPP specifically uses a [double SHA256 multihash](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/util/multihashDoubleSHA256.js#L14)) |

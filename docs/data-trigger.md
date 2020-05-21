@@ -6,6 +6,10 @@ Although [data contracts](data-contract.md) provide much needed constraints on t
 
 Since all application data is submitted in the form of documents, data triggers are defined in the context of documents. To provide even more granularity, they also incorporate the [document transition action](document.md#document-transition-action) so separate triggers can be created for the CREATE, REPLACE, or DELETE actions.
 
+When document state transitions are received, DPP checks if there is a trigger associated with the document transition type and action. If there is, it then executes the trigger logic. 
+
+**Note:** Successful execution of the trigger logic is necessary for the document to be accepted and applied to the platform state.
+
 ## Example
 
 As an example, DPP contains several data triggers for DPNS. The preorder document has no extra constraints, but the domain document requires additional validation:

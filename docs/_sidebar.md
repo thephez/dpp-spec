@@ -2,3 +2,4 @@
 - [Data Contract](data-contract.md)
 - [Document](document.md)
 - [State Transition](state-transition.md)
+- [Data Trigger](data-trigger.md)

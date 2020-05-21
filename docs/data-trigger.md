@@ -65,7 +65,7 @@ An additional validation occurs related to document batch state transition as de
 
 ## DPNS Trigger Validation
 
-As of DPP v0.12, only DPNS is able to use data triggers. Its data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.12.1/test/unit/dataTrigger/dpnsTriggers) and have some DPNS-specific [validation tests](https://github.com/dashevo/js-dpp/tree/v0.12.1/test/unit/dataTrigger/dpnsTriggers):
+As of DPP v0.12, only DPNS is able to use data triggers. Its data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.12.1/lib/dataTrigger/dpnsTriggers) and have some DPNS-specific [validation tests](https://github.com/dashevo/js-dpp/tree/v0.12.1/test/unit/dataTrigger/dpnsTriggers):
 
 
 ```

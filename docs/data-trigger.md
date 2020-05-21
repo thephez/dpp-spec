@@ -16,13 +16,29 @@ As an example, DPP contains several data triggers for DPNS. The preorder documen
 
 | Data Contract | Document | Action | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validate provided hashes, and restrict top-level domain (TLD) registration |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | DPNS | `domain` | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/updateDomainDataTrigger.js) | Prevents updates to existing domains |
 | DPNS | `domain` | [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/deleteDomainDataTrigger.js) | Prevents deletion of existing domains |
 | ---- | ----| ---- | ---- |
 | DPNS | `preorder` | `CREATE`, `REPLACE`, `DELETE` | No triggers defined for preorders |
 
-When document state transitions are received, DPP checks if there is a trigger associated with the document transition type and action. If there is, it then executes the trigger logic. Successful execution of the trigger logic is necessary for the document to be accepted and applied to the platform state.
+**DPNS Trigger Constraints**
+
+The following table details the DPNS constraints applied via data triggers. These constraints are in addition to the ones applied directly by the DPNS data contract.
+
+| Document | Action(s) | Constraint |
+| - | - | - |
+| `domain` | `CREATE` | Full domain length <= 253 characters |
+| `domain` | `CREATE` | `nameHash` is a valid [multihash](https://github.com/multiformats/multihash) (DPP specifically uses a [double SHA256 multihash](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/util/multihashDoubleSHA256.js#L14)) |
+| `domain` | `CREATE` | `nameHash` matches the hash of the full domain name |
+| `domain` | `CREATE` | `normalizedLabel` matches lowercase `label` |
+| `domain` | `CREATE` | `ownerId` matches `records.dashIdentity` |
+| `domain` | `CREATE` | `normalizedParentDomainName` is all lowercase |
+| `domain` | `CREATE` | Only creating a top-level domain with an authorized identity |
+| `domain` | `CREATE` | Referenced `normalizedParentDomainName` must be an existing parent domain |
+| `domain` | `CREATE` | Referenced `preorder` document must exist |
+| `domain` | `REPLACE` | Action not allowed |
+| `domain` | `DELETE` | Action not allowed |
 
 # Data Trigger Validation
 

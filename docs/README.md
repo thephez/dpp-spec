@@ -42,4 +42,4 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
        - [Document Delete Transition](document.md#document-delete-transition)
  - [Signing](state-transition.md#state-transition-signing)
 
-[Data Triggers](data-triggers.md)
+[Data Triggers](data-trigger.md)

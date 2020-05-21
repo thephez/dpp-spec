@@ -40,6 +40,8 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
        - [Document Delete Transition](docs/document.md#document-delete-transition)
  - [Signing](docs/state-transition.md#state-transition-signing)
 
+[Data Triggers](docs/data-triggers.md)
+
 Serialization
  - Base 64
  - Canonical CBOR
@@ -49,6 +51,3 @@ Hashing
 Validation
  - JSON-Schema
  - Logic
-
-~~Data Triggers~~
-~~- DPNS is using multihash for the nameHash~~

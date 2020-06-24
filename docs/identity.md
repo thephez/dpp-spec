@@ -40,6 +40,23 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 }
 ```
 
+**Example Identity**
+
+```json
+{
+  id: '3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe',
+  publicKeys: [
+    {
+      id: 0,
+      type: 0,
+      data: 'A677zlRADmHdE395/O/YrCQxmNxD1BlB3K+5Z+BSVrUo',
+      isEnabled: true
+    }
+  ],
+  balance: 0
+}
+```
+
 ## Identity id
 
 The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) used to fund the identity creation.
@@ -58,6 +75,8 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 ## Identity publicKeys
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
+
+**Note:** As of Dash Platform Protocol version 0.13, the first public key assigned to an identity must be unique (not already used by an identity).
 
 Each item in the `publicKeys` array consists an object containing:
 
@@ -253,15 +272,13 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 **Example State Transition**
 
-**ADD EXAMPLE**
-
 ```json
 {
-  "protocolVersion": 0,
-  "type": 2,
-  "lockedOutPoint": "",
-  "identityId": "",
-  "signature": ""
+  protocolVersion: 0,
+  type: 3,
+  identityId: 'Gb9YEHMYxcMiSnBhtBQQmttmAoqN1asi6HKQxRR7YdXA',
+  lockedOutPoint: 'o/wqVhGcP/p5QzE8ozVoVN1pnjesfDmhUjdhQv4EN6UAAAAA'
+  signature: 'HwW7Dwq34OGgsoG8sDe+2G3Gs69+X5v7ELFHonpVgkzwSBqToRXUl6LePs+g+Pgq7DxEIGgSQG0C8OzHiXo8dT8=',  
 }
 ```
 

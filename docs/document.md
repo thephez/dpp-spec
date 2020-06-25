@@ -334,7 +334,7 @@ The platform protocol performs several forms of validation related to documents:
 
 ## Document Model
 
-The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentFactory
@@ -372,44 +372,51 @@ validateDocumentFactory
 
 ## State Transition Structure
 
-State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsBatchTransitionStructureFactory
-  ✓ should return invalid result if data contract was not found
-  ✓ should return invalid result if there are duplicate document transitions with the same ID
-  ✓ should return invalid result if there are duplicate unique index values
   ✓ should return invalid result if there are no identity found
   ✓ should return invalid result with invalid signature
-
-  create
-    ✓ should return invalid result if there are documents with wrong generated $id
-    ✓ should return invalid result if there are documents with wrong $entropy
-    schema
+  ✓ should return valid result
+  document transitions
+    ✓ should return invalid result if there are duplicate unique index values
+    create
+      ✓ should return invalid result if there are documents with wrong generated $id
+      ✓ should return invalid result if there are documents with wrong $entropy
       $entropy
         ✓ should be present
         ✓ should be a string
         ✓ should be no less than 26 chars
         ✓ should be no longer than 35 chars
-  replace
-    schema
+    replace
       $revision
         ✓ should be present
         ✓ should be a number
         ✓ should be multiple of 1.0
         ✓ should have a minimum value of 1
-  base schema
     $id
       ✓ should be present
       ✓ should be a string
       ✓ should be no less than 42 chars
       ✓ should be no longer than 44 chars
       ✓ should be base58 encoded
+      ✓ should no have duplicate IDs in the state transition
+    $dataContractId
+      ✓ should be present
+      ✓ should be string
+      ✓ should exists in the state
+    $type
+      ✓ should be present
+      ✓ should be defined in Data Contract
+    $action
+      ✓ should be present
+      ✓ should be create, replace or delete
 ```
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsBatchTransitionDataFactory
@@ -422,5 +429,14 @@ validateDocumentsBatchTransitionDataFactory
   ✓ should throw an error if document transition has invalid action
   ✓ should return invalid result if there are duplicate document transitions according to unique indices
   ✓ should return invalid result if data triggers execution failed
-  ✓ should return valid result if document transitions are valid  
+  ✓ should return valid result if document transitions are valid
+```
+
+The state transition data must also pass index validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js). The test output below shows the necessary criteria:
+
+```
+validateDocumentsUniquenessByIndices
+  - should return valid result if Documents have no unique indices
+  ✓ should return valid result if Document has unique indices and there are no duplicates
+  ✓ should return invalid result if Document has unique indices and there are duplicates
 ```

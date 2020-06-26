@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -23,7 +23,7 @@ The following sections provide details that developers need to construct valid c
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
@@ -36,7 +36,7 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -48,7 +48,7 @@ The data contract object consists of the following fields as defined in the Java
 
 ## Data Contract id
 
-The data contract `$id` is created by base58 encoding the hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/dataContract/generateDataContractId.js).
+The data contract `$id` is created by base58 encoding the hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/dataContract/generateDataContractId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -251,7 +251,7 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json#L315-L452).
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/dataContract/dataContractMeta.json#L315-L452).
 
 ## Data Contract Definitions
 
@@ -266,7 +266,7 @@ The following example shows a definition for a `message` object consisting of tw
 
 ```json
 {
-  // Preceeding content truncated ...
+  // Preceding content truncated ...
   "definitions": {
     "message": {
       "type": "object",
@@ -288,7 +288,7 @@ The following example shows a definition for a `message` object consisting of tw
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -373,7 +373,7 @@ Data contracts are created on the platform by submitting the [data contract obje
 | signature | string | Signature of state transition data |
 | entropy | string (base58) | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/dataContract/stateTransition/dataContractCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/dataContract/stateTransition/dataContractCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
@@ -444,7 +444,7 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/integration/dataContract/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/dataContract/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
 ```
  validateDataContractFactory
@@ -548,7 +548,7 @@ The data contract model must pass validation tests as defined in [js-dpp](https:
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDataContractCreateTransitionStructureFactory
@@ -563,7 +563,7 @@ validateDataContractCreateTransitionStructureFactory
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDataContractCreateTransitionDataFactory
@@ -572,7 +572,7 @@ validateDataContractCreateTransitionDataFactory
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.0/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
 ```
 validateDataContractMaxDepthFactory

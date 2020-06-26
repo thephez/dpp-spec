@@ -16,9 +16,9 @@ As an example, DPP contains several data triggers for DPNS. The preorder documen
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
-| DPNS | `domain` | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/updateDomainDataTrigger.js) | Prevents updates to existing domains |
-| DPNS | `domain` | [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/dataTrigger/dpnsTriggers/deleteDomainDataTrigger.js) | Prevents deletion of existing domains |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
+| DPNS | `domain` | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/dataTrigger/dpnsTriggers/updateDomainDataTrigger.js) | Prevents updates to existing domains |
+| DPNS | `domain` | [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/dataTrigger/dpnsTriggers/deleteDomainDataTrigger.js) | Prevents deletion of existing domains |
 | ---- | ----| ---- | ---- |
 | DPNS | `preorder` | `CREATE`, `REPLACE`, `DELETE` | No triggers defined for preorders |
 
@@ -29,7 +29,7 @@ The following table details the DPNS constraints applied via data triggers. Thes
 | Document | Action | Constraint |
 | - | - | - |
 | `domain` | `CREATE` | Full domain length <= 253 characters |
-| `domain` | `CREATE` | `nameHash` is a valid [multihash](https://github.com/multiformats/multihash) (DPP specifically uses a [double SHA256 multihash](https://github.com/dashevo/js-dpp/blob/v0.12.1/lib/util/multihashDoubleSHA256.js#L14)) |
+| `domain` | `CREATE` | `nameHash` is a valid [multihash](https://github.com/multiformats/multihash) (DPP specifically uses a [double SHA256 multihash](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/util/multihashDoubleSHA256.js#L14)) |
 | `domain` | `CREATE` | `nameHash` matches the hash of the full domain name |
 | `domain` | `CREATE` | `normalizedLabel` matches lowercase `label` |
 | `domain` | `CREATE` | `ownerId` matches `records.dashIdentity` |
@@ -44,7 +44,7 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.1/test/integration/document/stateTransition/validation/data/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/document/stateTransition/validation/data/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
   executeDataTriggersFactory
@@ -56,16 +56,25 @@ Data validation verifies that the data in the data trigger is valid in the conte
     ✓ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.12.1/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js#L325):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js#L325):
 
 ```
   validateDocumentsBatchTransitionDataFactory
+    ✓ should return invalid result if data contract was not found
+    ✓ should return invalid result if document transition with action "create" is already present
+    ✓ should return invalid result if document transition with action "replace" is not present
+    ✓ should return invalid result if document transition with action "delete" is not present
+    ✓ should return invalid result if document transition with action "replace" has wrong revision
+    ✓ should return invalid result if document transition with action "replace" has mismatch of ownerId with previous revision
+    ✓ should throw an error if document transition has invalid action
+    ✓ should return invalid result if there are duplicate document transitions according to unique indices
     ✓ should return invalid result if data triggers execution failed
+    ✓ should return valid result if document transitions are valid
 ```
 
 ## DPNS Trigger Validation
 
-As of DPP v0.12, only DPNS is able to use data triggers. Its data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.12.1/lib/dataTrigger/dpnsTriggers) and have some DPNS-specific [validation tests](https://github.com/dashevo/js-dpp/tree/v0.12.1/test/unit/dataTrigger/dpnsTriggers):
+As of DPP v0.13, only DPNS is able to use data triggers. Its data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.13.1/lib/dataTrigger/dpnsTriggers) and have some DPNS-specific [validation tests](https://github.com/dashevo/js-dpp/tree/v0.13.1/test/unit/dataTrigger/dpnsTriggers):
 
 
 ```

@@ -6,11 +6,11 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.12.0/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/util/serializer.js#L5).
 
 # Base Schema
 
@@ -19,7 +19,7 @@ All state transitions are built on the base schema and include the following fie
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
-| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation) |
+| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup) |
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 
 Additionally, all state transitions except the identity create state transition include:
@@ -29,7 +29,7 @@ Additionally, all state transitions except the identity create state transition 
 | signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 0`)|
 
 
-Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.12.0/schema/stateTransition/stateTransitionBase.json):
+Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json):
 
 
 ```json
@@ -42,7 +42,7 @@ Each state transition must comply with the state transition [base schema](https:
     },
     "type": {
       "type": "integer",
-      "enum": [0, 1, 2]
+      "enum": [0, 1, 2, 3]
     },
     "signaturePublicKeyId": {
       "type": ["integer", "null"],
@@ -105,6 +105,14 @@ More detailed information about the `transitions` array can be found in the [doc
 
 More detailed information about the `publicKeys` object can be found in the [identity section](identity.md).
 
+## Identity TopUp
+
+| Field | Type | Description|
+| - | - | - |
+| lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
+| identityId | string | An [Identity ID](identity.md#identity-id) for the identity receiving the topup (can be any identity) |
+
+
 # State Transition Signing
 
 State transitions must be signed by a private key associated with the identity creating the state transition.
@@ -117,7 +125,7 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
 
 1. The identity has a public key
 2. The identity's public key is of type `ECDSA`
@@ -134,7 +142,7 @@ validateStateTransitionSignatureFactory
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.11.1/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateStateTransitionStructureFactory

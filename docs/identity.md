@@ -44,16 +44,16 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  id: '3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe',
-  publicKeys: [
+  "id": "3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe",
+  "publicKeys": [
     {
-      id: 0,
-      type: 0,
-      data: 'A677zlRADmHdE395/O/YrCQxmNxD1BlB3K+5Z+BSVrUo',
-      isEnabled: true
+      "id": 0,
+      "type": 0,
+      "data": "A677zlRADmHdE395/O/YrCQxmNxD1BlB3K+5Z+BSVrUo",
+      "isEnabled": true
     }
   ],
-  balance: 0
+  "balance": 0
 }
 ```
 

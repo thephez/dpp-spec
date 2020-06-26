@@ -274,11 +274,11 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  protocolVersion: 0,
-  type: 3,
-  identityId: 'Gb9YEHMYxcMiSnBhtBQQmttmAoqN1asi6HKQxRR7YdXA',
-  lockedOutPoint: 'o/wqVhGcP/p5QzE8ozVoVN1pnjesfDmhUjdhQv4EN6UAAAAA'
-  signature: 'HwW7Dwq34OGgsoG8sDe+2G3Gs69+X5v7ELFHonpVgkzwSBqToRXUl6LePs+g+Pgq7DxEIGgSQG0C8OzHiXo8dT8=',  
+  "protocolVersion": 0,
+  "type": 3,
+  "identityId": "Gb9YEHMYxcMiSnBhtBQQmttmAoqN1asi6HKQxRR7YdXA",
+  "lockedOutPoint": "o/wqVhGcP/p5QzE8ozVoVN1pnjesfDmhUjdhQv4EN6UAAAAA",
+  "signature": "HwW7Dwq34OGgsoG8sDe+2G3Gs69+X5v7ELFHonpVgkzwSBqToRXUl6LePs+g+Pgq7DxEIGgSQG0C8OzHiXo8dT8=",
 }
 ```
 

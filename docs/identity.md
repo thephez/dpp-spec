@@ -10,7 +10,7 @@ Identities consist of three components that are described in further detail in f
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/identity.json):
 
 ```json
 {
@@ -87,7 +87,7 @@ Each item in the `publicKeys` array consists an object containing:
 | data | string (base64) | Public key |
 | isEnabled | boolean | Status of key |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/publicKey.json):
 
 ```json
 {
@@ -186,7 +186,7 @@ Identities are created on the platform by submitting the identity information in
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/identity/stateTransition/identityCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/stateTransition/identityCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
@@ -244,7 +244,7 @@ Identity credit balances are increased by submitting the topup information in an
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/identity/stateTransition/identityTopUp.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/stateTransition/identityTopUp.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
@@ -345,7 +345,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 Identity
@@ -371,7 +371,7 @@ validateIdentityFactory
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 PublicKeys
@@ -379,6 +379,7 @@ validatePublicKeysFactory
   ✓ should return invalid result if there are duplicate key ids
   ✓ should return invalid result if there are duplicate keys
   ✓ should return invalid result if key data is not a valid DER
+  ✓ should pass valid public keys
   id
     ✓ should be present
     ✓ should be a number
@@ -395,7 +396,7 @@ validatePublicKeysFactory
     ✓ should be in base64 format
   isEnabled
     ✓ should be present
-    ✓ should be a number      
+    ✓ should be a number   
 ```
 
 ## State Transition Structure
@@ -404,7 +405,7 @@ Structure validation verifies that the content of state transition fields compli
 
 ### Identity Create
 
-The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateSTStructureFactory
@@ -414,7 +415,7 @@ validateIdentityCreateSTStructureFactory
 
 ### Identity TopUp
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructure.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructure.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityTopUpTransitionStructure
@@ -429,7 +430,7 @@ Data validation verifies that the data in the state transition is valid in the c
 
 ### Identity Create
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateSTDataFactory
@@ -441,7 +442,7 @@ validateIdentityCreateSTDataFactory
 
 ### Identity TopUp
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityTopUpTransitionDataFactory
@@ -450,4 +451,4 @@ validateIdentityTopUpTransitionDataFactory
   ✓ should return invalid result if lock transaction is invalid
 ```
 
-**Note:** Additional validation rules will be added in future versions.
+**Note:** Additional validation rules may be added in future versions.

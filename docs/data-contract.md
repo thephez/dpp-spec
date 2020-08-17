@@ -188,9 +188,10 @@ The `indices` array consists of:
 
 | Description | Value |
 | - | - |
-| Maximum number of indices | 10 |
-| Maximum number of unique indices | 3 |
-| Maximum number of properties in a single index | 10 |
+| Maximum number of indices | [10](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/dataContract/dataContractMeta.json#L330) |
+| Maximum number of unique indices | [3](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/errors/UniqueIndicesLimitReachedError.js#L21) |
+| Maximum number of properties in a single index | [10](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/dataContract/dataContractMeta.json#L320) |
+| Maximum length of indexed string property | [1024](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/dataContract/validateDataContractFactory.js#L20) |
 
 **Example**
 The following example (excerpt from the DPNS contract's `preorder` document) creates an index on `saltedDomainHash` that also enforces uniqueness across all documents of that type:

@@ -6,11 +6,11 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/stateTransition/calculateStateTransitionFee.js#L1).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/util/serializer.js#L5).
 
 # Base Schema
 
@@ -29,7 +29,7 @@ Additionally, all state transitions except the identity create state transition 
 | signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 0`)|
 
 
-Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json):
+Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json):
 
 
 ```json
@@ -125,7 +125,7 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
 
 1. The identity has a public key
 2. The identity's public key is of type `ECDSA`
@@ -135,6 +135,7 @@ The example test output below shows the necessary criteria:
 
 ```
 validateStateTransitionSignatureFactory
+  ✓ should pass properly signed state transition
   ✓ should return MissingPublicKeyError if the identity doesn't have a matching public key
   ✓ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
   ✓ should return InvalidStateTransitionSignatureError if signature is invalid
@@ -142,7 +143,7 @@ validateStateTransitionSignatureFactory
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateStateTransitionStructureFactory

@@ -324,13 +324,14 @@ Each document object must comply with this JSON-Schema definition established in
 
 ```json
 {
-  "$id": "9UAkQCQCGXrRRVZexw7Dbu78wG8GxwvpyqeyX9AD9o4N",
+  "$id": "5pBBpSH2ew664GWrF6zKPUgPgBP9bBXAJ4Sv7rsRK5JD",
   "$type": "note",
-  "$dataContractId": "4YZp8DmxuCypWLSBjWx9vdEtSv1wmxk4vaBZGWWENcoT",
+  "$dataContractId": "6LzniQbzjhYoJBNMXUYQyGTbjXYW6ovYu5vkh8Mz3xwQ",
   "$ownerId": "58keGTkwoDycwWkRMmPYQMxVSEc6gy3fSTg59pfHAtdy",
   "$revision": 1,
-  message: "Tutorial Test @ Tue, 18 Aug 2020 19:21:10 GMT",
-  "$createdAt": 1597778471223
+  message: "Tutorial Test @ Tue, 18 Aug 2020 20:53:58 GMT",
+  "$createdAt": 1597784038882,
+  "$updatedAt": 1597784038882
 }
 ```
 

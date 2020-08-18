@@ -265,6 +265,8 @@ The document object represents the data provided by the platform in response to 
 | $revision | integer | No | Document revision (=>1) |
 | $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 | $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
+| $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
 Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/documentBase.json):
 
@@ -297,6 +299,14 @@ Each document object must comply with this JSON-Schema definition established in
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "$createdAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -314,12 +324,13 @@ Each document object must comply with this JSON-Schema definition established in
 
 ```json
 {
-  "$id": "2oGW6opwxKoJnb7KtLR8VZL2yPqk7jztgRMaa1mxMCnt",
+  "$id": "9UAkQCQCGXrRRVZexw7Dbu78wG8GxwvpyqeyX9AD9o4N",
   "$type": "note",
-  "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
-  "$ownerId": "5Zqim5LkL76dBMqa1kE2AFRng2yqpgyVTKK6kTqWbYmu",
+  "$dataContractId": "4YZp8DmxuCypWLSBjWx9vdEtSv1wmxk4vaBZGWWENcoT",
+  "$ownerId": "58keGTkwoDycwWkRMmPYQMxVSEc6gy3fSTg59pfHAtdy",
   "$revision": 1,
-  "message": "Tutorial Test @ Mon, 27 Apr 2020 15:30:17 GMT"
+  message: "Tutorial Test @ Tue, 18 Aug 2020 19:21:10 GMT",
+  "$createdAt": 1597778471223
 }
 ```
 

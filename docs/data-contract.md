@@ -18,6 +18,7 @@ The following sections provide details that developers need to construct valid c
 | `pattern: <something>` | `maxLength` must be defined (maximum: 50000) |
 | `format: <something>` | `maxLength` must be defined (maximum: 100000) |
 | `$ref: <something>` | `$ref` can only reference `definitions` - <br> remote references not supported |
+| `if`, `then`, `else`, `allOf`, `anyOf`, `oneOf`, `not` | Disabled for data contracts |
 
 ## Data Size
 

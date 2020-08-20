@@ -124,6 +124,8 @@ The document create transition extends the base schema to include the following 
 | Field | Type | Description|
 | - | - | - |
 | $entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
+| $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
 Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
@@ -136,6 +138,14 @@ Each document create transition must comply with this JSON-Schema definition est
       "type": "string",
       "minLength": 26,
       "maxLength": 35
+    },
+    "$createdAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -176,8 +186,9 @@ The document replace transition extends the base schema to include the following
 | Field | Type | Description|
 | - | - | - |
 | $revision | integer | Document revision (=> 1) |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -187,6 +198,10 @@ Each document replace transition must comply with this JSON-Schema definition es
     "$revision": {
       "type": "integer",
       "minimum": 1
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -442,13 +457,22 @@ validateDocumentsBatchTransitionDataFactory
   ✓ should return invalid result if there are duplicate document transitions according to unique indices
   ✓ should return invalid result if data triggers execution failed
   ✓ should return valid result if document transitions are valid
+  Timestamps
+    CREATE transition
+      ✓ should return invalid result if timestamps mismatch
+      ✓ should return invalid result if "$createdAt" have violated time window
+      ✓ should return invalid result if "$updatedAt" have violated time window
+    REPLACE transition
+      ✓ should return invalid result if documents with action "replace" have violated time window
 ```
 
 The state transition data must also pass index validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsUniquenessByIndices
-  - should return valid result if Documents have no unique indices
+  ✓ should return valid result if Documents have no unique indices
   ✓ should return valid result if Document has unique indices and there are no duplicates
   ✓ should return invalid result if Document has unique indices and there are duplicates
+  ✓ should return valid result if Document has undefined field from index
+  ✓ should return valid result if Document being created and has createdAt and updatedAt indices
 ```

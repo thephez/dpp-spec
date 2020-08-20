@@ -13,7 +13,7 @@ Documents are sent to the platform by submitting the them in a document batch st
 
 **Note:** As of Dash Platform Protocol v0.13, documents from multiple data contracts can be submitted in the same document batch.
 
-Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentsBatch.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentsBatch.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
 
 ```json
 {
@@ -52,7 +52,7 @@ All document transitions in a document batch state transition are built on the b
 | $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 
-Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/base.json):
+Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/base.json):
 
 ```json
 {
@@ -91,7 +91,7 @@ Each document transition must comply with the document transition [base schema](
 
 ### Document id
 
-The document `$id` is created by base58 encoding the hash of the document's `ownerId`, `type`, `dataContractId`, and `entropy` as shown [here](https://github.com/dashevo/js-dpp/blob/v0.13.1/lib/document/generateDocumentId.js).
+The document `$id` is created by base58 encoding the hash of the document's `ownerId`, `type`, `dataContractId`, and `entropy` as shown [here](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/document/generateDocumentId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -124,8 +124,10 @@ The document create transition extends the base schema to include the following 
 | Field | Type | Description|
 | - | - | - |
 | $entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
+| $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -136,6 +138,14 @@ Each document create transition must comply with this JSON-Schema definition est
       "type": "string",
       "minLength": 26,
       "maxLength": 35
+    },
+    "$createdAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -176,8 +186,9 @@ The document replace transition extends the base schema to include the following
 | Field | Type | Description|
 | - | - | - |
 | $revision | integer | Document revision (=> 1) |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -187,6 +198,10 @@ Each document replace transition must comply with this JSON-Schema definition es
     "$revision": {
       "type": "integer",
       "minimum": 1
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -256,7 +271,7 @@ The document delete transition only requires the fields found in the [base docum
 
 # Document Object
 
-The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/documentBase.json)):
+The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/documentBase.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -265,8 +280,10 @@ The document object represents the data provided by the platform in response to 
 | $revision | integer | No | Document revision (=>1) |
 | $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 | $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
+| $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
+| $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/schema/document/documentBase.json):
+Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/documentBase.json):
 
 ```json
 {
@@ -297,6 +314,14 @@ Each document object must comply with this JSON-Schema definition established in
       "minLength": 42,
       "maxLength": 44,
       "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+    },
+    "$createdAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "$updatedAt": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "required": [
@@ -314,12 +339,14 @@ Each document object must comply with this JSON-Schema definition established in
 
 ```json
 {
-  "$id": "2oGW6opwxKoJnb7KtLR8VZL2yPqk7jztgRMaa1mxMCnt",
+  "$id": "5pBBpSH2ew664GWrF6zKPUgPgBP9bBXAJ4Sv7rsRK5JD",
   "$type": "note",
-  "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
-  "$ownerId": "5Zqim5LkL76dBMqa1kE2AFRng2yqpgyVTKK6kTqWbYmu",
+  "$dataContractId": "6LzniQbzjhYoJBNMXUYQyGTbjXYW6ovYu5vkh8Mz3xwQ",
+  "$ownerId": "58keGTkwoDycwWkRMmPYQMxVSEc6gy3fSTg59pfHAtdy",
   "$revision": 1,
-  "message": "Tutorial Test @ Mon, 27 Apr 2020 15:30:17 GMT"
+  message: "Tutorial Test @ Tue, 18 Aug 2020 20:53:58 GMT",
+  "$createdAt": 1597784038882,
+  "$updatedAt": 1597784038882
 }
 ```
 
@@ -334,7 +361,7 @@ The platform protocol performs several forms of validation related to documents:
 
 ## Document Model
 
-The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentFactory
@@ -372,7 +399,7 @@ validateDocumentFactory
 
 ## State Transition Structure
 
-State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsBatchTransitionStructureFactory
@@ -416,7 +443,7 @@ validateDocumentsBatchTransitionStructureFactory
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsBatchTransitionDataFactory
@@ -430,13 +457,22 @@ validateDocumentsBatchTransitionDataFactory
   ✓ should return invalid result if there are duplicate document transitions according to unique indices
   ✓ should return invalid result if data triggers execution failed
   ✓ should return valid result if document transitions are valid
+  Timestamps
+    CREATE transition
+      ✓ should return invalid result if timestamps mismatch
+      ✓ should return invalid result if "$createdAt" have violated time window
+      ✓ should return invalid result if "$updatedAt" have violated time window
+    REPLACE transition
+      ✓ should return invalid result if documents with action "replace" have violated time window
 ```
 
-The state transition data must also pass index validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.13.1/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js). The test output below shows the necessary criteria:
+The state transition data must also pass index validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsUniquenessByIndices
-  - should return valid result if Documents have no unique indices
+  ✓ should return valid result if Documents have no unique indices
   ✓ should return valid result if Document has unique indices and there are no duplicates
   ✓ should return invalid result if Document has unique indices and there are duplicates
+  ✓ should return valid result if Document has undefined field from index
+  ✓ should return valid result if Document being created and has createdAt and updatedAt indices
 ```

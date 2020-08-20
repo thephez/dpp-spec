@@ -1,4 +1,4 @@
-# Dash Platform Protocol Specification v0.13.x (Draft)
+# Dash Platform Protocol Specification v0.14.x (Draft)
 
 ## Introduction
 
@@ -17,9 +17,6 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
 [Identities](identity.md)
  - [Create](identity.md#identity-creation)
  - [TopUp](identity.md#identity-topup)
- - Non-implemented stuff
-	 - Update/Reset Key/Close Id
-	 - Recovery mechanisms
 
 [Data Contracts](data-contract.md)
  - [Documents](data-contract.md#data-contract-documents)

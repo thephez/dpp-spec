@@ -278,7 +278,7 @@ The document object represents the data provided by the platform in response to 
 | $id | string (base58) | Yes | The [document ID](#document-id) |
 | $type | string | Yes  | Document type defined in the referenced contract |
 | $revision | integer | No | Document revision (=>1) |
-| $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
+| $dataContractId | string (base58) | Yes | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
 | $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |

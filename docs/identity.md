@@ -10,8 +10,9 @@ Identities consist of three components that are described in further detail in f
 | id | string (base58) | The identity id |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
+| revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/identity.json):
 
 ```json
 {
@@ -24,26 +25,34 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "$comment": "Maximum is the latest Identity protocol version"
     },
     "id": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "publicKeys": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 100
+      "maxItems": 100,
+      "uniqueItems": true
     },
     "balance": {
       "type": "integer",
       "minimum": 0
-    }
-  },
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Identity update revision"
+  }
+},
   "required": [
     "protocolVersion",
     "id",
     "publicKeys",
-    "balance"
+    "balance",
+    "revision"
   ]
 }
 ```
@@ -85,18 +94,19 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
 
-**Note:** As of Dash Platform Protocol version 0.13, the first public key assigned to an identity must be unique (not already used by an identity).
+**Note:** As of Dash Platform Protocol [version 0.16](https://github.com/dashevo/js-dpp/pull/234), any public key(s) assigned to an identity must be unique (not already used by an identity). Prior versions checked (at most) the first key only.
 
 Each item in the `publicKeys` array consists an object containing:
 
 | Field | Type | Description|
 | - | - | - |
-| id | integer | The key id (`=> 0`, unique among keys in `publicKeys` array) |
+| id | integer | The key id (all public keys must be unique) |
 | type | integer | Type of key (default: 0 - ECDSA) |
 | data | string (base64) | Public key |
-| isEnabled | boolean | Status of key |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/publicKey.json):
+**Note:** the `isEnabled` field was removed in [version 0.16](https://github.com/dashevo/js-dpp/pull/236).
+
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/publicKey.json):
 
 ```json
 {
@@ -105,27 +115,68 @@ Each identity public key must comply with this JSON-Schema definition establishe
   "properties": {
     "id": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Public key ID",
+      "$comment": "Must be unique for the identity. It can’t be changed after adding a key. Included when signing state transitions to indicate which identity key was used to sign."
     },
     "type": {
       "type": "integer",
-      "enum": [0]
+      "enum": [
+        0,
+        1
+      ],
+      "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381",
+      "$comment": "It can't be changed after adding a key"
     },
     "data": {
-      "type": "string",
-      "minLength": 1,
-      "maxLength": 2048,
-      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
-    },
-    "isEnabled": {
-      "type": "boolean"
+      "type": "object",
+      "byteArray": true,
+      "description": "Raw public key",
+      "$commit": "It must be a valid key of the specified type and unique for the identity. It can’t be changed after adding a key"
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": 0
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "byteArray": true,
+            "minBytesLength": 33,
+            "maxBytesLength": 33
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": 1
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "byteArray": true,
+            "minBytesLength": 48,
+            "maxBytesLength": 48
+          }
+        }
+      }
+    }
+  ],
   "required": [
     "id",
     "type",
-    "data",
-    "isEnabled"
+    "data"
   ],
   "additionalProperties": false
 }

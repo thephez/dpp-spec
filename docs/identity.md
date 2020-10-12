@@ -85,8 +85,8 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // IdentityCreateTransition.js
-    this.identityId = bs58.encode(
-      hash(Buffer.from(lockedOutPoint, 'base64')),
+    this.identityId = new Identifier(
+      hash(this.lockedOutPoint),
     );
 ```
 
@@ -206,20 +206,18 @@ The `data` field contains the compressed public key encoded as base64.
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // AbstractStateTransitionIdentitySigned.js
-  /* We store compressed public key in the identity as a base64 string... */
-  pubKeyBase = new PublicKey({
-    ...privateKeyModel.toPublicKey().toObject(),
-    compressed: true,
-  })
-    .toBuffer()
-    .toString('base64');
+pubKeyBase = new PublicKey({
+  ...privateKeyModel.toPublicKey().toObject(),
+  compressed: true,
+})
+  .toBuffer();
 ```
 
 **Decode**
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // validatePublicKeysFactory.js
-        const dataHex = Buffer.from(publicKey.data, 'base64').toString('hex');
+const dataHex = rawPublicKey.data.toString('hex');
 ```
 
 ### Public Key `isEnabled`
@@ -398,11 +396,11 @@ The process to sign an identity create state transition consists of the followin
 ```javascript
 // From js-dpp
 // AbstractStateTransition.js
-// Serialize encodes the object (excluding the signature-related fields) with canonical CBOR
-const data = this.serialize({ skipSignature: true });
+// toBuffer encodes the object (excluding the signature-related fields) with canonical CBOR
+const data = this.toBuffer({ skipSignature: true });
 const privateKeyModel = new PrivateKey(privateKey);
 
-this.signature = sign(data, privateKeyModel).toString('base64');
+this.setSignature(sign(data, privateKeyModel));
 
 // From dashcore-lib
 // signer.js

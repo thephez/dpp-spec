@@ -246,7 +246,7 @@ Identities are created on the platform by submitting the identity information in
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/stateTransition/identityCreate.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -258,22 +258,36 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "maximum": 0,
       "$comment": "Maximum is the latest Identity Create Transition protocol version"
     },
+    "type": {
+      "type": "integer",
+      "const": 2
+    },
     "lockedOutPoint": {
-      "type": "string",
-      "minLength": 48,
-      "maxLength": 48,
-      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 36,
+      "maxBytesLength": 36
     },
     "publicKeys": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 10
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "signature": {
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 65,
+      "maxBytesLength": 65
     }
   },
+  "additionalProperties": false,
   "required": [
     "protocolVersion",
+    "type",
     "lockedOutPoint",
-    "publicKeys"
+    "publicKeys",
+    "signature"
   ]
 }
 ```
@@ -323,25 +337,40 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "maximum": 0,
       "$comment": "Maximum is the latest Identity TopUp Transition protocol version"
     },
+    "type": {
+      "type": "integer",
+      "const": 3
+    },
     "lockedOutPoint": {
-      "type": "string",
-      "minLength": 48,
-      "maxLength": 48,
-      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 36,
+      "maxBytesLength": 36
     },
     "identityId": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
+    },
+    "signature": {
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 65,
+      "maxBytesLength": 65
     }
   },
+  "additionalProperties": false,
   "required": [
     "protocolVersion",
+    "type",
     "lockedOutPoint",
-    "identityId"
+    "identityId",
+    "signature"
   ]
 }
+
 ```
 
 **Example State Transition**

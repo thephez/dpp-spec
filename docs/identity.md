@@ -1,13 +1,13 @@
 # Identity Overview
 
-Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data.
+Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data. Please see the [Identity DIP](https://github.com/dashpay/dips/blob/master/dip-0011.md) for additional information.
 
 Identities consist of three components that are described in further detail in following sections:
 
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The identity version |
-| id | string (base58) | The identity id |
+| id | object | The identity id (32 bytes) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
@@ -94,7 +94,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
 
-**Note:** As of Dash Platform Protocol [version 0.16](https://github.com/dashevo/js-dpp/pull/234), any public key(s) assigned to an identity must be unique (not already used by an identity). Prior versions checked (at most) the first key only.
+**Note:** As of Dash Platform Protocol [version 0.16](https://github.com/dashevo/js-dpp/pull/234), any public key(s) assigned to an identity must be unique (not already used by any identity). Prior versions checked (at most) the first key only.
 
 Each item in the `publicKeys` array consists an object containing:
 
@@ -102,7 +102,7 @@ Each item in the `publicKeys` array consists an object containing:
 | - | - | - |
 | id | integer | The key id (all public keys must be unique) |
 | type | integer | Type of key (default: 0 - ECDSA) |
-| data | string (base64) | Public key |
+| data | object | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
 
 **Note:** the `isEnabled` field was removed in [version 0.16](https://github.com/dashevo/js-dpp/pull/236).
 
@@ -220,12 +220,6 @@ pubKeyBase = new PublicKey({
 const dataHex = rawPublicKey.data.toString('hex');
 ```
 
-### Public Key `isEnabled`
-
-The `isEnabled` field indicates whether or not the key is an active, valid key. Setting this to `false` will disable the key.
-
-**Note:** Keys are disabled (rather than deleted) to ensure that signature verification is possible for any data they signed.
-
 ## Identity balance
 
 Each identity has a balance of credits established by value locked via a layer 1 lock transaction. This credit balance is used to pay the fees associated with state transitions.
@@ -238,7 +232,7 @@ Identities are created on the platform by submitting the identity information in
 | - | - | - |
 | protocolVersion | integer | The identity create protocol version (currently `0`) |
 | type | integer | State transition type (`2` for identity create) |
-| lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
+| lockedOutPoint | object | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | string | Signature of state transition data |
 
@@ -323,7 +317,7 @@ Identity credit balances are increased by submitting the topup information in an
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/identity/stateTransition/identityTopUp.json) (in addition to the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json) that is required for all state transitions):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {

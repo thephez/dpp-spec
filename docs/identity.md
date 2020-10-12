@@ -419,7 +419,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 Identity
@@ -428,10 +428,9 @@ validateIdentityFactory
   ✓ should return valid result if an identity model is valid
   id
     ✓ should be present
-    ✓ should be a string
-    ✓ should not be less than 42 characters
-    ✓ should not be more than 44 characters
-    ✓ should be base58 encoded
+    ✓ should be a byte array
+    ✓ should not be less than 32 bytes
+    ✓ should not be more than 32 bytes
   balance
     ✓ should be present
     ✓ should be an integer
@@ -440,12 +439,17 @@ validateIdentityFactory
     ✓ should be present
     ✓ should be an array
     ✓ should not be empty
+    ✓ should be unique
     ✓ should throw an error if publicKeys have more than 100 keys
+  revision
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should be greater or equal 0    
 ```
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 PublicKeys
@@ -464,13 +468,13 @@ validatePublicKeysFactory
     ✓ should be a number
   data
     ✓ should be present
-    ✓ should be a string
-    ✓ should be no less than 1 character
-    ✓ should be no longer than 2048 character
-    ✓ should be in base64 format
-  isEnabled
-    ✓ should be present
-    ✓ should be a number   
+    ✓ should be a byte array
+    ECDSA_SECP256K1
+      ✓ should be no less than 33 bytes
+      ✓ should be no longer than 33 bytes
+    BLS12_381
+      ✓ should be no less than 48 bytes
+      ✓ should be no longer than 48 bytes
 ```
 
 ## State Transition Structure
@@ -479,22 +483,67 @@ Structure validation verifies that the content of state transition fields compli
 
 ### Identity Create
 
-The identity `type` and `publicKeys` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateIdentityCreateSTStructureFactory
-  ✓ should pass valid raw state transition
-  ✓ should pass valid state transition  
+validateIdentityCreateTransitionStructureFactory
+  ✓ should return valid result
+  protocolVersion
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
+    ✓ should not be greater than current version (0)
+  type
+    ✓ should be present
+    ✓ should be equal to 2
+  lockedOutPoint
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should not be less than 36 bytes
+    ✓ should not be more than 36 bytes
+  publicKeys
+    ✓ should be present
+    ✓ should not be empty
+    ✓ should not have more than 10 items
+    ✓ should be unique
+    ✓ should be valid
+  signature
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be not shorter than 65 bytes
+    ✓ should be not longer than 65 bytes
 ```
 
 ### Identity TopUp
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructure.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateIdentityTopUpTransitionStructure
-  ✓ should pass valid raw state transition
-  ✓ should pass valid state transition
+validateIdentityTopUpTransitionStructureFactory
+  ✓ should return valid result
+  protocolVersion
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
+    ✓ should not be greater than current version (0)
+  type
+    ✓ should be present
+    ✓ should be equal to 3
+  lockedOutPoint
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should not be less than 36 bytes
+    ✓ should not be more than 36 bytes
+  identityId
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be no less than 32 bytes
+    ✓ should be no longer than 32 bytes
+  signature
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be not shorter than 65 bytes
+    ✓ should be not longer than 65 bytes  
 ```
 
 ## State Transition Data
@@ -504,19 +553,19 @@ Data validation verifies that the data in the state transition is valid in the c
 
 ### Identity Create
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateSTDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
-validateIdentityCreateSTDataFactory
+validateIdentityCreateTransitionDataFactory
   ✓ should return invalid result if identity already exists
   ✓ should return invalid result if lock transaction is invalid
   ✓ should return invalid result if identity public key already exists
-  ✓ should return valid result if state transition is valid  
+  ✓ should return valid result if state transition is valid
 ```
 
 ### Identity TopUp
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityTopUpTransitionDataFactory

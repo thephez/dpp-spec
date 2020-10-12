@@ -6,6 +6,7 @@ Identities consist of three components that are described in further detail in f
 
 | Field | Type | Description|
 | - | - | - |
+| protocolVersion | integer | The identity version |
 | id | string (base58) | The identity id |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
@@ -16,6 +17,12 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0,
+      "$comment": "Maximum is the latest Identity protocol version"
+    },
     "id": {
       "type": "string",
       "minLength": 42,
@@ -33,6 +40,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
     }
   },
   "required": [
+    "protocolVersion",
     "id",
     "publicKeys",
     "balance"
@@ -44,6 +52,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
+  "protocolVersion": 0,
   "id": "3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe",
   "publicKeys": [
     {
@@ -178,7 +187,7 @@ Identities are created on the platform by submitting the identity information in
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | The identity create protocol version (currently `0`) |
 | type | integer | State transition type (`2` for identity create) |
 | lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
@@ -192,6 +201,12 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0,
+      "$comment": "Maximum is the latest Identity Create Transition protocol version"
+    },
     "lockedOutPoint": {
       "type": "string",
       "minLength": 48,
@@ -205,6 +220,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
     }
   },
   "required": [
+    "protocolVersion",
     "lockedOutPoint",
     "publicKeys"
   ]
@@ -236,7 +252,7 @@ Identity credit balances are increased by submitting the topup information in an
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | The identity topup protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity topup) |
 | lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
 | identityId | string | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) |
@@ -250,6 +266,12 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0,
+      "$comment": "Maximum is the latest Identity TopUp Transition protocol version"
+    },
     "lockedOutPoint": {
       "type": "string",
       "minLength": 48,
@@ -264,6 +286,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
     }
   },
   "required": [
+    "protocolVersion",
     "lockedOutPoint",
     "identityId"
   ]

@@ -6,7 +6,7 @@ Documents are sent to the platform by submitting the them in a document batch st
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type (`1` for document batch) |
-| ownerId | string (base58) | [Identity](identity.md) submitting the document(s) |
+| ownerId | object | [Identity](identity.md) submitting the document(s) (32 bytes) |
 | transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | string | Signature of state transition data |
@@ -19,11 +19,22 @@ Each document batch state transition must comply with this JSON-Schema definitio
 {
   "$schema": "http://json-schema.org/draft-07/schema",
   "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0,
+      "$comment": "Maximum is the latest Documents Batch Transition protocol version"
+    },
+    "type": {
+      "type": "integer",
+      "const": 1
+    },
     "ownerId": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "transitions": {
       "type": "array",
@@ -32,11 +43,26 @@ Each document batch state transition must comply with this JSON-Schema definitio
       },
       "minItems": 1,
       "maxItems": 10
+    },
+    "signaturePublicKeyId": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "signature": {
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 65,
+      "maxBytesLength": 65
     }
   },
+  "additionalProperties": false,
   "required": [
+    "protocolVersion",
+    "type",
     "ownerId",
-    "transitions"
+    "transitions",
+    "signaturePublicKeyId",
+    "signature"
   ]
 }
 ```
@@ -47,10 +73,10 @@ All document transitions in a document batch state transition are built on the b
 
 | Field | Type | Description|
 | - | - | - |
-| $id | string (base58) | The [document ID](#document-id) |
+| $id | object | The [document ID](#document-id) (32 bytes)|
 | $type | string | Name of a document type found in the data contract associated with the `dataContractId` |
 | $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
-| $dataContractId | string (base58) | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
+| $dataContractId | object | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (32 bytes) |
 
 Each document transition must comply with the document transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/document/stateTransition/documentTransition/base.json):
 
@@ -60,10 +86,11 @@ Each document transition must comply with the document transition [base schema](
   "type": "object",
   "properties": {
     "$id": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "$type": {
       "type": "string"
@@ -73,10 +100,11 @@ Each document transition must comply with the document transition [base schema](
       "enum": [0, 1, 3]
     },
     "$dataContractId": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     }
   },
   "required": [
@@ -119,11 +147,11 @@ function generateDocumentId(contractId, ownerId, type, entropy) {
 
 ## Document Create Transition
 
-The document create transition extends the base schema to include the following additional field:
+The document create transition extends the base schema to include the following additional fields:
 
 | Field | Type | Description|
 | - | - | - |
-| $entropy | string | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). |
+| $entropy | object | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). (20-35 bytes) |
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
@@ -135,9 +163,10 @@ Each document create transition must comply with this JSON-Schema definition est
   "type": "object",
   "properties": {
     "$entropy": {
-      "type": "string",
-      "minLength": 26,
-      "maxLength": 35
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 20,
+      "maxBytesLength": 35
     },
     "$createdAt": {
       "type": "integer",
@@ -181,7 +210,7 @@ The following example document create transition and subsequent table demonstrat
 
 ## Document Replace Transition
 
-The document replace transition extends the base schema to include the following additional field:
+The document replace transition extends the base schema to include the following additional fields:
 
 | Field | Type | Description|
 | - | - | - |
@@ -271,15 +300,16 @@ The document delete transition only requires the fields found in the [base docum
 
 # Document Object
 
-The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/document/documentBase.json)):
+The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/document/documentBase.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| $id | string (base58) | Yes | The [document ID](#document-id) |
+| protocolVersion | integer | The platform protocol version (currently `0`) |
+| $id | object | Yes | The [document ID](#document-id) (32 bytes)|
 | $type | string | Yes  | Document type defined in the referenced contract |
 | $revision | integer | No | Document revision (=>1) |
-| $dataContractId | string (base58) | Yes | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (42-44 characters) |
-| $ownerId | string (base58) | Yes | [Identity](identity.md) of the user submitting the document (42-44 characters) |
+| $dataContractId | object | Yes | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (32 bytes) |
+| $ownerId | object | Yes | [Identity](identity.md) of the user submitting the document (32 bytes) |
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
@@ -290,11 +320,18 @@ Each document object must comply with this JSON-Schema definition established in
   "$schema": "http://json-schema.org/draft-07/schema",
   "type": "object",
   "properties": {
+    "$protocolVersion": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 0,
+      "$comment": "Maximum is the latest Document protocol version"
+    },
     "$id": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "$type": {
       "type": "string"
@@ -304,16 +341,18 @@ Each document object must comply with this JSON-Schema definition established in
       "minimum": 1
     },
     "$dataContractId": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "$ownerId": {
-      "type": "string",
-      "minLength": 42,
-      "maxLength": 44,
-      "pattern": "^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$"
+      "type": "object",
+      "byteArray": true,
+      "minBytesLength": 32,
+      "maxBytesLength": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "$createdAt": {
       "type": "integer",
@@ -325,6 +364,7 @@ Each document object must comply with this JSON-Schema definition established in
     }
   },
   "required": [
+    "$protocolVersion",
     "$id",
     "$type",
     "$revision",

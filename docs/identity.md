@@ -90,6 +90,8 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
     );
 ```
 
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/Identifier.js).
+
 ## Identity publicKeys
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.

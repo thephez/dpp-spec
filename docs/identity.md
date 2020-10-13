@@ -236,7 +236,7 @@ Identities are created on the platform by submitting the identity information in
 | type | integer | State transition type (`2` for identity create) |
 | lockedOutPoint | object | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
-| signature | string | Signature of state transition data |
+| signature | object | Signature of state transition data (65 bytes) |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
@@ -313,9 +313,9 @@ Identity credit balances are increased by submitting the topup information in an
 | - | - | - |
 | protocolVersion | integer | The identity topup protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity topup) |
-| lockedOutPoint | string | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction |
-| identityId | string | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) |
-| signature | string | Signature of state transition data |
+| lockedOutPoint | object | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
+| identityId | object | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
+| signature | object | Signature of state transition data (65 bytes) |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 

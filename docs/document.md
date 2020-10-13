@@ -406,14 +406,19 @@ The document model must pass validation tests as defined in [js-dpp](https://git
 ```
 validateDocumentFactory
   ✓ should return invalid result if a document contractId is not equal to Data Contract ID
+  ✓ return invalid result if binary field exceeds `maxBytesLength`
   ✓ should return valid result is a document is valid
   Base schema
+    $protocolVersion
+      ✓ should be present
+      ✓ should be an integer
+      ✓ should not be less than 0
+      ✓ should not be greater than current Document protocol version (0)
     $id
       ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 42 chars
-      ✓ should be no longer than 44 chars
-      ✓ should be base58 encoded
+      ✓ should be a byte array
+      ✓ should be no less than 32 bytes
+      ✓ should be no longer than 32 bytes
     $type
       ✓ should be present
       ✓ should be defined in Data Contract
@@ -425,16 +430,14 @@ validateDocumentFactory
       ✓ should be greater or equal to one
     $dataContractId
       ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 42 chars
-      ✓ should be no longer than 44 chars
-      ✓ should be base58 encoded
+      ✓ should be a byte array
+      ✓ should be no less than 32 bytes
+      ✓ should be no longer than 32 bytes
     $ownerId
       ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 42 chars
-      ✓ should be no longer than 44 chars
-      ✓ should be base58 encoded
+      ✓ should be a byte array
+      ✓ should be no less than 32 bytes
+      ✓ should be no longer than 32 bytes
 ```
 
 ## State Transition Structure
@@ -443,42 +446,68 @@ State transition structure validation verifies that the content of state transit
 
 ```
 validateDocumentsBatchTransitionStructureFactory
-  ✓ should return invalid result if there are no identity found
-  ✓ should return invalid result with invalid signature
   ✓ should return valid result
-  document transitions
-    ✓ should return invalid result if there are duplicate unique index values
-    create
-      ✓ should return invalid result if there are documents with wrong generated $id
-      ✓ should return invalid result if there are documents with wrong $entropy
-      $entropy
+  protocolVersion
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
+    ✓ should not be greater than current version (0)
+  type
+    ✓ should be present
+    ✓ should be equal 1
+  ownerId
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be no less than 32 bytes
+    ✓ should be no longer than 32 bytes
+    ✓ should exists
+  transitions
+    ✓ should be present
+    ✓ should be an array
+    ✓ should have at least one element
+    ✓ should have no more than 10 elements
+    ✓ should have objects as elements
+    transaction
+      ✓ should return invalid result if there are duplicate unique index values
+      $id
         ✓ should be present
-        ✓ should be a string
-        ✓ should be no less than 26 chars
-        ✓ should be no longer than 35 chars
-    replace
-      $revision
+        ✓ should be a byte array
+        ✓ should be no less than 20 bytes
+        ✓ should be no longer than 35 bytes
+        ✓ should no have duplicate IDs in the state transition
+      $dataContractId
         ✓ should be present
-        ✓ should be a number
-        ✓ should be multiple of 1.0
-        ✓ should have a minimum value of 1
-    $id
-      ✓ should be present
-      ✓ should be a string
-      ✓ should be no less than 42 chars
-      ✓ should be no longer than 44 chars
-      ✓ should be base58 encoded
-      ✓ should no have duplicate IDs in the state transition
-    $dataContractId
-      ✓ should be present
-      ✓ should be string
-      ✓ should exists in the state
-    $type
-      ✓ should be present
-      ✓ should be defined in Data Contract
-    $action
-      ✓ should be present
-      ✓ should be create, replace or delete
+        ✓ should be byte array
+        ✓ should exists in the state
+      $type
+        ✓ should be present
+        ✓ should be defined in Data Contract
+      $action
+        ✓ should be present
+        ✓ should be create, replace or delete
+      create
+        $id
+          ✓ should be valid generated ID
+        $entropy
+          ✓ should be present
+          ✓ should be a byte array
+          ✓ should be no less than 20 bytes
+          ✓ should be no longer than 35 bytes
+      replace
+        $revision
+          ✓ should be present
+          ✓ should be a number
+          ✓ should be multiple of 1.0
+          ✓ should have a minimum value of 1
+  signature
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be not less than 65 bytes
+    ✓ should be not longer than 65 bytes
+    ✓ should be valid
+  signaturePublicKeyId
+    ✓ should be an integer
+    ✓ should not be < 0
 ```
 
 ## State Transition Data
@@ -497,6 +526,7 @@ validateDocumentsBatchTransitionDataFactory
   ✓ should return invalid result if there are duplicate document transitions according to unique indices
   ✓ should return invalid result if data triggers execution failed
   ✓ should return valid result if document transitions are valid
+  ✓ should return invalid result if document has partially set compound index data
   Timestamps
     CREATE transition
       ✓ should return invalid result if timestamps mismatch

@@ -9,7 +9,7 @@ Documents are sent to the platform by submitting the them in a document batch st
 | ownerId | object | [Identity](identity.md) submitting the document(s) (32 bytes) |
 | transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
-| signature | string | Signature of state transition data |
+| signature | object | Signature of state transition data (65 bytes) |
 
 **Note:** As of Dash Platform Protocol v0.13, documents from multiple data contracts can be submitted in the same document batch.
 

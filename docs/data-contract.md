@@ -490,23 +490,25 @@ validateDataContractFactory
   ✓ should return invalid result if indexed property missing maxLength constraint
   ✓ should return invalid result if indexed property have to big maxLength
   ✓ should return valid result if Data Contract is valid
-
+  protocolVersion
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
+    ✓ should not be greater than current version (0)
   $schema
     ✓ should be present
     ✓ should be a string
     ✓ should be a particular url
   ownerId
     ✓ should be present
-    ✓ should be a string
-    ✓ should be no less than 42 chars
-    ✓ should be no longer than 44 chars
-    ✓ should be base58 encoded
+    ✓ should be a byte array
+    ✓ should be no less than 32 bytes
+    ✓ should be no longer than 32 bytes
   $id
     ✓ should be present
-    ✓ should be a string
-    ✓ should be no less than 42 chars
-    ✓ should be no longer than 44 chars
-    ✓ should be base58 encoded
+    ✓ should be a byte array
+    ✓ should be no less than 32 bytes
+    ✓ should be no longer than 32 bytes
   definitions
     ✓ may not be present
     ✓ should be an object
@@ -555,6 +557,22 @@ validateDataContractFactory
       ✓ should have `maxLength` no bigger than 50000 if `pattern` is used
       ✓ should have `maxLength` if `format` is used
       ✓ should have `maxLength` no bigger than 50000 if `format` is used
+      byteArray
+        ✓ should be a boolean
+        ✓ should equal to true
+        ✓ should be used with type `object`
+      minBytesLength
+        ✓ should be a integer
+        ✓ should be not less than 0
+        ✓ should be used with `byteArray`
+        ✓ should be present if contentMediaType is "application/x.dash.dpp.identifier"
+        ✓ should be 32 bytes long if contentMediaType is "application/x.dash.dpp.identifier"
+      maxBytesLength
+        ✓ should be a integer
+        ✓ should be not less than 0
+        ✓ should be used with `byteArray`
+        ✓ should be present if contentMediaType is "application/x.dash.dpp.identifier"
+        ✓ should be 32 bytes long if contentMediaType is "application/x.dash.dpp.identifier"
 ```
 
 ### Index Validation
@@ -569,12 +587,13 @@ validateDataContractFactory
       ✓ should have "unique" flag to be of a boolean type
       ✓ should have no more than 10 indices
       ✓ should have no more than 3 unique indices
+      ✓ should return invalid result if index is prebuilt
       ✓ should return invalid result if indices has undefined property
       ✓ should return invalid result if index property is object
       ✓ should return invalid result if index property is array of objects
       ✓ should return invalid result if index property is array of arrays
       ✓ should return invalid result if index property is array with many item definitions
-      ✓ should return invalid result if index property is a single $id
+      ✓ should return invalid result if unique compound index contains both required and optional properties
       properties definition
         ✓ should be an array
         ✓ should have at least one property defined
@@ -588,15 +607,38 @@ validateDataContractFactory
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.14.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDataContractCreateTransitionStructureFactory
-  ✓ should return invalid result if Data Contract Identity is invalid
-  ✓ should return invalid result if data contract is invalid
-  ✓ should return invalid result on invalid signature
-  ✓ should return invalid result on invalid Data Contract id
-  ✓ should return invalid result on invalid entropy
+  ✓ should return valid result
+  protocolVersion
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
+    ✓ should not be greater than current version (0)
+  type
+    ✓ should be present
+    ✓ should be equal to 0
+  dataContract
+    ✓ should be present
+    ✓ should be valid
+    ✓ should return invalid result on invalid Data Contract id
+    ✓ should return invalid result if Data Contract Identity is invalid
+  entropy
+    ✓ should be present
+    ✓ should be a binary
+    ✓ should be no less than 20 bytes
+    ✓ should be no longer than 35 bytes
+  signature
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should be not less than 65 bytes
+    ✓ should be not longer than 65 bytes
+    ✓ should be valid
+  signaturePublicKeyId
+    ✓ should be an integer
+    ✓ should not be < 0
 ```
 
 * See the [state transition document](state-transition.md) for signature validation details.

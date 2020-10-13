@@ -119,20 +119,18 @@ Each document transition must comply with the document transition [base schema](
 
 ### Document id
 
-The document `$id` is created by base58 encoding the hash of the document's `ownerId`, `type`, `dataContractId`, and `entropy` as shown [here](https://github.com/dashevo/js-dpp/blob/v0.14.0/lib/document/generateDocumentId.js).
+The document `$id` is created by hashing the document's `dataContractId`, `ownerId`, `type`, and `entropy` as shown [here](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/document/generateDocumentId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // generateDocumentId.js
 function generateDocumentId(contractId, ownerId, type, entropy) {
-  return bs58.encode(
-    hash(Buffer.concat([
-      bs58.decode(contractId),
-      bs58.decode(ownerId),
-      Buffer.from(type),
-      bs58.decode(entropy),
-    ])),
-  );
+  return hash(Buffer.concat([
+    contractId,
+    ownerId,
+    Buffer.from(type),
+    entropy,
+  ]));
 }
 ```
 

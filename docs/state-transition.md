@@ -85,8 +85,8 @@ State transitions must be signed by a private key associated with the identity c
 The process to sign a state transition consists of the following steps:
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the identity creating the state transition
-3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
-4. For all state transitions _other than identity create_, set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
+3. Set the state transition `signature` to the ~~base64 encoded~~ value of the signature created in the previous step
+4. For all state transitions _other than identity create or topup_, set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 ## Signature Validation
 
@@ -111,75 +111,30 @@ validateStateTransitionSignatureFactory
 The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/stateTransition/validation/validateStateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
+validateIdentityExistence
+  ✓ should return invalid result if identity is not found
+
+validateStateTransitionDataFactory
+  ✓ should return invalid result if State Transition type is invalid
+  ✓ should return invalid result if Data Contract State Transition is not valid
+
+validateStateTransitionFeeFactory
+  ✓ should return invalid result if balance is not enough
+  ✓ should return valid result for DataContractCreateTransition
+  ✓ should return valid result for DocumentsBatchTransition
+  ✓ should return valid result for IdentityCreateStateTransition
+  ✓ should return valid result for IdentityTopUpTransition
+  ✓ should throw InvalidStateTransitionTypeError on invalid State Transition
+
+validateStateTransitionSignatureFactory
+  ✓ should pass properly signed state transition
+  ✓ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✓ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✓ should return InvalidStateTransitionSignatureError if signature is invalid
+
 validateStateTransitionStructureFactory
-  ✓ should return invalid result if ST invalid against extension schema
-  ✓ should return invalid result if ST is invalid against extension function
+  ✓ should return invalid result if ST type is missing
+  ✓ should return invalid result if ST type is not valid
+  ✓ should return invalid result if ST is invalid against validation function
   ✓ should return invalid result if ST size is more than 16 kb
-  ✓ should return valid result
-
-  Base schema
-    protocolVersion
-      ✓ should be present
-      ✓ should equal to 0
-    type
-      ✓ should be present
-      ✓ should have defined extension
-    signature
-      ✓ should be present
-      ✓ should no have length < 86
-      ✓ should not have length > 88
-      ✓ should be base64 encoded
-    signaturePublicKeyId
-      ✓ should be an integer
-      ✓ should be a nullable
-      ✓ should not be < 0
-```
-
-## Data Contract State Transition
-
-```
-Data Contract Schema
-  ✓ should be valid
-  dataContract
-    ✓ should be present
-  entropy
-    ✓ should be present
-    ✓ should be a string
-    ✓ should be no less than 34 chars
-    ✓ should be no longer than 34 chars
-```
-
-## Documents Batch State Transition
-
-```
-Documents Batch Schema
-  ✓ should be valid
-  ownerId
-    ✓ should be present
-    ✓ should be a string
-    ✓ should be no less than 42 chars
-    ✓ should be no longer than 44 chars
-    ✓ should be base58 encoded
-  transitions
-    ✓ should be present
-    ✓ should be an array
-    ✓ should have at least one element
-    ✓ should have no more than 10 elements
-    ✓ should have objects as elements
-```
-
-## Identity State Transition
-
-```
-Identity schema
-  ✓ should be valid
-  lockedOutPoint
-    ✓ should be present
-    ✓ should not be less than 48 characters in length
-    ✓ should not be more than 48 characters in length
-    ✓ should be base64 encoded
-  publicKeys
-    ✓ should be present
-    ✓ should not be empty
-    ✓ should not have more than 10 items
 ```

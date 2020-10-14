@@ -1,7 +1,7 @@
 # State Transition Overview
 
  State transitions are the means for submitting data that creates, updates, or deletes platform data and results in a change to a new state. Each one must contain:
- - Required fields from the [base schema](#base-schema)
+ - [Common fields](#common-fields) present in all state transitions
  - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](identity.md#identity-create-schema))
 
 ## Fees
@@ -56,7 +56,7 @@ function generate() {
 
 | Field | Type | Description|
 | - | - | - |
-| ownerId | string (base58) | [Identity](identity.md) submitting the document(s) |
+| ownerId | object | [Identity](identity.md) submitting the document(s) (32 bytes) |
 | transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 
 More detailed information about the `transitions` array can be found in the [document section](document.md).

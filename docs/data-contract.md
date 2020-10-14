@@ -16,7 +16,7 @@ The following sections provide details that developers need to construct valid c
 | `propertyNames` | Restricted - cannot be used (defined in DPP logic) |
 | `uniqueItems: true` | `maxItems` must be defined (maximum: 100000) |
 | `pattern: <something>` | `maxLength` must be defined (maximum: 50000) |
-| `format: <something>` | `maxLength` must be defined (maximum: 100000) |
+| `format: <something>` | `maxLength` must be defined (maximum: 50000) |
 | `$ref: <something>` | `$ref` can only reference `definitions` - <br> remote references not supported |
 | `if`, `then`, `else`, `allOf`, `anyOf`, `oneOf`, `not` | Disabled for data contracts |
 
@@ -463,12 +463,12 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ## Data Contract State Transition Signing
 
-Data contract state transitions must be signed by a private key associated with the contract's identity.
+Data contract state transitions must be signed by a private key associated with the contract owner's identity.
 
 The process to sign a data contract state transition consists of the following steps:
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
-2. Sign the encoded data with a private key associated with the `contractId`
-3. Set the state transition `signature` to the base64 encoded value of the signature created in the previous step
+2. Sign the encoded data with a private key associated with the `ownerId`
+3. Set the state transition `signature` to the ~~base64 encoded~~ value of the signature created in the previous step
 4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 # Data Contract Validation

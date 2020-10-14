@@ -12,9 +12,9 @@ State transition fees are paid via the credits established when an identity is c
 
 All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/util/serializer.js#L5).
 
-# Base Schema
+## Common Fields
 
-All state transitions are built on the base schema and include the following fields:
+All state transitions include the following fields:
 
 | Field | Type | Description|
 | - | - | - |
@@ -22,47 +22,12 @@ All state transitions are built on the base schema and include the following fie
 | type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup) |
 | signature | string (base64)| Signature of state transition data (86-88 characters) |
 
-Additionally, all state transitions except the identity create state transition include:
+Additionally, all state transitions except the identity create and topup state transitions include:
 
 | Field | Type | Description|
 | - | - | - |
 | signaturePublicKeyId | integer | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition (`=> 0`)|
 
-
-Each state transition must comply with the state transition [base schema](https://github.com/dashevo/js-dpp/blob/v0.14.0/schema/stateTransition/stateTransitionBase.json):
-
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema",
-  "properties": {
-    "protocolVersion": {
-      "type": "number",
-      "const": 0
-    },
-    "type": {
-      "type": "integer",
-      "enum": [0, 1, 2, 3]
-    },
-    "signaturePublicKeyId": {
-      "type": ["integer", "null"],
-      "minimum": 0
-    },
-    "signature": {
-      "type": "string",
-      "minLength": 86,
-      "maxLength": 88,
-      "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
-    }
-  },
-  "required": [
-    "protocolVersion",
-    "type",
-    "signature"
-  ],
-  "additionalProperties": false
-}
-```
 
 # State Transition Types
 
@@ -71,7 +36,7 @@ Each state transition must comply with the state transition [base schema](https:
 | Field | Type | Description|
 | - | - | - |
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
-| entropy | string | Entropy used to generate the data contract ID |
+| entropy | object | Entropy used to generate the data contract ID (20-35 bytes) |
 
 More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
 
@@ -100,7 +65,7 @@ More detailed information about the `transitions` array can be found in the [doc
 
 | Field | Type | Description|
 | - | - | - |
-| lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
+| lockedOutPoint | object | Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
 
 More detailed information about the `publicKeys` object can be found in the [identity section](identity.md).
@@ -109,8 +74,8 @@ More detailed information about the `publicKeys` object can be found in the [ide
 
 | Field | Type | Description|
 | - | - | - |
-| lockedOutPoint | string (base64)| Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (48 characters) |
-| identityId | string | An [Identity ID](identity.md#identity-id) for the identity receiving the topup (can be any identity) |
+| lockedOutPoint | object | Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (36 bytes) |
+| identityId | object | An [Identity ID](identity.md#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 
 
 # State Transition Signing

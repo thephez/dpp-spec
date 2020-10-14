@@ -42,13 +42,13 @@ More detailed information about the `dataContract` object can be found in the [d
 
 ### Entropy Generation
 
+Entropy is included in [Data Contracts](data-contract.md#data-contract-creation) and [Documents](document.md#document-create-transition).
+
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
-// entropy.js
-generate() {
-  const privateKey = new PrivateKey();
-  const publicKey = privateKey.toPublicKey();
-  return publicKey.toAddress(Networks.testnet).toString();
+// generateEntropy.js
+function generate() {
+  return crypto.randomBytes(32);
 }
 ```
 

@@ -149,7 +149,7 @@ The document create transition extends the base schema to include the following 
 
 | Field | Type | Description|
 | - | - | - |
-| $entropy | object | Entropy used in creating the [document ID](#document-id). Generated in the same way as the [data contract's entropy](state-transition.md#entropy-generation). (20-35 bytes) |
+| $entropy | object | Entropy used in creating the [document ID](#document-id). Generated as [shown here](state-transition.md#entropy-generation). (20-35 bytes) |
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 

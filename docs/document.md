@@ -397,7 +397,7 @@ The document model must pass validation tests as defined in [js-dpp](https://git
 ```
 validateDocumentFactory
   ✓ should return invalid result if a document contractId is not equal to Data Contract ID
-  ✓ return invalid result if binary field exceeds `maxBytesLength`
+  ✓ return invalid result if a byte array exceeds `maxItems`
   ✓ should return valid result is a document is valid
   Base schema
     $protocolVersion
@@ -463,12 +463,12 @@ validateDocumentsBatchTransitionStructureFactory
       $id
         ✓ should be present
         ✓ should be a byte array
-        ✓ should be no less than 20 bytes
-        ✓ should be no longer than 35 bytes
+        ✓ should be no less than 32 bytes
+        ✓ should be no longer than 32 bytes
         ✓ should no have duplicate IDs in the state transition
       $dataContractId
         ✓ should be present
-        ✓ should be byte array
+        ✓ should be a byte array
         ✓ should exists in the state
       $type
         ✓ should be present
@@ -482,8 +482,8 @@ validateDocumentsBatchTransitionStructureFactory
         $entropy
           ✓ should be present
           ✓ should be a byte array
-          ✓ should be no less than 20 bytes
-          ✓ should be no longer than 35 bytes
+          ✓ should be no less than 32 bytes
+          ✓ should be no longer than 32 bytes
       replace
         $revision
           ✓ should be present
@@ -527,7 +527,7 @@ validateDocumentsBatchTransitionDataFactory
       ✓ should return invalid result if documents with action "replace" have violated time window
 ```
 
-The state transition data must also pass index validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js). The test output below shows the necessary criteria:
+The state transition data must also pass index validation tests as defined in [js-dpp here](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js) and [here](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validatePartialCompoundIndices.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateDocumentsUniquenessByIndices
@@ -536,4 +536,11 @@ validateDocumentsUniquenessByIndices
   ✓ should return invalid result if Document has unique indices and there are duplicates
   ✓ should return valid result if Document has undefined field from index
   ✓ should return valid result if Document being created and has createdAt and updatedAt indices
+```
+
+```
+validatePartialCompoundIndices
+  ✓ should return invalid result if compound index contains not all fields
+  ✓ should return valid result if compound index contains no fields
+  ✓ should return valid result if compound index contains all fields
 ```

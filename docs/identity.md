@@ -89,7 +89,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
     );
 ```
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
@@ -465,7 +465,7 @@ validateIdentityFactory
   revision
     ✓ should be present
     ✓ should be an integer
-    ✓ should be greater or equal 0    
+    ✓ should be greater or equal 0
 ```
 
 ## Public Key Model
@@ -564,7 +564,7 @@ validateIdentityTopUpTransitionStructureFactory
     ✓ should be present
     ✓ should be a byte array
     ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes  
+    ✓ should be not longer than 65 bytes
 ```
 
 ## State Transition Data

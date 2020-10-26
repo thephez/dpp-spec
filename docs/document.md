@@ -272,25 +272,17 @@ The document delete transition only requires the fields found in the [base docum
 {
   "protocolVersion": 0,
   "type": 1,
-  "signature": "HwIqrNQmfpvu7wYbpHwEOSfmXlkImt1oBQBCweUVhsWtW6cjIl3CJ/qANrU3UoJlo2jnQKITUjIbhjcaoB7iHug=",
+  "signature": "ICu/H7MoqxNUzznP9P2aTVEo91VVy0T8M3QWCH/7dg2UVokG98TbD4DQB4E8SD4GzHoRrBMycJ75SbT2AaF9hFc=",
   "signaturePublicKeyId": 0,
-  "ownerId": "5Zqim5LkL76dBMqa1kE2AFRng2yqpgyVTKK6kTqWbYmu",
+  "ownerId": "4ZJsE1Yg8AosmC4hAeo3GJgso4N9pCoa6eCTDeXsvdhn",
   "transitions": [
     {
-      "$action": 0,
-      "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
-      "$id": "6oCKUeLVgjr7VZCyn1LdGbrepqKLmoabaff5WQqyTKYP",
+      "$id": "8jm8iHsYE6ENENvFVeFVFMCwfgEqo5P1iR2q4KAYgpbS",
       "$type": "note",
-      "$entropy": "yfo6LnZfJ5koT2YUwtd8PdJa8SXzfQMVDz",
-      "message": "Tutorial Test @ Mon, 27 Apr 2020 20:23:35 GMT"
-    },
-    {
-      "$action": 0,
-      "$dataContractId": "5wpZAEWndYcTeuwZpkmSa8s49cHXU5q2DhdibesxFSu8",
-      "$id": "E8NftpxhvBmSg9wsTVDNUFXEw774Gb4ioFtT5YWuKvcn",
-      "$type": "note",
-      "$entropy": "yeGZVSYACVPPdNrSkwc2shKDWpHFKvmmww",
-      "message": "Tutorial Test 2 @ Mon, 27 Apr 2020 20:23:35 GMT"
+      "$action": 1,
+      "$dataContractId": "AnmBaYH13RyiuvBkBD6qkdc36H5DKt6ToMrkqgUnnywz",
+      "message": "Updated document @ Mon, 26 Oct 2020 14:58:31 GMT",
+      "$revision": 2
     }
   ]
 }
@@ -377,14 +369,15 @@ Each document object must comply with this JSON-Schema definition established in
 
 ```json
 {
-  "$id": "5pBBpSH2ew664GWrF6zKPUgPgBP9bBXAJ4Sv7rsRK5JD",
+  "$protocolVersion": 0,
+  "$id": "4mWnFcDDzCpeLExJqE8v7pfN4EERC8NE2xn4hw3VKriU",
   "$type": "note",
-  "$dataContractId": "6LzniQbzjhYoJBNMXUYQyGTbjXYW6ovYu5vkh8Mz3xwQ",
-  "$ownerId": "58keGTkwoDycwWkRMmPYQMxVSEc6gy3fSTg59pfHAtdy",
+  "$dataContractId": "63au7XVDt8aHtPrsYKoHx2bnRTSenwH62pDN1BQ5n5m9",
+  "$ownerId": "7TkaE5uhG3T9AhyEkAvYCqZvRH4pyBibhjuSYPReNfME",
   "$revision": 1,
-  message: "Tutorial Test @ Tue, 18 Aug 2020 20:53:58 GMT",
-  "$createdAt": 1597784038882,
-  "$updatedAt": 1597784038882
+  message: "Tutorial Test @ Mon, 26 Oct 2020 15:54:35 GMT",
+  "$createdAt": 1603727675072,
+  "$updatedAt": 1603727675072
 }
 ```
 

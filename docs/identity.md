@@ -56,22 +56,21 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   ]
 }
 ```
-
 **Example Identity**
 
 ```json
 {
   "protocolVersion": 0,
-  "id": "3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe",
+  "id": "4ZJsE1Yg8AosmC4hAeo3GJgso4N9pCoa6eCTDeXsvdhn",
   "publicKeys": [
     {
       "id": 0,
       "type": 0,
-      "data": "A677zlRADmHdE395/O/YrCQxmNxD1BlB3K+5Z+BSVrUo",
-      "isEnabled": true
+      "data": "Ao57Lp0174Svimn3OW+JUxOu/JhjhgRjBWzx9Gu/hyjo"
     }
   ],
-  "balance": 0
+  "balance": 0,
+  "revision": 0
 }
 ```
 

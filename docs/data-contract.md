@@ -43,8 +43,8 @@ The data contract object consists of the following fields as defined in the Java
 | - | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | object | Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L335-L341)) |
-| ownerId | object | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L342-L348) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L335-L341)) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L342-L348) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
@@ -72,17 +72,17 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
     },
     "$id":{
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "ownerId":{
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "documents": {
@@ -381,9 +381,9 @@ Data contracts are created on the platform by submitting the [data contract obje
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
-| entropy | object | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (20-35 bytes) |
+| entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
-| signature | object | Signature of state transition data (65 bytes) |
+| signature | array of bytes | Signature of state transition data (65 bytes) |
 
 Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/stateTransition/dataContractCreate.json):
 
@@ -405,20 +405,20 @@ Each data contract state transition must comply with this JSON-Schema definition
       "type": "object"
     },
     "entropy": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 20,
-      "maxBytesLength": 35
+      "minItems": 32,
+      "maxItems": 32
     },
     "signaturePublicKeyId": {
       "type": "integer",
       "minimum": 0
     },
     "signature": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 65,
-      "maxBytesLength": 65
+      "minItems": 65,
+      "maxItems": 65
     }
   },
   "additionalProperties": false,

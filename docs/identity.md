@@ -7,7 +7,7 @@ Identities consist of three components that are described in further detail in f
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The identity version |
-| id | object | The identity id (32 bytes) |
+| id | array | The identity id (32 bytes) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
@@ -25,10 +25,10 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "$comment": "Maximum is the latest Identity protocol version"
     },
     "id": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "publicKeys": {
@@ -56,22 +56,21 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   ]
 }
 ```
-
 **Example Identity**
 
 ```json
 {
   "protocolVersion": 0,
-  "id": "3z343JK2X884uy8pK9iNRw8urymdEo71GJFPrC1QEjJe",
+  "id": "4ZJsE1Yg8AosmC4hAeo3GJgso4N9pCoa6eCTDeXsvdhn",
   "publicKeys": [
     {
       "id": 0,
       "type": 0,
-      "data": "A677zlRADmHdE395/O/YrCQxmNxD1BlB3K+5Z+BSVrUo",
-      "isEnabled": true
+      "data": "Ao57Lp0174Svimn3OW+JUxOu/JhjhgRjBWzx9Gu/hyjo"
     }
   ],
-  "balance": 0
+  "balance": 0,
+  "revision": 0
 }
 ```
 
@@ -90,7 +89,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
     );
 ```
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
@@ -104,7 +103,7 @@ Each item in the `publicKeys` array consists an object containing:
 | - | - | - |
 | id | integer | The key id (all public keys must be unique) |
 | type | integer | Type of key (default: 0 - ECDSA) |
-| data | object | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
+| data | array | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
 
 **Note:** the `isEnabled` field was removed in [version 0.16](https://github.com/dashevo/js-dpp/pull/236).
 
@@ -131,7 +130,7 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "$comment": "It can't be changed after adding a key"
     },
     "data": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
       "description": "Raw public key",
       "$commit": "It must be a valid key of the specified type and unique for the identity. It can’t be changed after adding a key"
@@ -150,8 +149,8 @@ Each identity public key must comply with this JSON-Schema definition establishe
         "properties": {
           "data": {
             "byteArray": true,
-            "minBytesLength": 33,
-            "maxBytesLength": 33
+            "minItems": 33,
+            "maxItems": 33
           }
         }
       }
@@ -168,8 +167,8 @@ Each identity public key must comply with this JSON-Schema definition establishe
         "properties": {
           "data": {
             "byteArray": true,
-            "minBytesLength": 48,
-            "maxBytesLength": 48
+            "minItems": 48,
+            "maxItems": 48
           }
         }
       }
@@ -234,9 +233,9 @@ Identities are created on the platform by submitting the identity information in
 | - | - | - |
 | protocolVersion | integer | The identity create protocol version (currently `0`) |
 | type | integer | State transition type (`2` for identity create) |
-| lockedOutPoint | object | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
+| lockedOutPoint | array | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
-| signature | object | Signature of state transition data (65 bytes) |
+| signature | array | Signature of state transition data (65 bytes) |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
@@ -257,10 +256,10 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "const": 2
     },
     "lockedOutPoint": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 36,
-      "maxBytesLength": 36
+      "minItems": 36,
+      "maxItems": 36
     },
     "publicKeys": {
       "type": "array",
@@ -269,10 +268,10 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "uniqueItems": true
     },
     "signature": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 65,
-      "maxBytesLength": 65
+      "minItems": 65,
+      "maxItems": 65
     }
   },
   "additionalProperties": false,
@@ -313,9 +312,9 @@ Identity credit balances are increased by submitting the topup information in an
 | - | - | - |
 | protocolVersion | integer | The identity topup protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity topup) |
-| lockedOutPoint | object | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
-| identityId | object | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
-| signature | object | Signature of state transition data (65 bytes) |
+| lockedOutPoint | array | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
+| identityId | array | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
+| signature | array | Signature of state transition data (65 bytes) |
 
 **Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
 
@@ -336,23 +335,23 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "const": 3
     },
     "lockedOutPoint": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 36,
-      "maxBytesLength": 36
+      "minItems": 36,
+      "maxItems": 36
     },
     "identityId": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "signature": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 65,
-      "maxBytesLength": 65
+      "minItems": 65,
+      "maxItems": 65
     }
   },
   "additionalProperties": false,
@@ -364,7 +363,6 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
     "signature"
   ]
 }
-
 ```
 
 **Example State Transition**
@@ -467,7 +465,7 @@ validateIdentityFactory
   revision
     ✓ should be present
     ✓ should be an integer
-    ✓ should be greater or equal 0    
+    ✓ should be greater or equal 0
 ```
 
 ## Public Key Model
@@ -566,7 +564,7 @@ validateIdentityTopUpTransitionStructureFactory
     ✓ should be present
     ✓ should be a byte array
     ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes  
+    ✓ should be not longer than 65 bytes
 ```
 
 ## State Transition Data

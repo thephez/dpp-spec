@@ -43,8 +43,8 @@ The data contract object consists of the following fields as defined in the Java
 | - | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | object | Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L335-L341)) |
-| ownerId | object | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L342-L348) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L335-L341)) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L342-L348) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
@@ -72,17 +72,17 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
     },
     "$id":{
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "ownerId":{
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 32,
-      "maxBytesLength": 32,
+      "minItems": 32,
+      "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
     "documents": {
@@ -226,12 +226,12 @@ The following example (excerpt from the DPNS contract's `domain` document) demon
 
 ```json
 "required": [
-  "nameHash",
   "label",
   "normalizedLabel",
   "normalizedParentDomainName",
   "preorderSalt",
-  "records"
+  "records",
+  "subdomainRules"
 ]
 ```
 
@@ -337,7 +337,7 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L349-L486).
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L348-L485).
 
 ## Data Contract Definitions
 
@@ -381,9 +381,9 @@ Data contracts are created on the platform by submitting the [data contract obje
 | protocolVersion | integer | The platform protocol version (currently `0`) |
 | type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
-| entropy | object | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (20-35 bytes) |
+| entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
-| signature | object | Signature of state transition data (65 bytes) |
+| signature | array of bytes | Signature of state transition data (65 bytes) |
 
 Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/stateTransition/dataContractCreate.json):
 
@@ -405,20 +405,20 @@ Each data contract state transition must comply with this JSON-Schema definition
       "type": "object"
     },
     "entropy": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 20,
-      "maxBytesLength": 35
+      "minItems": 32,
+      "maxItems": 32
     },
     "signaturePublicKeyId": {
       "type": "integer",
       "minimum": 0
     },
     "signature": {
-      "type": "object",
+      "type": "array",
       "byteArray": true,
-      "minBytesLength": 65,
-      "maxBytesLength": 65
+      "minItems": 65,
+      "maxItems": 65
     }
   },
   "additionalProperties": false,
@@ -431,7 +431,6 @@ Each data contract state transition must comply with this JSON-Schema definition
     "signature"
   ]
 }
-
 ```
 
 **Example State Transition**
@@ -440,10 +439,12 @@ Each data contract state transition must comply with this JSON-Schema definition
 {
   "protocolVersion": 0,
   "type": 0,
+  "signature": "HzgJHFGlAYzcelu6zFUIk/Andfps9ztwCXX4EGL01WfSArC7/WNqb8hom3yijzTMCuYQyOe+WOekbEKECPzDiEQ=",
+  "signaturePublicKeyId": 0,
   "dataContract": {
-    "$id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
+    "$id": "6KkSUqcKy2PG1mg3LXuC1h2rXqco7tgLBhvQ7Zwok9DG",
     "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
+    "ownerId": "e5Gh6sWsVfdDq3NTPiZod5tnG6EweB1kG7h8u2tccQG",
     "documents": {
       "note": {
         "properties": {
@@ -455,9 +456,7 @@ Each data contract state transition must comply with this JSON-Schema definition
       }
     }
   },
-  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC",
-  "signaturePublicKeyId": 0,
-  "signature": "H9Z4mWQNzJWLkMlih450FiMDLybLZeyzbJT95ubyYIQfZcVFqEnABtLcoHb4Fi+AAhUUtHG0AaGmSiLgjQxjo8k=",
+  "entropy": "cq7kZYfvHLua4F3jhEbC2+Hj3OO2nJ9XCSWiBmdN0Os=",
 }
 ```
 
@@ -468,7 +467,7 @@ Data contract state transitions must be signed by a private key associated with 
 The process to sign a data contract state transition consists of the following steps:
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the `ownerId`
-3. Set the state transition `signature` to the ~~base64 encoded~~ value of the signature created in the previous step
+3. Set the state transition `signature` to the value of the signature created in the previous step
 4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 # Data Contract Validation
@@ -560,19 +559,13 @@ validateDataContractFactory
       byteArray
         ✓ should be a boolean
         ✓ should equal to true
-        ✓ should be used with type `object`
-      minBytesLength
-        ✓ should be a integer
-        ✓ should be not less than 0
-        ✓ should be used with `byteArray`
-        ✓ should be present if contentMediaType is "application/x.dash.dpp.identifier"
-        ✓ should be 32 bytes long if contentMediaType is "application/x.dash.dpp.identifier"
-      maxBytesLength
-        ✓ should be a integer
-        ✓ should be not less than 0
-        ✓ should be used with `byteArray`
-        ✓ should be present if contentMediaType is "application/x.dash.dpp.identifier"
-        ✓ should be 32 bytes long if contentMediaType is "application/x.dash.dpp.identifier"
+        ✓ should be used with type `array`
+        ✓ should not be used with `items`
+      contentMediaType
+        application/x.dash.dpp.identifier
+          ✓ should be used with byte array only
+          ✓ should be used with byte array not shorter than 32 bytes
+          ✓ should be used with byte array not longer than 32 bytes
 ```
 
 ### Index Validation
@@ -627,9 +620,9 @@ validateDataContractCreateTransitionStructureFactory
     ✓ should return invalid result if Data Contract Identity is invalid
   entropy
     ✓ should be present
-    ✓ should be a binary
-    ✓ should be no less than 20 bytes
-    ✓ should be no longer than 35 bytes
+    ✓ should be a byte array
+    ✓ should be no less than 32 bytes
+    ✓ should be no longer than 32 bytes
   signature
     ✓ should be present
     ✓ should be a byte array

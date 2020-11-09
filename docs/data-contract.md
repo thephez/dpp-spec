@@ -113,8 +113,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ```json
 {
-  "id": "E7Kh5MbMuTmGTHzyfpKZ9erRzu1fNa4JZYd6sJFDLbqh",
-  "ownerId": "HcgaeTzwiwGMTpYFDBJuKERv8kjbDS2oDGDkQ4SN4Mi1",
+  "id": "AoDzJxWSb1gUi2dSmvFeUFpSsjZQRJaqCpn7vCLkwwJj",
+  "ownerId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
   "schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "documents": {
     "note": {
@@ -125,9 +125,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       },
       "additionalProperties": false
     }
-  },
-  "definitions": {},
-  "entropy": "yRx116Yipokd6ueHW2NN8prZxgS2uUttqC"
+  }
 }
 ```
 
@@ -439,12 +437,13 @@ Each data contract state transition must comply with this JSON-Schema definition
 {
   "protocolVersion": 0,
   "type": 0,
-  "signature": "HzgJHFGlAYzcelu6zFUIk/Andfps9ztwCXX4EGL01WfSArC7/WNqb8hom3yijzTMCuYQyOe+WOekbEKECPzDiEQ=",
+  "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
   "signaturePublicKeyId": 0,
   "dataContract": {
-    "$id": "6KkSUqcKy2PG1mg3LXuC1h2rXqco7tgLBhvQ7Zwok9DG",
+    "protocolVersion": 0,
+    "$id": "AoDzJxWSb1gUi2dSmvFeUFpSsjZQRJaqCpn7vCLkwwJj",
     "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "ownerId": "e5Gh6sWsVfdDq3NTPiZod5tnG6EweB1kG7h8u2tccQG",
+    "ownerId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
     "documents": {
       "note": {
         "properties": {
@@ -456,7 +455,7 @@ Each data contract state transition must comply with this JSON-Schema definition
       }
     }
   },
-  "entropy": "cq7kZYfvHLua4F3jhEbC2+Hj3OO2nJ9XCSWiBmdN0Os=",
+  "entropy": "ahw7IvTAYkZcPaGcvh6BCVYP9rh/KyBkoeCGk28yoAw="
 }
 ```
 

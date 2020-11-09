@@ -288,19 +288,19 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 **Example State Transition**
 
 ```json
+
 {
   "protocolVersion": 0,
   "type": 2,
-  "lockedOutPoint": "qalDv8f/ZrHtkdoqVFA/lgyEHvj9RJM7bSJBZG0HDIIAAAAA",
+  "signature": "ILoF6DKZPpDMJTlBjwiY05v7/3LEcJcLlwgmg6wvltT7St15F4oesX8cd+yNtosIQ6rgCx7o3m+OeJM49HWk880=",
+  "lockedOutPoint": "kSALb/mPrS7H83szmJ5EJYIKUPI1QFXN9Zv60lCSvIMAAAAA",
   "publicKeys": [
     {
-      "id": 1,
+      "id": 0,
       "type": 0,
-      "data": "A6AJAfRJyKuNoNvt33ygYfYh6OIYA8tF1s2BQcRA9RNg",
-      "isEnabled": true
+      "data": "A3imAPz+S1aP+keuUYpRvq9JD3Vn4+0nN5UydeV5JiIP"
     }
-  ],
-  "signature": "IOSuSYdQnYVttzsrD6nlfdN6b+fXyOE8Yz3XWpoafC93R5YQmOwRtTYvqMiJ/EtkDEsBoQevuo2FjgTw8lC4pvM="
+  ]
 }
 ```
 
@@ -371,9 +371,9 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "protocolVersion": 0,
   "type": 3,
-  "identityId": "Gb9YEHMYxcMiSnBhtBQQmttmAoqN1asi6HKQxRR7YdXA",
-  "lockedOutPoint": "o/wqVhGcP/p5QzE8ozVoVN1pnjesfDmhUjdhQv4EN6UAAAAA",
-  "signature": "HwW7Dwq34OGgsoG8sDe+2G3Gs69+X5v7ELFHonpVgkzwSBqToRXUl6LePs+g+Pgq7DxEIGgSQG0C8OzHiXo8dT8=",
+  "signature": "IGsZ6qDhSvrACTo+PpAvmWrlnnSzmKjNJVPBjXAMweFBVtPDPdDHBNomsEzzPo9BHPMPCTK9882omofGFot41iY=",
+  "identityId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
+  "lockedOutPoint": "KSP1RVZdVG1R5OkaK8LTjccTC6eaWTWiAt+6YMp5fzwAAAAA"
 }
 ```
 

@@ -375,7 +375,7 @@ Each document object must comply with this JSON-Schema definition established in
   "$dataContractId": "63au7XVDt8aHtPrsYKoHx2bnRTSenwH62pDN1BQ5n5m9",
   "$ownerId": "7TkaE5uhG3T9AhyEkAvYCqZvRH4pyBibhjuSYPReNfME",
   "$revision": 1,
-  message: "Tutorial Test @ Mon, 26 Oct 2020 15:54:35 GMT",
+  "message": "Tutorial Test @ Mon, 26 Oct 2020 15:54:35 GMT",
   "$createdAt": 1603727675072,
   "$updatedAt": 1603727675072
 }

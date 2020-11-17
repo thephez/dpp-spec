@@ -41,10 +41,10 @@ The data contract object consists of the following fields as defined in the Java
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | Yes | The platform protocol version (currently `0`) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L335-L341)) |
-| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16-dev/schema/dataContract/dataContractMeta.json#L342-L348) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L334-L340)) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L341-L347) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 

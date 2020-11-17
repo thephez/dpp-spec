@@ -69,7 +69,6 @@ validateDocumentsBatchTransitionDataFactory
 
 As of DPP v0.16, only DPNS is able to use data triggers. Its data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.16.0/lib/dataTrigger/dpnsTriggers) and have some DPNS-specific [validation tests](https://github.com/dashevo/js-dpp/tree/v0.16.0/test/unit/dataTrigger/dpnsTriggers):
 
-
 ```
 createDomainDataTrigger
   ✓ should successfully execute if document is valid

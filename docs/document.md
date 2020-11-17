@@ -294,7 +294,7 @@ The document object represents the data provided by the platform in response to 
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | Yes | The platform protocol version (currently `0`) |
 | $id | array | Yes | The [document ID](#document-id) (32 bytes)|
 | $type | string | Yes  | Document type defined in the referenced contract |
 | $revision | integer | No | Document revision (=>1) |

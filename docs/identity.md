@@ -515,7 +515,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 Identity
@@ -545,7 +545,7 @@ validateIdentityFactory
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 PublicKeys
@@ -579,7 +579,7 @@ Structure validation verifies that the content of state transition fields compli
 
 ### Identity Create
 
-The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityCreateTransitionStructureFactory
@@ -592,11 +592,10 @@ validateIdentityCreateTransitionStructureFactory
   type
     ✓ should be present
     ✓ should be equal to 2
-  lockedOutPoint
+  assetLock
     ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be less than 36 bytes
-    ✓ should not be more than 36 bytes
+    ✓ should be an object
+    ✓ should be valid
   publicKeys
     ✓ should be present
     ✓ should not be empty
@@ -608,11 +607,12 @@ validateIdentityCreateTransitionStructureFactory
     ✓ should be a byte array
     ✓ should be not shorter than 65 bytes
     ✓ should be not longer than 65 bytes
+    ✓ should be valid
 ```
 
 ### Identity TopUp
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```
 validateIdentityTopUpTransitionStructureFactory
@@ -625,21 +625,75 @@ validateIdentityTopUpTransitionStructureFactory
   type
     ✓ should be present
     ✓ should be equal to 3
-  lockedOutPoint
+  assetLock
     ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be less than 36 bytes
-    ✓ should not be more than 36 bytes
+    ✓ should be an object
+    ✓ should be valid
   identityId
     ✓ should be present
     ✓ should be a byte array
     ✓ should be no less than 32 bytes
     ✓ should be no longer than 32 bytes
+    ✓ should exist
   signature
     ✓ should be present
     ✓ should be a byte array
     ✓ should be not shorter than 65 bytes
     ✓ should be not longer than 65 bytes
+    ✓ should be valid
+```
+
+## Asset Lock
+
+The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/assetLock/validateAssetLockStructureFactory.spec.js). The test output below shows the necessary criteria:
+
+
+```text
+  validateAssetLockStructureFactory
+    ✓ should return invalid result if proof is not valid
+    ✓ should return valid result with public key hash
+    transaction
+      ✓ should be present
+      ✓ should be a byte array
+      ✓ should be not shorter than 1 byte
+      ✓ should be not longer than 100 Kb
+      ✓ should be valid
+    outputIndex
+      ✓ should be present
+      ✓ should be an integer
+      ✓ should be not less than 0
+      ✓ should point to specific output in transaction
+      ✓ should point to output with OR_RETURN
+      ✓ should point to output with public key hash
+    proof
+      ✓ should be present
+      ✓ should be an object
+      ✓ should return invalid result if asset lock transaction outPoint exists
+      type
+        ✓ should be present
+        ✓ should be equal to 0
+```
+
+## InstantSend Asset Lock Proof
+
+The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17-dev/test/integration/identity/stateTransition/assetLock/proof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+
+
+```text
+  validateInstantAssetLockProofStructureFactory
+    ✓ should skip signature verification if skipAssetLockProofSignatureVerification passed
+    ✓ should return valid result
+    type
+      ✓ should be present
+      ✓ should be equal to 0
+    instantLock
+      ✓ should be present
+      ✓ should be a byte array
+      ✓ should be not shorter than 160 bytes
+      ✓ should be not longer than 100 Kb
+      ✓ should be valid
+      ✓ should lock the same transaction
+      ✓ should have valid signature
 ```
 
 ## State Transition Data
@@ -649,25 +703,22 @@ Data validation verifies that the data in the state transition is valid in the c
 
 ### Identity Create
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateIdentityCreateTransitionDataFactory
   ✓ should return invalid result if identity already exists
-  ✓ should return invalid result if lock transaction is invalid
   ✓ should return invalid result if identity public key already exists
   ✓ should return valid result if state transition is valid
 ```
 
 ### Identity TopUp
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateIdentityTopUpTransitionDataFactory
-  ✓ should return invalid result if identity does not exist
-  ✓ should return valid result if state transition is valid
-  ✓ should return invalid result if lock transaction is invalid
+  ✓ should return valid result
 ```
 
 **Note:** Additional validation rules may be added in future versions.

@@ -12,7 +12,7 @@ Identities consist of three components that are described in further detail in f
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/identity.json):
 
 ```json
 {
@@ -34,7 +34,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
     "publicKeys": {
       "type": "array",
       "minItems": 1,
-      "maxItems": 100,
+      "maxItems": 32,
       "uniqueItems": true
     },
     "balance": {
@@ -56,6 +56,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   ]
 }
 ```
+
 **Example Identity**
 
 ```json
@@ -89,7 +90,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
     );
 ```
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/identifier/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.17.0/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
@@ -107,7 +108,7 @@ Each item in the `publicKeys` array consists an object containing:
 
 **Note:** the `isEnabled` field was removed in [version 0.16](https://github.com/dashevo/js-dpp/pull/236).
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/publicKey.json):
 
 ```json
 {
@@ -233,13 +234,11 @@ Identities are created on the platform by submitting the identity information in
 | - | - | - |
 | protocolVersion | integer | The identity create protocol version (currently `0`) |
 | type | integer | State transition type (`2` for identity create) |
-| lockedOutPoint | array of bytes | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
+| assetLock | object | [Asset lock object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-**Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
-
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -255,11 +254,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "integer",
       "const": 2
     },
-    "lockedOutPoint": {
-      "type": "array",
-      "byteArray": true,
-      "minItems": 36,
-      "maxItems": 36
+    "assetLock": {
+      "type": "object"
     },
     "publicKeys": {
       "type": "array",
@@ -278,7 +274,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "required": [
     "protocolVersion",
     "type",
-    "lockedOutPoint",
+    "assetLock",
     "publicKeys",
     "signature"
   ]
@@ -312,13 +308,11 @@ Identity credit balances are increased by submitting the topup information in an
 | - | - | - |
 | protocolVersion | integer | The identity topup protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity topup) |
-| lockedOutPoint | array of bytes | Lock [outpoint]([https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint)) from the layer 1 locking transaction (36 bytes) |
+| assetLock | object | [Asset lock object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-**Note:** The lock transaction that creates the `lockedOutPoint` is not covered in this document. The preliminary design simply uses an `OP_RETURN` output.
-
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/identity/stateTransition/identityTopUp.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {
@@ -334,11 +328,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "integer",
       "const": 3
     },
-    "lockedOutPoint": {
-      "type": "array",
-      "byteArray": true,
-      "minItems": 36,
-      "maxItems": 36
+    "assetLock": {
+      "type": "object"
     },
     "identityId": {
       "type": "array",
@@ -358,7 +349,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "required": [
     "protocolVersion",
     "type",
-    "lockedOutPoint",
+    "assetLock",
     "identityId",
     "signature"
   ]
@@ -374,6 +365,86 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "signature": "IGsZ6qDhSvrACTo+PpAvmWrlnnSzmKjNJVPBjXAMweFBVtPDPdDHBNomsEzzPo9BHPMPCTK9882omofGFot41iY=",
   "identityId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
   "lockedOutPoint": "KSP1RVZdVG1R5OkaK8LTjccTC6eaWTWiAt+6YMp5fzwAAAAA"
+}
+```
+
+# Asset Lock
+
+The [identity create](#identity-creation) and [identity topup](#identity-topup) state transitions both include an asset lock object. This object references includes the layer 1 lock transaction and includes proof that the transaction is locked.
+
+| Field | Type | Description|
+| - | - | - |
+| transaction | array of bytes | The asset lock transaction |
+| outputIndex | integer | Index of the transaction output to be used |
+| proof | object | Proof that the transaction is locked via InstantSend or ChainLocks |
+
+Each asset lock object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/stateTransition/assetLock/assetLock.json):
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "properties": {
+    "transaction": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "outputIndex": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "proof": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "enum": [0]
+        }
+      },
+      "required": ["type"]
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "transaction",
+    "outputIndex",
+    "proof"
+  ]
+}
+```
+
+## Asset Lock Proof
+
+Currently only InstantSend locks are accepted as proofs.
+
+| Field | Type | Description|
+| - | - | - |
+| type | integer | The asset lock proof type (`0` for InstantSend locks) |
+| instantLock | array of bytes | The InstantSend lock ([`islock`?](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
+
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://raw.githubusercontent.com/dashevo/js-dpp/v0.17.0/schema/identity/stateTransition/assetLock/proof/instantAssetLockProof.json):
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "properties": {
+    "type": {
+      "type": "integer",
+      "const": 0
+    },
+    "instantLock": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 165,
+      "maxItems": 100000
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "instantLock"
+  ]
 }
 ```
 

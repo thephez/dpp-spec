@@ -226,7 +226,11 @@ const dataHex = rawPublicKey.data.toString('hex');
 
 Each identity has a balance of credits established by value locked via a layer 1 lock transaction. This credit balance is used to pay the fees associated with state transitions.
 
-# Identity Creation
+# Identity State Transition Details
+
+There are two identity-related state transitions: [identity create](#identity-creation) and [identity topup](#identity-topup). Details are provided in this section including information about [asset locking](#asset-lock) and [signing](#identity-state-transition-signing) required for both state transitions.
+
+## Identity Creation
 
 Identities are created on the platform by submitting the identity information in an identity create state transition.
 
@@ -300,7 +304,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 }
 ```
 
-# Identity TopUp
+## Identity TopUp
 
 Identity credit balances are increased by submitting the topup information in an identity topup state transition.
 
@@ -368,7 +372,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 }
 ```
 
-# Asset Lock
+## Asset Lock
 
 The [identity create](#identity-creation) and [identity topup](#identity-topup) state transitions both include an asset lock object. This object references includes the layer 1 lock transaction and includes proof that the transaction is locked.
 
@@ -414,7 +418,7 @@ Each asset lock object must comply with this JSON-Schema definition established 
 }
 ```
 
-## Asset Lock Proof
+### Asset Lock Proof
 
 Currently only InstantSend locks are accepted as proofs.
 
@@ -448,7 +452,7 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
 }
 ```
 
-# Identity State Transition Signing
+## Identity State Transition Signing
 
 **Note:** The identity create and topup state transition signatures are unique in that they must be signed by the private key used in the layer 1 locking transaction. All other state transitions will be signed by a private key of the identity submitting them.
 

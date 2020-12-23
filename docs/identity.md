@@ -82,6 +82,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
 ### Example id creation
+
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // IdentityCreateTransition.js
@@ -188,7 +189,6 @@ Each identity public key must comply with this JSON-Schema definition establishe
 
 Each public key in an identity's `publicKeys` array must be assigned a unique index number (`id`).
 
-
 ### Public Key `type`
 
 The `type` field indicates the algorithm used to derive the key.
@@ -205,6 +205,7 @@ The `data` field contains the compressed public key.
 #### Example data encode/decode
 
 **Encode**
+
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // AbstractStateTransitionIdentitySigned.js
@@ -216,6 +217,7 @@ pubKeyBase = new PublicKey({
 ```
 
 **Decode**
+
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
 // validatePublicKeysFactory.js
@@ -457,11 +459,13 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
 **Note:** The identity create and topup state transition signatures are unique in that they must be signed by the private key used in the layer 1 locking transaction. All other state transitions will be signed by a private key of the identity submitting them.
 
 The process to sign an identity create state transition consists of the following steps:
+
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature`
 2. Sign the encoded data with private key associated with a lock transaction public key
 3. Set the state transition `signature` to the value of the signature created in the previous step
 
 ### Code snipits related to signing
+
 ```javascript
 // From js-dpp
 // AbstractStateTransition.js
@@ -507,6 +511,7 @@ function signHash(hash, privateKey) {
 # Identity Validation
 
 The platform protocol performs several forms of validation related to identities: model validation, structure validation, and data validation.
+
  - Model validation - ensures object models are correct
  - State transition structure validation - only checks the content of the state transition
  - State transition data validation - takes the overall platform state into consideration
@@ -517,7 +522,7 @@ The platform protocol performs several forms of validation related to identities
 
 The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 Identity
 validateIdentityFactory
   ✓ should return valid result if a raw identity is valid
@@ -547,7 +552,7 @@ validateIdentityFactory
 
 The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 PublicKeys
 validatePublicKeysFactory
   ✓ should return invalid result if there are duplicate key ids
@@ -575,13 +580,13 @@ validatePublicKeysFactory
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. 
+Structure validation verifies that the content of state transition fields complies with the requirements for the field.
 
 ### Identity Create
 
 The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateIdentityCreateTransitionStructureFactory
   ✓ should return valid result
   protocolVersion
@@ -614,7 +619,7 @@ validateIdentityCreateTransitionStructureFactory
 
 The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateIdentityTopUpTransitionStructureFactory
   ✓ should return valid result
   protocolVersion
@@ -647,7 +652,6 @@ validateIdentityTopUpTransitionStructureFactory
 
 The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/assetLock/validateAssetLockStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-
 ```text
   validateAssetLockStructureFactory
     ✓ should return invalid result if proof is not valid
@@ -678,7 +682,6 @@ The asset lock fields must pass validation tests as defined in [js-dpp](https://
 
 The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17-dev/test/integration/identity/stateTransition/assetLock/proof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-
 ```text
   validateInstantAssetLockProofStructureFactory
     ✓ should skip signature verification if skipAssetLockProofSignatureVerification passed
@@ -698,7 +701,7 @@ The InstantSend asset lock proof fields must pass validation tests as defined in
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. 
+Data validation verifies that the data in the state transition is valid in the context of the current platform state.
 
 
 ### Identity Create

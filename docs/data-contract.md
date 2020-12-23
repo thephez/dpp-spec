@@ -31,6 +31,7 @@ All serialized data (including state transitions) is limited to a maximum size o
 Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined (including within document properties of type `object`).
 
 Include the following at the same level as the `properties` keyword to ensure proper validation:
+
 ```json
 "additionalProperties": false
 ```
@@ -205,7 +206,7 @@ There are a variety of constraints currently defined for performance and securit
 | Maximum number of properties | [100](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L17) |
 | Minimum property name length | [1](https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L14) |
 | Maximum property name length | [63]((https://github.com/dashevo/js-dpp/blob/v0.16.0/schema/dataContract/dataContractMeta.json#L14)) |
-| Property name first/last characters | ** Alphanumeric only (`A-Z`, `a-z`, `0-9`)**|
+| Property name first/last characters | \** Alphanumeric only (`A-Z`, `a-z`, `0-9`)**|
 | Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hypen (`-`) <br>Underscore (`_`) |
 
 #### Required Properties (Optional)
@@ -240,9 +241,10 @@ The following example (excerpt from the DPNS contract's `domain` document) demon
 Document indices may be defined if indexing on document fields is required.
 
 The `indices` array consists of:
+
  - One or more objects that each contain:
-  - A `properties` array composed of a `<field name: sort order>` object for each document field that is part of the index (sort order: `asc` or `desc`)
-  - An (optional) `unique` element that determines if duplicate values are allowed for the document
+   - A `properties` array composed of a `<field name: sort order>` object for each document field that is part of the index (sort order: `asc` or `desc`)
+   - An (optional) `unique` element that determines if duplicate values are allowed for the document
 
 **Note:** When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
 
@@ -291,6 +293,7 @@ The following example (excerpt from the DPNS contract's `preorder` document) cre
 ```
 
 ### Full Document Syntax
+
 This example syntax shows the structure of a documents object that defines two documents, an index, and a required field.
 
 ```json
@@ -464,6 +467,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 Data contract state transitions must be signed by a private key associated with the contract owner's identity.
 
 The process to sign a data contract state transition consists of the following steps:
+
 1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the `ownerId`
 3. Set the state transition `signature` to the value of the signature created in the previous step
@@ -472,6 +476,7 @@ The process to sign a data contract state transition consists of the following s
 # Data Contract Validation
 
 The platform protocol performs several forms of validation related to data contracts: model validation, structure validation, and data validation.
+
  - Model validation - ensures object models are correct
  - State transition structure validation - only checks the content of the state transition
  - State transition data validation - takes the overall platform state into consideration
@@ -482,7 +487,7 @@ The platform protocol performs several forms of validation related to data contr
 
 The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/dataContract/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
-```
+```text
 validateDataContractFactory
   ✓ should return invalid result with circular $ref pointer
   ✓ should return invalid result if indexed property missing maxLength constraint
@@ -518,7 +523,8 @@ validateDataContractFactory
 ```
 
 ### Document Validation
-```
+
+```text
   documents
     ✓ should be present
     ✓ should be an object
@@ -568,7 +574,8 @@ validateDataContractFactory
 ```
 
 ### Index Validation
-```
+
+```text
   indices
     ✓ should be an array
     ✓ should have at least one item
@@ -601,7 +608,7 @@ validateDataContractFactory
 
 Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDataContractCreateTransitionStructureFactory
   ✓ should return valid result
   protocolVersion
@@ -633,13 +640,13 @@ validateDataContractCreateTransitionStructureFactory
     ✓ should not be < 0
 ```
 
-* See the [state transition document](state-transition.md) for signature validation details.
+- See the [state transition document](state-transition.md) for signature validation details.
 
 ## State Transition Data
 
 Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDataContractCreateTransitionDataFactory
   ✓ should return invalid result if Data Contract with specified contractId is already exist
 ```
@@ -648,7 +655,7 @@ validateDataContractCreateTransitionDataFactory
 
 Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.16.0/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
-```
+```text
 validateDataContractMaxDepthFactory
   ✓ should throw error if depth > MAX_DEPTH
   ✓ should return valid result if depth = MAX_DEPTH

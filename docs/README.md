@@ -15,10 +15,12 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
 ## Outline
 
 [Identities](identity.md)
+
  - [Create](identity.md#identity-creation)
  - [TopUp](identity.md#identity-topup)
 
 [Data Contracts](data-contract.md)
+
  - [Documents](data-contract.md#data-contract-documents)
    - [Properties](data-contract.md#document-properties)
    - [Indices](data-contract.md#document-indices)
@@ -27,6 +29,7 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
 [Document](document.md)
 
 [State Transitions](state-transition.md)
+
  - [Overview / general structure](state-transition.md)
  - Types
    - [Identity Create ST](identity.md#identity-creation)

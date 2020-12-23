@@ -15,16 +15,19 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
 ## Outline
 
 [Identities](docs/identity.md)
+
  - [Create](docs/identity.md#identity-creation)
  - [TopUp](docs/identity.md#identity-topup)
 
 [Data Contracts](docs/data-contract.md)
+
  - [Documents](docs/document.md#document-overview)
    - [Properties](docs/document.md#document-properties)
    - [Indices](docs/document.md#document-indices)
  - [Definitions](docs/document.md#definition-overview)
 
 [State Transitions](docs/state-transition.md)
+
  - [Overview / general structure](docs/state-transition.md)
  - Types
    - [Identity Create ST](docs/identity.md#identity-creation)
@@ -40,11 +43,13 @@ The current reference implementation is the (JavaScript) [js-dpp](https://github
 [Data Triggers](docs/data-trigger.md)
 
 Serialization
+
  - Base 64
  - Canonical CBOR
 
 Hashing
 
 Validation
+
  - JSON-Schema
  - Logic

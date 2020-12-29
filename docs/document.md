@@ -365,7 +365,7 @@ Each document object must comply with this JSON-Schema definition established in
 }
 ```
 
-### Example Document Object
+## Example Document Object
 
 ```json
 {
@@ -384,6 +384,7 @@ Each document object must comply with this JSON-Schema definition established in
 # Document Validation
 
 The platform protocol performs several forms of validation related to documents: model validation, state transition structure validation, and state transition data validation.
+
  - Model validation - ensures object models are correct
  - State transition structure validation - only checks the content of the state transition
  - State transition data validation - takes the overall platform state into consideration
@@ -394,7 +395,7 @@ The platform protocol performs several forms of validation related to documents:
 
 The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/document/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDocumentFactory
   ✓ should return invalid result if a document contractId is not equal to Data Contract ID
   ✓ return invalid result if a byte array exceeds `maxItems`
@@ -435,7 +436,7 @@ validateDocumentFactory
 
 State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/integration/document/stateTransition/validation/structure/validateDocumentsBatchTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDocumentsBatchTransitionStructureFactory
   ✓ should return valid result
   protocolVersion
@@ -505,7 +506,7 @@ validateDocumentsBatchTransitionStructureFactory
 
 Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDocumentsBatchTransitionDataFactory
   ✓ should return invalid result if data contract was not found
   ✓ should return invalid result if document transition with action "create" is already present
@@ -529,7 +530,7 @@ validateDocumentsBatchTransitionDataFactory
 
 The state transition data must also pass index validation tests as defined in [js-dpp here](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validateDocumentsUniquenessByIndicesFactory.spec.js) and [here](https://github.com/dashevo/js-dpp/blob/v0.16.0/test/unit/document/stateTransition/data/validatePartialCompoundIndices.spec.js). The test output below shows the necessary criteria:
 
-```
+```text
 validateDocumentsUniquenessByIndices
   ✓ should return valid result if Documents have no unique indices
   ✓ should return valid result if Document has unique indices and there are no duplicates
@@ -538,7 +539,7 @@ validateDocumentsUniquenessByIndices
   ✓ should return valid result if Document being created and has createdAt and updatedAt indices
 ```
 
-```
+```text
 validatePartialCompoundIndices
   ✓ should return invalid result if compound index contains not all fields
   ✓ should return valid result if compound index contains no fields

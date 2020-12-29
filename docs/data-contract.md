@@ -205,7 +205,7 @@ There are a variety of constraints currently defined for performance and securit
 | Minimum number of properties | [1](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/dataContract/dataContractMeta.json#L16) |
 | Maximum number of properties | [100](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/dataContract/dataContractMeta.json#L17) |
 | Minimum property name length | [1](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/dataContract/dataContractMeta.json#L14) |
-| Maximum property name length | [63]((https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/dataContract/dataContractMeta.json#L14)) |
+| Maximum property name length | [63](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/dataContract/dataContractMeta.json#L14) |
 | Property name first/last characters | \** Alphanumeric only (`A-Z`, `a-z`, `0-9`)**|
 | Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hypen (`-`) <br>Underscore (`_`) |
 

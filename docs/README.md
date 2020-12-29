@@ -1,4 +1,4 @@
-# Dash Platform Protocol Specification v0.16.x (Draft)
+# Dash Platform Protocol Specification v0.17.x (Draft)
 
 ## Introduction
 

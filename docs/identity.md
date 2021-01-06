@@ -290,17 +290,23 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 **Example State Transition**
 
 ```json
-
 {
   "protocolVersion": 0,
   "type": 2,
-  "signature": "ILoF6DKZPpDMJTlBjwiY05v7/3LEcJcLlwgmg6wvltT7St15F4oesX8cd+yNtosIQ6rgCx7o3m+OeJM49HWk880=",
-  "lockedOutPoint": "kSALb/mPrS7H83szmJ5EJYIKUPI1QFXN9Zv60lCSvIMAAAAA",
+  "signature": "IO15T6RCXSH2qHEYYBinXy8n+/E8AhEqNRFngPrxoZ+WT9Y4dF89uuUgzfTsK+L0FiTg6JQynk32IhII4XdBfLg=",
+  "assetLock": {
+    "transaction": "03000000011dc6578c8c60d1fa1e5ed3d9581a8028b2e9b08b1b8cd3d9535c56b69c77c743010000006a473044022063532c0f1cddc1dfcde853350204a44e747c9c575b2aa5d301fab633e69b28420220617c60520a0125d219c50000b24402adf01f9cfe81ea8996f5996cf2efb86d710121027369081c5d755fe493f1019c48911d2b0e2571d4c9a175e0a2620ccc7ad790a4ffffffff021027000000000000166a1445e54b74b591b28cde362b693186faf7ad2909ca905ce60e000000001976a914b07d21cb4aab2d4cd5fd2f636490bb4182fd2f6188ac00000000",
+    "outputIndex": 0,
+    "proof": {
+      "type": 0,
+      "instantLock": "AR3GV4yMYNH6Hl7T2VgagCiy6bCLG4zT2VNcVracd8dDAQAAAJirJim2+gA55+jG99faJMObo/kQtVkY+G6LBk6eNPOiDbqp+g4Tf735y3gm/ykFmZKxM5Q+kZn3pe4bPQCu8V4E6bKrhDUE80ZMSavYcGHXF86oSeeoqgejvs3wQlrntbxg3j5x8rZvF0CYJAzXgrF6N4IcGotA7gxE/HYOgJEU"
+    }
+  },
   "publicKeys": [
     {
       "id": 0,
       "type": 0,
-      "data": "A3imAPz+S1aP+keuUYpRvq9JD3Vn4+0nN5UydeV5JiIP"
+      data: "AslQmm/K+kjV5GcUudY4GsAvcTd+v/4dE2G740AFdPeN"
     }
   ]
 }
@@ -368,9 +374,16 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "protocolVersion": 0,
   "type": 3,
-  "signature": "IGsZ6qDhSvrACTo+PpAvmWrlnnSzmKjNJVPBjXAMweFBVtPDPdDHBNomsEzzPo9BHPMPCTK9882omofGFot41iY=",
-  "identityId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
-  "lockedOutPoint": "KSP1RVZdVG1R5OkaK8LTjccTC6eaWTWiAt+6YMp5fzwAAAAA"
+  "signature": "IGXSpVuY8hqrfbISrBfFPBtYd3x4O+Jzf6263WMtQluuRsAtLpx3EQKYbsKl6wwRdUuKrtGQkd7KRY7XsuSI9iU=",
+  "identityId": "EseVWo8sXWKjvp8VidwT2xBy5q9RHqMbra9iyHJB4uxp",
+  "assetLock": {
+    "transaction": "030000000198ab2629b6fa0039e7e8c6f7d7da24c39ba3f910b55918f86e8b064e9e34f3a2010000006a47304402203df77552c1e1680c1b91acb91676ad565d80f5a36633ba8139889af6472e35d9022014fdb848a167a31e39f2d12c5c724b2d9ff13dd3d6417ac2a1635a16b51f0e47012102e3aaadeb2800220bad531558888a47d5a03d0bdda21a30823594591d3f177429ffffffff02e803000000000000166a142c9dc681ab0512cd2395daa894d0fd9a8cc7b2e9c054e60e000000001976a914d6c0bedc22dacb338b869bbe77e677cf924702e288ac00000000",
+    "outputIndex": 0,
+    "proof": {
+      "type": 0,
+      "instantLock": "AZirJim2+gA55+jG99faJMObo/kQtVkY+G6LBk6eNPOiAQAAAG0TCt0zY6GexLs/NsjCXcyq4kqLgxnr0NWIDgf+FwFqFVNzc06l8lrPywHddUgWYSyUCPUQdsmTiiJgBPLzvpcfWm75wOcYw+4vJUhRxSLBBXfz1PkBeMPySzF9Gnf2Y+83ZsT8AY8UWK4FB/xkEHLkKHQOKtqYtMaCWcYV6j1h"
+    }
+  }
 }
 ```
 

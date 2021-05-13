@@ -97,7 +97,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
 
-**Note:** As of Dash Platform Protocol [version 0.16](https://github.com/dashevo/js-dpp/pull/234), any public key(s) assigned to an identity must be unique (not already used by any identity). Prior versions checked (at most) the first key only.
+**Note:** Any public key(s) assigned to an identity must be unique (not already used by any identity).
 
 Each item in the `publicKeys` array consists an object containing:
 
@@ -435,7 +435,7 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
 }
 ```
 
-#### ChainLock Asset Lock Proof
+### ChainLock Asset Lock Proof
 
 The ChainLock asset lock proof is used for transactions that have note received an InstantSend lock, but have been included in a block that has received a ChainLock.
 

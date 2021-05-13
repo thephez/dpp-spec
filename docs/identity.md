@@ -107,8 +107,6 @@ Each item in the `publicKeys` array consists an object containing:
 | type | integer | Type of key (default: 0 - ECDSA) |
 | data | array of bytes | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
 
-**Note:** the `isEnabled` field was removed in [version 0.16](https://github.com/dashevo/js-dpp/pull/236).
-
 Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/schema/identity/publicKey.json):
 
 ```json

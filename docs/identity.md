@@ -429,16 +429,16 @@ Each asset lock object must comply with this JSON-Schema definition established 
 }
 ```
 
-### Asset Lock Proof
-
-Currently only InstantSend locks are accepted as proofs.
+### InstantSend Asset Lock Proof
 
 | Field | Type | Description|
 | - | - | - |
 | type | integer | The asset lock proof type (`0` for InstantSend locks) |
 | instantLock | array of bytes | The InstantSend lock ([`islock`?](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
+| transaction | array of bytes | The asset lock transaction |
+| outputIndex | integer | Index of the transaction output to be used |
 
-Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://raw.githubusercontent.com/dashevo/js-dpp/v0.17.0/schema/identity/stateTransition/assetLock/proof/instantAssetLockProof.json):
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
 
 ```json
 {
@@ -453,12 +453,63 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
       "byteArray": true,
       "minItems": 165,
       "maxItems": 100000
+    },
+    "transaction": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 1,
+      "maxItems": 100000
+    },
+    "outputIndex": {
+      "type": "integer",
+      "minimum": 0
     }
   },
   "additionalProperties": false,
   "required": [
     "type",
-    "instantLock"
+    "instantLock",
+    "transaction",
+    "outputIndex"
+  ]
+}
+```
+
+#### ChainLock Asset Lock Proof
+
+| Field | Type | Description|
+| - | - | - |
+| type | array of bytes | The type of asset lock proof |
+| coreChainLockedHeight | integer | Index of the transaction output to be used |
+| outPoint | object |  |
+
+Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "properties": {
+    "type": {
+      "type": "integer",
+      "const": 1
+    },
+    "coreChainLockedHeight":  {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 4294967295
+    },
+    "outPoint": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 36,
+      "maxItems": 36
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "coreChainLockedHeight",
+    "outPoint"
   ]
 }
 ```

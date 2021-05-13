@@ -385,56 +385,18 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ## Asset Lock
 
-The [identity create](#identity-creation) and [identity topup](#identity-topup) state transitions both include an asset lock object. This object references includes the layer 1 lock transaction and includes proof that the transaction is locked.
+The [identity create](#identity-creation) and [identity topup](#identity-topup) state transitions both include an asset lock proof object. This object references the layer 1 lock transaction and includes proof that the transaction is locked.
 
-| Field | Type | Description|
-| - | - | - |
-| transaction | array of bytes | The asset lock transaction |
-| outputIndex | integer | Index of the transaction output to be used |
-| proof | object | Proof that the transaction is locked via InstantSend or ChainLocks |
-
-Each asset lock object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/schema/identity/stateTransition/assetLock/assetLock.json):
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema",
-  "properties": {
-    "transaction": {
-      "type": "array",
-      "byteArray": true,
-      "minItems": 1,
-      "maxItems": 100000
-    },
-    "outputIndex": {
-      "type": "integer",
-      "minimum": 0
-    },
-    "proof": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "integer",
-          "enum": [0]
-        }
-      },
-      "required": ["type"]
-    }
-  },
-  "additionalProperties": false,
-  "required": [
-    "transaction",
-    "outputIndex",
-    "proof"
-  ]
-}
-```
+Currently there are two types of asset lock proofs: InstantSend and ChainLock. Transactions almost always receive InstantSend locks, so the InstantSend asset lock proof is the predominate type.
 
 ### InstantSend Asset Lock Proof
+
+The InstantSend asset lock proof is used for transactions that have received an InstantSend lock.
 
 | Field | Type | Description|
 | - | - | - |
 | type | integer | The asset lock proof type (`0` for InstantSend locks) |
-| instantLock | array of bytes | The InstantSend lock ([`islock`?](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
+| instantLock | array of bytes | The InstantSend lock ([`islock`](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
@@ -477,11 +439,13 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
 
 #### ChainLock Asset Lock Proof
 
+The ChainLock asset lock proof is used for transactions that have note received an InstantSend lock, but have been included in a block that has received a ChainLock.
+
 | Field | Type | Description|
 | - | - | - |
-| type | array of bytes | The type of asset lock proof |
-| coreChainLockedHeight | integer | Index of the transaction output to be used |
-| outPoint | object |  |
+| type | array of bytes | The type of asset lock proof (`1` for ChainLocks) |
+| coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
+| outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
 
 Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 
@@ -710,53 +674,63 @@ validateIdentityTopUpTransitionStructureFactory
 
 ## Asset Lock Structure
 
-The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/identity/stateTransition/assetLock/validateAssetLockStructureFactory.spec.js). The test output below shows the necessary criteria:
+The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.19.1/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
+
+### InstantSend Asset Lock Proof Structure
+
+The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-  validateAssetLockStructureFactory
-    ✓ should return invalid result if proof is not valid
-    ✓ should return valid result with public key hash
-    transaction
-      ✓ should be present
-      ✓ should be a byte array
-      ✓ should be not shorter than 1 byte
-      ✓ should be not longer than 100 Kb
-      ✓ should be valid
-    outputIndex
-      ✓ should be present
-      ✓ should be an integer
-      ✓ should be not less than 0
-      ✓ should point to specific output in transaction
-      ✓ should point to output with OR_RETURN
-      ✓ should point to output with public key hash
-    proof
-      ✓ should be present
-      ✓ should be an object
-      ✓ should return invalid result if asset lock transaction outPoint exists
-      type
-        ✓ should be present
-        ✓ should be equal to 0
+validateInstantAssetLockProofStructureFactory
+  ✓ should return valid result
+  type
+    ✓ should be present
+    ✓ should be equal to 0
+  instantLock
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should not be shorter than 160 bytes
+    ✓ should not be longer than 100 Kb
+    ✓ should be valid
+    ✓ should lock the same transaction
+    ✓ should have valid signature
+  transaction
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should not be shorter than 1 byte
+    ✓ should not be longer than 100 Kb
+    ✓ should should be valid
+  outputIndex
+    ✓ should be present
+    ✓ should be an integer
+    ✓ should not be less than 0
 ```
 
-## InstantSend Asset Lock Proof Structure
+### ChainLock Asset Lock Proof Structure
 
-The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17-dev/test/integration/identity/stateTransition/assetLock/proof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-  validateInstantAssetLockProofStructureFactory
-    ✓ should skip signature verification if skipAssetLockProofSignatureVerification passed
-    ✓ should return valid result
-    type
-      ✓ should be present
-      ✓ should be equal to 0
-    instantLock
-      ✓ should be present
-      ✓ should be a byte array
-      ✓ should be not shorter than 160 bytes
-      ✓ should be not longer than 100 Kb
-      ✓ should be valid
-      ✓ should lock the same transaction
-      ✓ should have valid signature
+validateChainAssetLockProofStructureFactory
+  ✓ should return valid result
+  type
+    ✓ should be present
+    ✓ should be equal to 1
+  coreChainLockedHeight
+    ✓ should be preset
+    ✓ should be an integer
+    ✓ should be a number
+    ✓ should be greater than 0
+    ✓ should be less than 4294967296
+    ✓ should be less or equal to consensus core height
+  outPoint
+    ✓ should be present
+    ✓ should be a byte array
+    ✓ should not be shorter than 36 bytes
+    ✓ should not be longer than 36 bytes
+    ✓ should point to existing transaction
+    ✓ should point to valid transaction
+    ✓ should point to transaction from block lower than core chain locked height
 ```
 
 ## State Transition Data

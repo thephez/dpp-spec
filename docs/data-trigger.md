@@ -16,10 +16,10 @@ As an example, DPP contains several data triggers for DPNS. The `domain` documen
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.17.0/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.19.1/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | ---- | ----| ---- | ---- |
-| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.17.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
-| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.17.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
+| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.19.1/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
+| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.19.1/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
 
 **DPNS Trigger Constraints**
 
@@ -44,7 +44,7 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/integration/document/stateTransition/validation/data/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/test/integration/document/stateTransition/validation/data/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 executeDataTriggersFactory
@@ -56,7 +56,7 @@ executeDataTriggersFactory
   ✓ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.17.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js#L375):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.19.1/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js#L375):
 
 ```text
 validateDocumentsBatchTransitionDataFactory
@@ -67,7 +67,7 @@ validateDocumentsBatchTransitionDataFactory
 
 ## DPNS Trigger Validation
 
-As of DPP v0.17, only DPNS and DashPay are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.17.0/lib/dataTrigger/). See here for some DPNS and DashPay [validation tests](https://github.com/dashevo/js-dpp/tree/v0.17.0/test/unit/dataTrigger/dpnsTriggers):
+As of DPP v0.19, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.19.1/lib/dataTrigger/). See here for some [validation tests](https://github.com/dashevo/js-dpp/tree/v0.19.1/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger
@@ -87,6 +87,11 @@ createDomainDataTrigger
   ✓ should fail with disallowed domain creation
   ✓ should fail with allowing subdomains for non top level domain
   ✓ should allow creating a second level domain by any identity
+
+createFeatureFlagDataTrigger
+  ✓ should return an error if heigh is lower than block height
+  ✓ should return an error if owner id is not equal to top level identity id
+  ✓ should pass
 
 getDataTriggers
   ✓ should return matching triggers

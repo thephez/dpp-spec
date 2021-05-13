@@ -240,7 +240,7 @@ Identities are created on the platform by submitting the identity information in
 | - | - | - |
 | protocolVersion | integer | The identity create protocol version (currently `0`) |
 | type | integer | State transition type (`2` for identity create) |
-| assetLock | object | [Asset lock object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
+| assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
@@ -260,7 +260,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "integer",
       "const": 2
     },
-    "assetLock": {
+    "assetLockProof": {
       "type": "object"
     },
     "publicKeys": {
@@ -280,7 +280,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "required": [
     "protocolVersion",
     "type",
-    "assetLock",
+    "assetLockProof",
     "publicKeys",
     "signature"
   ]
@@ -293,20 +293,18 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 {
   "protocolVersion": 0,
   "type": 2,
-  "signature": "IO15T6RCXSH2qHEYYBinXy8n+/E8AhEqNRFngPrxoZ+WT9Y4dF89uuUgzfTsK+L0FiTg6JQynk32IhII4XdBfLg=",
-  "assetLock": {
-    "transaction": "03000000011dc6578c8c60d1fa1e5ed3d9581a8028b2e9b08b1b8cd3d9535c56b69c77c743010000006a473044022063532c0f1cddc1dfcde853350204a44e747c9c575b2aa5d301fab633e69b28420220617c60520a0125d219c50000b24402adf01f9cfe81ea8996f5996cf2efb86d710121027369081c5d755fe493f1019c48911d2b0e2571d4c9a175e0a2620ccc7ad790a4ffffffff021027000000000000166a1445e54b74b591b28cde362b693186faf7ad2909ca905ce60e000000001976a914b07d21cb4aab2d4cd5fd2f636490bb4182fd2f6188ac00000000",
-    "outputIndex": 0,
-    "proof": {
-      "type": 0,
-      "instantLock": "AR3GV4yMYNH6Hl7T2VgagCiy6bCLG4zT2VNcVracd8dDAQAAAJirJim2+gA55+jG99faJMObo/kQtVkY+G6LBk6eNPOiDbqp+g4Tf735y3gm/ykFmZKxM5Q+kZn3pe4bPQCu8V4E6bKrhDUE80ZMSavYcGHXF86oSeeoqgejvs3wQlrntbxg3j5x8rZvF0CYJAzXgrF6N4IcGotA7gxE/HYOgJEU"
-    }
+  "signature": "Hzr8+TKH8dQ6jGpIEJkL4ZwAyEz1kXZvpMvJEREMrGNYaFcz1DeI4kdiEPAQlhHlxIEclpBV/UUqx/31t+q3f+g=",
+  "assetLockProof": {
+    "type": 0,
+    "instantLock": "AccIHRPGVv1zaEfUuv+zMrEgMrAHmcv/ga8RcrxMJ+iwAQAAACpJWiHcEKX2be4a4yuJk+1CgdCXwlm8NV5rnIddtK9mkvj/BgcP2xnj1tpbwbWIbtoKhD7/lIEgzCOLbUh6AgFoYnwdhuzbV6CBr6johaSUBBwDiWpcL/IunPOXt3coYE+VBtMxDi4zUJYt9/honbtk+0R9e2wWz6msdoRSsaSI",
+    "transaction": "0300000001c7081d13c656fd736847d4baffb332b12032b00799cbff81af1172bc4c27e8b0010000006a47304402202ee1794aef90a2bb4c3864ff907b8fcba1e35bdf8eb7cd0e13be35ff03ec76d9022007dedf1f82f971f0c8aef72c64fb4ef19e9e93e10e24ab9aa1d1a1afbf8071b10121034cd9086e5c478520e951de2b0c7921e509e3075ca7ec8ca50520cabc584b0decffffffff021027000000000000166a1415b79fb7696556717d80358a0eb91d1b87683f2018eecf2c020000001976a914ca4ca9236b42ee5704bae2c5127211cc1b077bf488ac00000000",
+    "outputIndex": 0
   },
   "publicKeys": [
     {
       "id": 0,
       "type": 0,
-      data: "AslQmm/K+kjV5GcUudY4GsAvcTd+v/4dE2G740AFdPeN"
+      "data": "Axm/d8nCzwgE4WpFSWVlGLj6mWggkTmva0U8yQJYn1XS"
     }
   ]
 }
@@ -320,7 +318,7 @@ Identity credit balances are increased by submitting the topup information in an
 | - | - | - |
 | protocolVersion | integer | The identity topup protocol version (currently `0`) |
 | type | integer | State transition type (`3` for identity topup) |
-| assetLock | object | [Asset lock object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
+| assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
@@ -340,7 +338,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "integer",
       "const": 3
     },
-    "assetLock": {
+    "assetLockProof": {
       "type": "object"
     },
     "identityId": {
@@ -361,7 +359,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "required": [
     "protocolVersion",
     "type",
-    "assetLock",
+    "assetLockProof",
     "identityId",
     "signature"
   ]
@@ -372,18 +370,16 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  "protocolVersion": 0,
-  "type": 3,
-  "signature": "IGXSpVuY8hqrfbISrBfFPBtYd3x4O+Jzf6263WMtQluuRsAtLpx3EQKYbsKl6wwRdUuKrtGQkd7KRY7XsuSI9iU=",
-  "identityId": "EseVWo8sXWKjvp8VidwT2xBy5q9RHqMbra9iyHJB4uxp",
-  "assetLock": {
-    "transaction": "030000000198ab2629b6fa0039e7e8c6f7d7da24c39ba3f910b55918f86e8b064e9e34f3a2010000006a47304402203df77552c1e1680c1b91acb91676ad565d80f5a36633ba8139889af6472e35d9022014fdb848a167a31e39f2d12c5c724b2d9ff13dd3d6417ac2a1635a16b51f0e47012102e3aaadeb2800220bad531558888a47d5a03d0bdda21a30823594591d3f177429ffffffff02e803000000000000166a142c9dc681ab0512cd2395daa894d0fd9a8cc7b2e9c054e60e000000001976a914d6c0bedc22dacb338b869bbe77e677cf924702e288ac00000000",
-    "outputIndex": 0,
-    "proof": {
+   "protocolVersion": 0,
+   "type": 3,
+   "signature": "H600QTquykuG5H6XeZPaAUfnMCIKcsLha/0hlTPm/WSofsx7TH26/Xxl65E4d2mQ2ntxBaaaomGaxX/8l9inJXo=",
+   "identityId": "Dnda8JuiiFAFWkaiCdfvEgfbazaccTpmV3EkfJiMHXar",
+   "assetLockProof": {
       "type": 0,
-      "instantLock": "AZirJim2+gA55+jG99faJMObo/kQtVkY+G6LBk6eNPOiAQAAAG0TCt0zY6GexLs/NsjCXcyq4kqLgxnr0NWIDgf+FwFqFVNzc06l8lrPywHddUgWYSyUCPUQdsmTiiJgBPLzvpcfWm75wOcYw+4vJUhRxSLBBXfz1PkBeMPySzF9Gnf2Y+83ZsT8AY8UWK4FB/xkEHLkKHQOKtqYtMaCWcYV6j1h"
-    }
-  }
+      "instantLock": "ASpJWiHcEKX2be4a4yuJk+1CgdCXwlm8NV5rnIddtK9mAQAAAJoriHitzrMlv/PjjTw10sP+F/PndylOV5igJzELzPu7E1+hOPXjpuMg8T4BCRD1pdAE/ysDJMAqeycSpGJNiaxyu4REBiHWBR8FDE2qkCo2EThpWTqIF9jqhH5oMyLNPaB60mWNRrfipXm7B/dBlOs4ugeAFr8RrzCPayD2bfob",
+      "transaction": "03000000012a495a21dc10a5f66dee1ae32b8993ed4281d097c259bc355e6b9c875db4af66010000006b483045022100c0f0efeb48b5cfc33031062d4111b70056a9fb5b162b27afe690a4b0582badad02205688e74e98d51210f93f48b75862934d35a797f00b46f6329b6ce7dca4e1151f012103d90d4da6b8310e7c7a4be9fa1ff75d530def3f57dc60d5995a472b0bfeccbd0bffffffff02e803000000000000166a140ecb1591376a48e36049484d2063e4202a17fa6348e6cf2c020000001976a914e3ff5db1da7e6966c54aa7d82d98a4fc5fce428888ac00000000",
+      "outputIndex": 0
+   }
 }
 ```
 

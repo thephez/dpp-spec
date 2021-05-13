@@ -88,6 +88,11 @@ createDomainDataTrigger
   ✓ should fail with allowing subdomains for non top level domain
   ✓ should allow creating a second level domain by any identity
 
+createFeatureFlagDataTrigger
+  ✓ should return an error if heigh is lower than block height
+  ✓ should return an error if owner id is not equal to top level identity id
+  ✓ should pass
+
 getDataTriggers
   ✓ should return matching triggers
   ✓ should return empty trigger array for any other type except `domain`

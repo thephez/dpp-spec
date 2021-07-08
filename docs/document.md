@@ -15,7 +15,8 @@ Each document batch state transition must comply with this JSON-Schema definitio
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "protocolVersion": {
       "type": "integer",
@@ -80,7 +81,7 @@ Each document transition must comply with the document transition [base schema](
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "$id": {
@@ -155,7 +156,7 @@ Each document create transition must comply with this JSON-Schema definition est
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "$entropy": {
@@ -217,7 +218,7 @@ Each document replace transition must comply with this JSON-Schema definition es
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "$revision": {
@@ -305,7 +306,7 @@ Each document object must comply with this JSON-Schema definition established in
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "$protocolVersion": {

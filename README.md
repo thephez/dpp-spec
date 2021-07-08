@@ -2,15 +2,28 @@
 
 ## Introduction
 
-The Dash Platform Protocol (DPP) specification defines a protocol for the data objects (e.g.  data contracts, documents, state transitions) that can be stored on [Dash's layer 2 platform](https://dashplatform.readme.io/docs/introduction-what-is-dash-platform). All data stored on Dash platform is governed by DPP to ensure data consistency and integrity is maintained.
+The Dash Platform Protocol (DPP) specification defines a protocol for the data
+objects (e.g.  data contracts, documents, state transitions) that can be stored
+on [Dash's layer 2
+platform](https://dashplatform.readme.io/docs/introduction-what-is-dash-platform).
+All data stored on Dash platform is governed by DPP to ensure data consistency
+and integrity is maintained.
 
-Dash platform data objects consist of JSON and are validated using the JSON-Schema specification via pre-defined JSON-Schemas and meta-schemas described in this specification. The meta-schemas allow for creation of DPP-compliant schemas which define fields for third-party Dash Platform applications.
+Dash platform data objects consist of JSON and are validated using the
+JSON-Schema specification via pre-defined JSON-Schemas and meta-schemas
+described in this specification. The meta-schemas allow for creation of
+DPP-compliant schemas which define fields for third-party Dash Platform
+applications.
 
-In addition to ensuring data complies with predefined JSON Schemas, DPP also defines rules for hashing and serialization of these objects.
+In addition to ensuring data complies with predefined JSON Schemas, DPP also
+defines rules for hashing and serialization of these objects.
 
 ## Reference Implementation
 
-The current reference implementation is the (JavaScript) [js-dpp](https://github.com/dashevo/js-dpp) library. The schemas and meta-schemas referred to in this specification can be found here in the reference implementation: https://github.com/dashevo/js-dpp/tree/master/schema.
+The current reference implementation is the (JavaScript)
+[js-dpp](https://github.com/dashevo/js-dpp) library. The schemas and
+meta-schemas referred to in this specification can be found here in the
+reference implementation: https://github.com/dashevo/js-dpp/tree/master/schema.
 
 ## Outline
 

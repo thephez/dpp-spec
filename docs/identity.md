@@ -16,7 +16,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "protocolVersion": {
       "type": "integer",
@@ -111,7 +112,7 @@ Each identity public key must comply with this JSON-Schema definition establishe
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
     "id": {
@@ -129,12 +130,7 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381",
       "$comment": "It can't be changed after adding a key"
     },
-    "data": {
-      "type": "array",
-      "byteArray": true,
-      "description": "Raw public key",
-      "$commit": "It must be a valid key of the specified type and unique for the identity. It can’t be changed after adding a key"
-    }
+    "data": true
   },
   "allOf": [
     {
@@ -148,9 +144,12 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "then": {
         "properties": {
           "data": {
+            "type": "array",
             "byteArray": true,
             "minItems": 33,
-            "maxItems": 33
+            "maxItems": 33,
+            "description": "Raw ECDSA public key",
+            "$comment": "It must be a valid key of the specified type and unique for the identity. It can’t be changed after adding a key"
           }
         }
       }
@@ -166,9 +165,12 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "then": {
         "properties": {
           "data": {
+            "type": "array",
             "byteArray": true,
             "minItems": 48,
-            "maxItems": 48
+            "maxItems": 48,
+            "description": "Raw BLS public key",
+            "$comment": "It must be a valid key of the specified type and unique for the identity. It can’t be changed after adding a key"
           }
         }
       }
@@ -246,7 +248,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "protocolVersion": {
       "type": "integer",
@@ -324,7 +327,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "protocolVersion": {
       "type": "integer",
@@ -402,7 +406,8 @@ Asset locks using an InstantSend lock as proof must comply with this JSON-Schema
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "type": {
       "type": "integer",
@@ -449,7 +454,8 @@ Asset locks using a ChainLock as proof must comply with this JSON-Schema definit
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "type": {
       "type": "integer",

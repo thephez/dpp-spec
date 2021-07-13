@@ -17,7 +17,7 @@ The following sections provide details that developers need to construct valid c
 | `uniqueItems: true` | `maxItems` must be defined (maximum: 100000) |
 | `pattern: <something>` | `maxLength` must be defined (maximum: 50000) |
 | `format: <something>` | `maxLength` must be defined (maximum: 50000) |
-| `$ref: <something>` | `$ref` can only reference `definitions` - <br> remote references not supported |
+| `$ref: <something>` | `$ref` can only reference `$defs` - <br> remote references not supported |
 | `if`, `then`, `else`, `allOf`, `anyOf`, `oneOf`, `not` | Disabled for data contracts |
 
 ## Data Size
@@ -47,7 +47,7 @@ The data contract object consists of the following fields as defined in the Java
 | $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L348-L354)) |
 | ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L355-L361) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
-| definitions | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
+| $defs | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
 ## Data Contract Schema
 
@@ -58,7 +58,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
   "$schema": "http://json-schema.org/draft-07/schema",
   "$id": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "type": "object",
-  "definitions": {
+  "$defs": {
     // Truncated ...
   },
   "properties": {
@@ -95,8 +95,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "minProperties": 1,
       "maxProperties": 100
     },
-    "definitions": {
-      "$ref": "#/definitions/documentProperties"
+    "$defs": {
+      "$ref": "#/$defs/documentProperties"
     }
   },
   "required": [
@@ -170,7 +170,7 @@ The following example shows a minimal `documents` object defining a single docum
 
 The `properties` object defines each field that will be used by a document. Each field consists of an object that, at a minimum, must define its data `type` (`string`, `number`, `integer`, `boolean`, `array`, `object`). Fields may also apply a variety of optional JSON Schema constraints related to the format, range, length, etc. of the data.
 
-**Note:** The `object` type is required to have properties defined either directly or via the data contract's [definitions](#data-contract-definitions).  For example, the body property shown below is an object containing a single string property (objectProperty):
+**Note:** The `object` type is required to have properties defined either directly or via the data contract's [$defs](#data-contract-definitions).  For example, the body property shown below is an object containing a single string property (objectProperty):
 
 ```javascript
 const contractDocuments = {
@@ -342,11 +342,11 @@ Full document schema details may be found in this section of the [js-dpp data co
 
 ## Data Contract Definitions
 
-The optional `definitions` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#reuse). Items defined in `definitions` may then be referenced when defining `documents` through use of the `$ref` keyword.
+The optional `$defs` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#reuse). Items defined in `$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
 
-**Note:** Properties defined in the `definitions` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
+**Note:** Properties defined in the `$defs` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
 
-**Note:** Data contracts can only use the `$ref` keyword to reference their own `definitions`. Referencing external definitions is not supported by the platform protocol.
+**Note:** Data contracts can only use the `$ref` keyword to reference their own `$defs`. Referencing external definitions is not supported by the platform protocol.
 
 **Example**
 The following example shows a definition for a `message` object consisting of two properties:
@@ -354,7 +354,7 @@ The following example shows a definition for a `message` object consisting of tw
 ```json
 {
   // Preceding content truncated ...
-  "definitions": {
+  "$defs": {
     "message": {
       "type": "object",
       "properties": {

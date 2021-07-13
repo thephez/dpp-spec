@@ -55,7 +55,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
   "type": "object",
   "$defs": {
@@ -88,10 +88,10 @@ Details regarding the data contract object may be found in the [js-dpp data cont
     },
     "documents": {
       "type": "object",
-      // Truncated ...
       "propertyNames": {
-        "pattern": "^((?!-|_)[a-zA-Z0-9-_]{0,62}[a-zA-Z0-9])$"
+        "pattern": "^[a-zA-Z][a-zA-Z0-9-_]{1,62}[a-zA-Z0-9]$"
       },
+      // Truncated ...
       "minProperties": 1,
       "maxProperties": 100
     },
@@ -390,7 +390,8 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ```json
 {
-  "$schema": "http://json-schema.org/draft-07/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
   "properties": {
     "protocolVersion": {
       "type": "integer",

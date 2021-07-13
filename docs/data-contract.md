@@ -512,7 +512,7 @@ validateDataContractFactory
     ✓ should be a byte array
     ✓ should be no less than 32 bytes
     ✓ should be no longer than 32 bytes
-  definitions
+  $defs
     ✓ may not be present
     ✓ should be an object
     ✓ should not be empty
@@ -547,10 +547,9 @@ validateDataContractFactory
       ✓ should return invalid result if there are additional properties
       ✓ should have no more than 100 properties
       ✓ should have defined items for arrays
-      ✓ should not have additionalItems for arrays if items is subschema
-      ✓ should have additionalItems for arrays
-      ✓ should have additionalItems disabled for arrays
-      ✓ should not have additionalItems enabled for arrays
+      ✓ should have sub schema in items for arrays
+      ✓ should have items if prefixItems is used for arrays
+      ✓ should not have items disabled if prefixItems is used for arrays
       ✓ should return invalid result if "default" keyword is used
       ✓ should return invalid result if remote `$ref` is used
       ✓ should not have `propertyNames`
@@ -561,6 +560,7 @@ validateDataContractFactory
       ✓ should have `maxLength` no bigger than 50000 if `pattern` is used
       ✓ should have `maxLength` if `format` is used
       ✓ should have `maxLength` no bigger than 50000 if `format` is used
+      ✓ should not have incompatible patterns
       byteArray
         ✓ should be a boolean
         ✓ should equal to true
@@ -591,17 +591,29 @@ validateDataContractFactory
       ✓ should return invalid result if index property is object
       ✓ should return invalid result if index property is array of objects
       ✓ should return invalid result if index property is array of arrays
-      ✓ should return invalid result if index property is array with many item definitions
+      ✓ should return invalid result if index property is array with different item definitions
       ✓ should return invalid result if unique compound index contains both required and optional properties
       properties definition
         ✓ should be an array
         ✓ should have at least one property defined
-        ✓ should have no more than 10 property definitions
+        ✓ should have no more than 10 property $defs
         property definition
           ✓ should be an object
           ✓ should have at least one property
           ✓ should have no more than one property
           ✓ should have property values only "asc" or "desc"
+```
+
+### Dependency Validation
+
+```text
+  dependentSchemas
+    ✓ should be an object
+  dependentRequired
+    ✓ should be an object
+    ✓ should have an array value
+    ✓ should have an array of strings
+    ✓ should have an array of unique strings
 ```
 
 ## State Transition Structure

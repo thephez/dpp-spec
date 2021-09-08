@@ -16,10 +16,10 @@ As an example, DPP contains several data triggers for DPNS. The `domain` documen
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | ---- | ----| ---- | ---- |
-| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
-| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
+| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
+| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
 
 **DPNS Trigger Constraints**
 
@@ -44,59 +44,59 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/document/stateTransition/validation/data/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 executeDataTriggersFactory
-  ✓ should return an array of DataTriggerExecutionResult
-  ✓ should execute multiple data triggers if there is more than one data trigger for the same document and action in the contract
-  ✓ should return a result for each passed document with success or error
-  ✓ should not call any triggers if documents have no triggers associated with it's type or action
-  ✓ should call only one trigger if there's one document with a trigger and one without
-  ✓ should not call any triggers if there's no triggers in the contract
+  ✔ should return an array of DataTriggerExecutionResult
+  ✔ should execute multiple data triggers if there is more than one data trigger for the same document and action in the contract
+  ✔ should return a result for each passed document with success or error
+  ✔ should not call any triggers if documents have no triggers associated with it's type or action
+  ✔ should call only one trigger if there's one document with a trigger and one without
+  ✔ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/unit/document/stateTransition/data/validateDocumentsBatchTransitionDataFactory.spec.js#L375):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
 
 ```text
-validateDocumentsBatchTransitionDataFactory
+validateDocumentsBatchTransitionStateFactory
   -- Truncated
-  ✓ should return invalid result if data triggers execution failed
+  ✔ should return invalid result if data triggers execution failed
   -- Truncated
 ```
 
 ## DPNS Trigger Validation
 
-As of DPP v0.19, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.20.0/lib/dataTrigger/). See here for some [validation tests](https://github.com/dashevo/js-dpp/tree/v0.20.0/test/unit/dataTrigger/):
+As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.21.0/lib/dataTrigger/). See here for some [validation tests](https://github.com/dashevo/js-dpp/tree/v0.21.0/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger
-  ✓ should successfully execute if document is valid
-  ✓ should successfully execute if document has no `coreHeightCreatedAt` field
-  ✓ should fail with out of window error
+  ✔ should successfully execute if document is valid
+  ✔ should successfully execute if document has no `coreHeightCreatedAt` field
+  ✔ should fail with out of window error
 
 createDomainDataTrigger
-  ✓ should successfully execute if document is valid
-  ✓ should fail with invalid normalizedLabel
-  ✓ should fail with invalid parent domain
-  ✓ should fail with invalid dashUniqueIdentityId
-  ✓ should fail with invalid dashAliasIdentityId
-  ✓ should fail with preorder document was not found
-  ✓ should fail with invalid full domain name length
-  ✓ should fail with identity can't create top level domain
-  ✓ should fail with disallowed domain creation
-  ✓ should fail with allowing subdomains for non top level domain
-  ✓ should allow creating a second level domain by any identity
+  ✔ should successfully execute if document is valid
+  ✔ should fail with invalid normalizedLabel
+  ✔ should fail with invalid parent domain
+  ✔ should fail with invalid dashUniqueIdentityId
+  ✔ should fail with invalid dashAliasIdentityId
+  ✔ should fail with preorder document was not found
+  ✔ should fail with invalid full domain name length
+  ✔ should fail with identity can't create top level domain
+  ✔ should fail with disallowed domain creation
+  ✔ should fail with allowing subdomains for non top level domain
+  ✔ should allow creating a second level domain by any identity
 
 createFeatureFlagDataTrigger
-  ✓ should return an error if heigh is lower than block height
-  ✓ should return an error if owner id is not equal to top level identity id
-  ✓ should pass
+  ✔ should return an error if heigh is lower than block height
+  ✔ should return an error if owner id is not equal to top level identity id
+  ✔ should pass
 
 getDataTriggers
-  ✓ should return matching triggers
-  ✓ should return empty trigger array for any other type except `domain`
+  ✔ should return matching triggers
+  ✔ should return empty trigger array for any other type except `domain`
 
 rejectDataTrigger
-  ✓ should always fail
+  ✔ should always fail
 ```

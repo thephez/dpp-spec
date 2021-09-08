@@ -553,27 +553,31 @@ The identity model must pass validation tests as defined in [js-dpp](https://git
 ```text
 Identity
 validateIdentityFactory
-  ✓ should return valid result if a raw identity is valid
-  ✓ should return valid result if an identity model is valid
+  ✔ should return valid result if a raw identity is valid
+  ✔ should return valid result if an identity model is valid
+  protocolVersion
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   id
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be less than 32 bytes
-    ✓ should not be more than 32 bytes
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be less than 32 bytes
+    ✔ should not be more than 32 bytes
   balance
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should be greater or equal 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be greater or equal 0
   publicKeys
-    ✓ should be present
-    ✓ should be an array
-    ✓ should not be empty
-    ✓ should be unique
-    ✓ should throw an error if publicKeys have more than 100 keys
+    ✔ should be present
+    ✔ should be an array
+    ✔ should not be empty
+    ✔ should be unique
+    ✔ should throw an error if publicKeys have more than 100 keys
   revision
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should be greater or equal 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be greater or equal 0
 ```
 
 ## Public Key Model
@@ -583,27 +587,27 @@ The public key model must pass validation tests as defined in [js-dpp](https://g
 ```text
 PublicKeys
 validatePublicKeysFactory
-  ✓ should return invalid result if there are duplicate key ids
-  ✓ should return invalid result if there are duplicate keys
-  ✓ should return invalid result if key data is not a valid DER
-  ✓ should pass valid public keys
+  ✔ should return invalid result if there are duplicate key ids
+  ✔ should return invalid result if there are duplicate keys
+  ✔ should return invalid result if key data is not a valid DER
+  ✔ should pass valid public keys
   id
-    ✓ should be present
-    ✓ should be a number
-    ✓ should be an integer
-    ✓ should be greater or equal to one
+    ✔ should be present
+    ✔ should be a number
+    ✔ should be an integer
+    ✔ should be greater or equal to one
   type
-    ✓ should be present
-    ✓ should be a number
+    ✔ should be present
+    ✔ should be a number
   data
-    ✓ should be present
-    ✓ should be a byte array
+    ✔ should be present
+    ✔ should be a byte array
     ECDSA_SECP256K1
-      ✓ should be no less than 33 bytes
-      ✓ should be no longer than 33 bytes
+      ✔ should be no less than 33 bytes
+      ✔ should be no longer than 33 bytes
     BLS12_381
-      ✓ should be no less than 48 bytes
-      ✓ should be no longer than 48 bytes
+      ✔ should be no less than 48 bytes
+      ✔ should be no longer than 48 bytes
 ```
 
 ## State Transition Structure
@@ -615,32 +619,30 @@ Structure validation verifies that the content of state transition fields compli
 The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityCreateTransitionStructureFactory
-  ✓ should return valid result
+validateIdentityCreateTransitionBasicFactory
+  ✔ should return valid result
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   type
-    ✓ should be present
-    ✓ should be equal to 2
+    ✔ should be present
+    ✔ should be equal to 2
   assetLockProof
-    ✓ should be present
-    ✓ should be an object
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be an object
+    ✔ should be valid
   publicKeys
-    ✓ should be present
-    ✓ should not be empty
-    ✓ should not have more than 10 items
-    ✓ should be unique
-    ✓ should be valid
+    ✔ should be present
+    ✔ should not be empty
+    ✔ should not have more than 10 items
+    ✔ should be unique
+    ✔ should be valid
   signature
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be not shorter than 65 bytes
+    ✔ should be not longer than 65 bytes    
 ```
 
 ### Identity TopUp Structure
@@ -648,32 +650,29 @@ validateIdentityCreateTransitionStructureFactory
 The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityTopUpTransitionStructureFactory
-  ✓ should return valid result
+validateIdentityTopUpTransitionBasicFactory
+  ✔ should return valid result
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   type
-    ✓ should be present
-    ✓ should be equal to 3
+    ✔ should be present
+    ✔ should be equal to 3
   assetLockProof
-    ✓ should be present
-    ✓ should be an object
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be an object
+    ✔ should be valid
   identityId
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be no less than 32 bytes
-    ✓ should be no longer than 32 bytes
-    ✓ should exist
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be no less than 32 bytes
+    ✔ should be no longer than 32 bytes
   signature
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be not shorter than 65 bytes
+    ✔ should be not longer than 65 bytes
 ```
 
 ## Asset Lock Structure
@@ -686,28 +685,28 @@ The InstantSend asset lock proof fields must pass validation tests as defined in
 
 ```text
 validateInstantAssetLockProofStructureFactory
-  ✓ should return valid result
+  ✔ should return valid result
   type
-    ✓ should be present
-    ✓ should be equal to 0
+    ✔ should be present
+    ✔ should be equal to 0
   instantLock
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 160 bytes
-    ✓ should not be longer than 100 Kb
-    ✓ should be valid
-    ✓ should lock the same transaction
-    ✓ should have valid signature
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 160 bytes
+    ✔ should not be longer than 100 Kb
+    ✔ should be valid
+    ✔ should lock the same transaction
+    ✔ should have valid signature
   transaction
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 1 byte
-    ✓ should not be longer than 100 Kb
-    ✓ should should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 1 byte
+    ✔ should not be longer than 100 Kb
+    ✔ should should be valid
   outputIndex
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should not be less than 0
 ```
 
 ### ChainLock Asset Lock Proof Structure
@@ -716,25 +715,25 @@ The ChainLock asset lock proof fields must pass validation tests as defined in [
 
 ```text
 validateChainAssetLockProofStructureFactory
-  ✓ should return valid result
+  ✔ should return valid result
   type
-    ✓ should be present
-    ✓ should be equal to 1
+    ✔ should be present
+    ✔ should be equal to 1
   coreChainLockedHeight
-    ✓ should be preset
-    ✓ should be an integer
-    ✓ should be a number
-    ✓ should be greater than 0
-    ✓ should be less than 4294967296
-    ✓ should be less or equal to consensus core height
+    ✔ should be preset
+    ✔ should be an integer
+    ✔ should be a number
+    ✔ should be greater than 0
+    ✔ should be less than 4294967296
+    ✔ should be less or equal to consensus core height
   outPoint
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 36 bytes
-    ✓ should not be longer than 36 bytes
-    ✓ should point to existing transaction
-    ✓ should point to valid transaction
-    ✓ should point to transaction from block lower than core chain locked height
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 36 bytes
+    ✔ should not be longer than 36 bytes
+    ✔ should point to existing transaction
+    ✔ should point to valid transaction
+    ✔ should point to transaction from block lower than core chain locked height
 ```
 
 ## State Transition Data
@@ -746,10 +745,10 @@ Data validation verifies that the data in the state transition is valid in the c
 The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityCreateTransitionDataFactory
-  ✓ should return invalid result if identity already exists
-  ✓ should return invalid result if identity public key already exists
-  ✓ should return valid result if state transition is valid
+validateIdentityCreateTransitionStateFactory
+  ✔ should return invalid result if identity already exists
+  ✔ should return invalid result if identity public key already exists
+  ✔ should return valid result if state transition is valid
 ```
 
 ### Identity TopUp Data
@@ -757,8 +756,8 @@ validateIdentityCreateTransitionDataFactory
 The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityTopUpTransitionDataFactory
-  ✓ should return valid result
+validateIdentityTopUpTransitionStateFactory
+  ✔ should return valid result
 ```
 
 **Note:** Additional validation rules may be added in future versions.

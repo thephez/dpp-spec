@@ -267,7 +267,7 @@ The `indices` array consists of:
 
 #### Index Constraints
 
-**Note:** For performance and security reasons, Evonet places the following constraints on indices. These constraints are subject to change over time.
+**Note:** For performance and security reasons, indices have the following constraints. These constraints are subject to change over time.
 
 | Description | Value |
 | - | - |

@@ -19,7 +19,7 @@ All state transitions include the following fields:
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | The platform protocol version (currently `1`) |
 | type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 

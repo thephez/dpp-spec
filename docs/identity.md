@@ -236,7 +236,7 @@ Identities are created on the platform by submitting the identity information in
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The protocol version (currently `0`) |
+| protocolVersion | integer | The protocol version (currently `1`) |
 | type | integer | State transition type (`2` for identity create) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
@@ -313,7 +313,7 @@ Identity credit balances are increased by submitting the topup information in an
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The protocol version (currently `0`) |
+| protocolVersion | integer | The protocol version (currently `1`) |
 | type | integer | State transition type (`3` for identity topup) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |

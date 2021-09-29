@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -24,7 +24,7 @@ The following sections provide details that developers need to construct valid c
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
@@ -38,20 +38,20 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | Yes | The platform protocol version (currently `0`) |
+| protocolVersion | integer | Yes | The platform protocol version ([currently `2`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L348-L354)) |
-| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L355-L361) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L346-L352)) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L353-L359) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | $defs | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -64,9 +64,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
   "properties": {
     "protocolVersion": {
       "type": "integer",
-      "minimum": 0,
-      "maximum": 0,
-      "$comment": "Maximum is the latest Data Contract protocol version"
+      "$comment": "Maximum is the latest protocol version"
     },
     "$schema": {
       "type": "string",
@@ -132,7 +130,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ## Data Contract id
 
-The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/dataContract/generateDataContractId.js).
+The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/dataContract/generateDataContractId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -156,6 +154,7 @@ The following example shows a minimal `documents` object defining a single docum
 ```json
 {
   "note": {
+    "type": "object",
     "properties": {
       "message": {
         "type": "string"
@@ -175,6 +174,7 @@ The `properties` object defines each field that will be used by a document. Each
 ```javascript
 const contractDocuments = {
   message: {
+    "type": "object",
     properties: {
       body: {
         type: "object",
@@ -202,10 +202,10 @@ There are a variety of constraints currently defined for performance and securit
 
 | Description | Value |
 | - | - |
-| Minimum number of properties | [1](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L22) |
-| Maximum number of properties | [100](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L23) |
-| Minimum property name length | [3](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L9) |
-| Maximum property name length | [63](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L9) |
+| Minimum number of properties | [1](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L22) |
+| Maximum number of properties | [100](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L23) |
+| Minimum property name length | [3](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L9) |
+| Maximum property name length | [64](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L9) |
 | Property name first/last characters | \** First: (`A-Z`, `a-z`); Last: Alphanumeric (`A-Z`, `a-z`, `0-9`)**|
 | Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hypen (`-`) <br>Underscore (`_`) |
 
@@ -271,10 +271,10 @@ The `indices` array consists of:
 
 | Description | Value |
 | - | - |
-| Maximum number of indices | [10](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L402) |
-| Maximum number of unique indices | [3](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/errors/UniqueIndicesLimitReachedError.js#L21) |
-| Maximum number of properties in a single index | [10](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L392) |
-| Maximum length of indexed string property | [1024](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/dataContract/validateDataContractFactory.js#L23) |
+| Maximum number of indices | [10](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L400) |
+| Maximum number of unique indices | [3](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
+| Maximum number of properties in a single index | [10](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L390) |
+| Maximum length of indexed string property | [1024](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/dataContract/validation/validateDataContractFactory.js#L23) |
 
 **Example**
 The following example (excerpt from the DPNS contract's `preorder` document) creates an index on `saltedDomainHash` that also enforces uniqueness across all documents of that type:
@@ -299,6 +299,7 @@ This example syntax shows the structure of a documents object that defines two d
 ```json
 {
   "<document name a>": {
+    "type": "object",
     "properties": {
       "<field name b>": {
         "type": "<field data type>"
@@ -323,6 +324,7 @@ This example syntax shows the structure of a documents object that defines two d
     "additionalProperties": false
   },
   "<document name x>": {
+    "type": "object",
     "properties": {
       "<property name y>": {
         "type": "<property data type>"
@@ -338,11 +340,11 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/dataContractMeta.json#L362-L417).
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L360-L415).
 
 ## Data Contract Definitions
 
-The optional `$defs` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#reuse). Items defined in `$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
+The optional `$defs` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#defs). Items defined in `$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
 
 **Note:** Properties defined in the `$defs` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
 
@@ -379,14 +381,14 @@ Data contracts are created on the platform by submitting the [data contract obje
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | The platform protocol version ([currently `2`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
 | type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/dataContract/stateTransition/dataContractCreate.json):
+Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/stateTransition/dataContractCreate.json):
 
 ```json
 {
@@ -395,9 +397,7 @@ Each data contract state transition must comply with this JSON-Schema definition
   "properties": {
     "protocolVersion": {
       "type": "integer",
-      "minimum": 0,
-      "maximum": 0,
-      "$comment": "Maximum is the latest Data Contract Create Transition protocol version"
+      "$comment": "Maximum is the latest protocol version"
     },
     "type": {
       "type": "integer",
@@ -439,7 +439,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ```json
 {
-  "protocolVersion": 0,
+  "protocolVersion": 2,
   "type": 0,
   "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
   "signaturePublicKeyId": 0,
@@ -486,178 +486,177 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/dataContract/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
 ```text
 validateDataContractFactory
-  ✓ should return invalid result with circular $ref pointer
-  ✓ should return invalid result if indexed property missing maxLength constraint
-  ✓ should return invalid result if indexed property have to big maxLength
-  ✓ should return valid result if Data Contract is valid
+  ✔ should return invalid result with circular $ref pointer
+  ✔ should return invalid result if indexed property missing maxLength constraint
+  ✔ should return invalid result if indexed property have to big maxLength
+  ✔ should return valid result if Data Contract is valid
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   $schema
-    ✓ should be present
-    ✓ should be a string
-    ✓ should be a particular url
+    ✔ should be present
+    ✔ should be a string
+    ✔ should be a particular url
   ownerId
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be no less than 32 bytes
-    ✓ should be no longer than 32 bytes
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be no less than 32 bytes
+    ✔ should be no longer than 32 bytes
   $id
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be no less than 32 bytes
-    ✓ should be no longer than 32 bytes
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be no less than 32 bytes
+    ✔ should be no longer than 32 bytes
   $defs
-    ✓ may not be present
-    ✓ should be an object
-    ✓ should not be empty
-    ✓ should have no non-alphanumeric properties
-    ✓ should have no more than 100 properties
-    ✓ should have valid property names
-    ✓ should return an invalid result if a property has invalid format
+    ✔ may not be present
+    ✔ should be an object
+    ✔ should not be empty
+    ✔ should have no non-alphanumeric properties
+    ✔ should have no more than 100 properties
+    ✔ should have valid property names
+    ✔ should return an invalid result if a property has invalid format
 ```
 
 ### Document Validation
 
 ```text
   documents
-    ✓ should be present
-    ✓ should be an object
-    ✓ should not be empty
-    ✓ should have valid property names (document types)
-    ✓ should return an invalid result if a property (document type) has invalid format
-    ✓ should have no more than 100 properties
+    ✔ should be present
+    ✔ should be an object
+    ✔ should not be empty
+    ✔ should have valid property names (document types)
+    ✔ should return an invalid result if a property (document type) has invalid format
+    ✔ should have no more than 100 properties
     Document schema
-      ✓ should not be empty
-      ✓ should have type "object"
-      ✓ should have "properties"
-      ✓ should have nested "properties"
-      ✓ should have valid property names
-      ✓ should have valid nested property names
-      ✓ should return an invalid result if a property has invalid format
-      ✓ should return an invalid result if a nested property has invalid format
-      ✓ should have "additionalProperties" defined
-      ✓ should have "additionalProperties" defined to false
-      ✓ should have nested "additionalProperties" defined
-      ✓ should return invalid result if there are additional properties
-      ✓ should have no more than 100 properties
-      ✓ should have defined items for arrays
-      ✓ should have sub schema in items for arrays
-      ✓ should have items if prefixItems is used for arrays
-      ✓ should not have items disabled if prefixItems is used for arrays
-      ✓ should return invalid result if "default" keyword is used
-      ✓ should return invalid result if remote `$ref` is used
-      ✓ should not have `propertyNames`
-      ✓ should have `maxItems` if `uniqueItems` is used
-      ✓ should have `maxItems` no bigger than 100000 if `uniqueItems` is used
-      ✓ should return invalid result if document JSON Schema is not valid
-      ✓ should have `maxLength` if `pattern` is used
-      ✓ should have `maxLength` no bigger than 50000 if `pattern` is used
-      ✓ should have `maxLength` if `format` is used
-      ✓ should have `maxLength` no bigger than 50000 if `format` is used
-      ✓ should not have incompatible patterns
+      ✔ should not be empty
+      ✔ should have type "object"
+      ✔ should have "properties"
+      ✔ should have nested "properties"
+      ✔ should have valid property names
+      ✔ should have valid nested property names
+      ✔ should return an invalid result if a property has invalid format
+      ✔ should return an invalid result if a nested property has invalid format
+      ✔ should have "additionalProperties" defined
+      ✔ should have "additionalProperties" defined to false
+      ✔ should have nested "additionalProperties" defined
+      ✔ should return invalid result if there are additional properties
+      ✔ should have no more than 100 properties
+      ✔ should have defined items for arrays
+      ✔ should have sub schema in items for arrays
+      ✔ should have items if prefixItems is used for arrays
+      ✔ should not have items disabled if prefixItems is used for arrays
+      ✔ should return invalid result if "default" keyword is used
+      ✔ should return invalid result if remote `$ref` is used
+      ✔ should not have `propertyNames`
+      ✔ should have `maxItems` if `uniqueItems` is used
+      ✔ should have `maxItems` no bigger than 100000 if `uniqueItems` is used
+      ✔ should return invalid result if document JSON Schema is not valid
+      ✔ should have `maxLength` if `pattern` is used
+      ✔ should have `maxLength` no bigger than 50000 if `pattern` is used
+      ✔ should have `maxLength` if `format` is used
+      ✔ should have `maxLength` no bigger than 50000 if `format` is used
+      ✔ should not have incompatible patterns
       byteArray
-        ✓ should be a boolean
-        ✓ should equal to true
-        ✓ should be used with type `array`
-        ✓ should not be used with `items`
+        ✔ should be a boolean
+        ✔ should equal to true
+        ✔ should be used with type `array`
+        ✔ should not be used with `items`
       contentMediaType
         application/x.dash.dpp.identifier
-          ✓ should be used with byte array only
-          ✓ should be used with byte array not shorter than 32 bytes
-          ✓ should be used with byte array not longer than 32 bytes
+          ✔ should be used with byte array only
+          ✔ should be used with byte array not shorter than 32 bytes
+          ✔ should be used with byte array not longer than 32 bytes
 ```
 
 ### Index Validation
 
 ```text
   indices
-    ✓ should be an array
-    ✓ should have at least one item
-    ✓ should return invalid result if there are duplicated indices
+    ✔ should be an array
+    ✔ should have at least one item
+    ✔ should return invalid result if there are duplicated indices
     index
-      ✓ should be an object
-      ✓ should have properties definition
-      ✓ should have "unique" flag to be of a boolean type
-      ✓ should have no more than 10 indices
-      ✓ should have no more than 3 unique indices
-      ✓ should return invalid result if index is prebuilt
-      ✓ should return invalid result if indices has undefined property
-      ✓ should return invalid result if index property is object
-      ✓ should return invalid result if index property is array of objects
-      ✓ should return invalid result if index property is array of arrays
-      ✓ should return invalid result if index property is array with different item definitions
-      ✓ should return invalid result if unique compound index contains both required and optional properties
+      ✔ should be an object
+      ✔ should have properties definition
+      ✔ should have "unique" flag to be of a boolean type
+      ✔ should have no more than 10 indices
+      ✔ should have no more than 3 unique indices
+      ✔ should return invalid result if index is prebuilt
+      ✔ should return invalid result if indices has undefined property
+      ✔ should return invalid result if index property is object
+      ✔ should return invalid result if index property is array of objects
+      ✔ should return invalid result if index property is an array of different types
+      ✔ should return invalid result if index property contained prefixItems array of arrays
+      ✔ should return invalid result if index property contained prefixItems array of objects
+      ✔ should return invalid result if index property is array of arrays
+      ✔ should return invalid result if index property is array with different item definitions
+      ✔ should return invalid result if unique compound index contains both required and optional properties
       properties definition
-        ✓ should be an array
-        ✓ should have at least one property defined
-        ✓ should have no more than 10 property $defs
+        ✔ should be an array
+        ✔ should have at least one property defined
+        ✔ should have no more than 10 property $defs
         property definition
-          ✓ should be an object
-          ✓ should have at least one property
-          ✓ should have no more than one property
-          ✓ should have property values only "asc" or "desc"
+          ✔ should be an object
+          ✔ should have at least one property
+          ✔ should have no more than one property
+          ✔ should have property values only "asc" or "desc"
 ```
 
 ### Dependency Validation
 
 ```text
   dependentSchemas
-    ✓ should be an object
+    ✔ should be an object
   dependentRequired
-    ✓ should be an object
-    ✓ should have an array value
-    ✓ should have an array of strings
-    ✓ should have an array of unique strings
+    ✔ should be an object
+    ✔ should have an array value
+    ✔ should have an array of strings
+    ✔ should have an array of unique strings
 ```
 
 ## State Transition Structure
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/dataContract/stateTransition/validation/validateDataContractCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDataContractCreateTransitionStructureFactory
-  ✓ should return valid result
+validateDataContractCreateTransitionBasicFactory
+  ✔ should return valid result
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   type
-    ✓ should be present
-    ✓ should be equal to 0
+    ✔ should be present
+    ✔ should be equal to 0
   dataContract
-    ✓ should be present
-    ✓ should be valid
-    ✓ should return invalid result on invalid Data Contract id
-    ✓ should return invalid result if Data Contract Identity is invalid
+    ✔ should be present
+    ✔ should be valid
+    ✔ should return invalid result on invalid Data Contract id
   entropy
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be no less than 32 bytes
-    ✓ should be no longer than 32 bytes
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be no less than 32 bytes
+    ✔ should be no longer than 32 bytes
   signature
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be not less than 65 bytes
-    ✓ should be not longer than 65 bytes
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be not less than 65 bytes
+    ✔ should be not longer than 65 bytes
   signaturePublicKeyId
-    ✓ should be an integer
-    ✓ should not be < 0
+    ✔ should be an integer
+    ✔ should not be < 0
 ```
 
 - See the [state transition document](state-transition.md) for signature validation details.
 
 ## State Transition Data
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/unit/dataContract/stateTransition/validation/validateDataContractCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDataContractCreateTransitionDataFactory
@@ -666,14 +665,14 @@ validateDataContractCreateTransitionDataFactory
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/unit/dataContract/stateTransition/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/errors/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
 ```text
 validateDataContractMaxDepthFactory
-  ✓ should throw error if depth > MAX_DEPTH
-  ✓ should return valid result if depth = MAX_DEPTH
-  ✓ should throw error if contract contains array with depth > MAX_DEPTH
-  ✓ should return error if refParser throws an error
+  ✔ should throw error if depth > MAX_DEPTH
+  ✔ should return valid result if depth = MAX_DEPTH
+  ✔ should throw error if contract contains array with depth > MAX_DEPTH
+  ✔ should return error if refParser throws an error
 ```
 
 **Note:** Additional validation rules will be added in future versions.

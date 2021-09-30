@@ -42,7 +42,7 @@ The data contract object consists of the following fields as defined in the Java
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | Yes | The platform protocol version ([currently `2`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
 | $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L346-L352)) |
 | ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/dataContract/dataContractMeta.json#L353-L359) |
@@ -381,7 +381,7 @@ Data contracts are created on the platform by submitting the [data contract obje
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version ([currently `2`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/version/protocolVersion.js#L2)) |
 | type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
@@ -439,7 +439,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ```json
 {
-  "protocolVersion": 2,
+  "protocolVersion": 1,
   "type": 0,
   "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
   "signaturePublicKeyId": 0,

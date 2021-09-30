@@ -7,11 +7,11 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/util/serializer.js#L5).
 
 ## Common Fields
 
@@ -19,7 +19,7 @@ All state transitions include the following fields:
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version (currently `0`) |
+| protocolVersion | integer | The platform protocol version (currently `1`) |
 | type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
@@ -90,51 +90,64 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/unit/stateTransition/validation/validateStateTransitionSignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
 
-1. The identity has a public key
-2. The identity's public key is of type `ECDSA`
-3. The state transition signature is valid
+1. The identity exists
+2. The identity has a public key
+3. The identity's public key is of type `ECDSA`
+4. The state transition signature is valid
 
 The example test output below shows the necessary criteria:
 
 ```text
-validateStateTransitionSignatureFactory
-  ✓ should pass properly signed state transition
-  ✓ should return MissingPublicKeyError if the identity doesn't have a matching public key
-  ✓ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
-  ✓ should return InvalidStateTransitionSignatureError if signature is invalid
+validateStateTransitionIdentitySignatureFactory
+  ✔ should pass properly signed state transition
+  ✔ should return invalid result if owner id doesn't exist
+  ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✔ should return InvalidStateTransitionSignatureError if signature is invalid
 ```
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.20.0/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.21.0/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
 
 ```text
-validateStateTransitionDataFactory
-  ✓ should return invalid result if State Transition type is invalid
-  ✓ should return invalid result if Data Contract State Transition is not valid
+validateStateTransitionBasicFactory
+  ✔ should return invalid result if ST type is missing
+  ✔ should return invalid result if ST type is not valid
+  ✔ should return invalid result if ST is invalid against validation function
+  ✔ should return invalid result if ST size is more than 16 kb (219ms)
+  ✔ should return valid result
 
 validateStateTransitionFeeFactory
-  ✓ should throw InvalidStateTransitionTypeError on invalid State Transition
+  ✔ should throw InvalidStateTransitionTypeError on invalid State Transition
   DataContractCreateTransition
-    ✓ should return invalid result if balance is not enough
+    ✔ should return invalid result if balance is not enough
+    ✔ should return valid result
   DocumentsBatchTransition
-    ✓ should return invalid result if balance is not enough
+    ✔ should return invalid result if balance is not enough
+    ✔ should return valid result
   IdentityCreateStateTransition
-    ✓ should return invalid result if asset lock output amount is not enough
+    ✔ should return invalid result if asset lock output amount is not enough
+    ✔ should return valid result
   IdentityTopUpTransition
-    ✓ should return invalid result if sum of balance and asset lock output amount is not enough
+    ✔ should return invalid result if sum of balance and asset lock output amount is not enough
+    ✔ should return valid result
 
-validateStateTransitionSignatureFactory
-  ✓ should pass properly signed state transition
-  ✓ should return MissingPublicKeyError if the identity doesn't have a matching public key
-  ✓ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
-  ✓ should return InvalidStateTransitionSignatureError if signature is invalid
+validateStateTransitionIdentitySignatureFactory
+  ✔ should pass properly signed state transition
+  ✔ should return invalid result if owner id doesn't exist
+  ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✔ should return InvalidStateTransitionSignatureError if signature is invalid
 
-validateStateTransitionStructureFactory
-  ✓ should return invalid result if ST type is missing
-  ✓ should return invalid result if ST type is not valid
-  ✓ should return invalid result if ST is invalid against validation function
-  ✓ should return invalid result if ST size is more than 16 kb
+validateStateTransitionKeySignatureFactory
+  ✔ should return invalid result if signature is not valid
+  ✔ should return valid result if signature is valid
+
+validateStateTransitionStateFactory
+  ✔ should return invalid result if State Transition type is invalid
+  ✔ should return invalid result if Data Contract State Transition is not valid
+  ✔ should return valid result
 ```

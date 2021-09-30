@@ -6,13 +6,13 @@ Identities consist of three components that are described in further detail in f
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The identity version |
+| protocolVersion | integer | The protocol version |
 | id | array of bytes | The identity id (32 bytes) |
 | publicKeys | array of keys | Public key(s) associated with the identity |
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/identity.json):
 
 ```json
 {
@@ -21,9 +21,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "properties": {
     "protocolVersion": {
       "type": "integer",
-      "minimum": 0,
-      "maximum": 0,
-      "$comment": "Maximum is the latest Identity protocol version"
+      "$comment": "Maximum is the latest protocol version"
     },
     "id": {
       "type": "array",
@@ -92,7 +90,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
     );
 ```
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.20.0/lib/identifier/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/js-dpp/blob/v0.21.0/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
@@ -108,7 +106,7 @@ Each item in the `publicKeys` array consists an object containing:
 | type | integer | Type of key (default: 0 - ECDSA) |
 | data | array of bytes | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/publicKey.json):
 
 ```json
 {
@@ -238,13 +236,13 @@ Identities are created on the platform by submitting the identity information in
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The identity create protocol version (currently `0`) |
+| protocolVersion | integer | The protocol version (currently `1`) |
 | type | integer | State transition type (`2` for identity create) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -253,9 +251,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "properties": {
     "protocolVersion": {
       "type": "integer",
-      "minimum": 0,
-      "maximum": 0,
-      "$comment": "Maximum is the latest Identity Create Transition protocol version"
+      "$comment": "Maximum is the latest protocol version"
     },
     "type": {
       "type": "integer",
@@ -317,13 +313,13 @@ Identity credit balances are increased by submitting the topup information in an
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The identity topup protocol version (currently `0`) |
+| protocolVersion | integer | The protocol version (currently `1`) |
 | type | integer | State transition type (`3` for identity topup) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/stateTransition/identityTopUp.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {
@@ -332,9 +328,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
   "properties": {
     "protocolVersion": {
       "type": "integer",
-      "minimum": 0,
-      "maximum": 0,
-      "$comment": "Maximum is the latest Identity TopUp Transition protocol version"
+      "$comment": "Maximum is the latest protocol version"
     },
     "type": {
       "type": "integer",
@@ -402,7 +396,7 @@ The InstantSend asset lock proof is used for transactions that have received an 
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
-Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
 
 ```json
 {
@@ -450,7 +444,7 @@ The ChainLock asset lock proof is used for transactions that have note received 
 | coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
 | outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
 
-Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
+Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 
 ```json
 {
@@ -548,62 +542,66 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 Identity
 validateIdentityFactory
-  ✓ should return valid result if a raw identity is valid
-  ✓ should return valid result if an identity model is valid
+  ✔ should return valid result if a raw identity is valid
+  ✔ should return valid result if an identity model is valid
+  protocolVersion
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   id
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be less than 32 bytes
-    ✓ should not be more than 32 bytes
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be less than 32 bytes
+    ✔ should not be more than 32 bytes
   balance
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should be greater or equal 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be greater or equal 0
   publicKeys
-    ✓ should be present
-    ✓ should be an array
-    ✓ should not be empty
-    ✓ should be unique
-    ✓ should throw an error if publicKeys have more than 100 keys
+    ✔ should be present
+    ✔ should be an array
+    ✔ should not be empty
+    ✔ should be unique
+    ✔ should throw an error if publicKeys have more than 100 keys
   revision
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should be greater or equal 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be greater or equal 0
 ```
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 PublicKeys
 validatePublicKeysFactory
-  ✓ should return invalid result if there are duplicate key ids
-  ✓ should return invalid result if there are duplicate keys
-  ✓ should return invalid result if key data is not a valid DER
-  ✓ should pass valid public keys
+  ✔ should return invalid result if there are duplicate key ids
+  ✔ should return invalid result if there are duplicate keys
+  ✔ should return invalid result if key data is not a valid DER
+  ✔ should pass valid public keys
   id
-    ✓ should be present
-    ✓ should be a number
-    ✓ should be an integer
-    ✓ should be greater or equal to one
+    ✔ should be present
+    ✔ should be a number
+    ✔ should be an integer
+    ✔ should be greater or equal to one
   type
-    ✓ should be present
-    ✓ should be a number
+    ✔ should be present
+    ✔ should be a number
   data
-    ✓ should be present
-    ✓ should be a byte array
+    ✔ should be present
+    ✔ should be a byte array
     ECDSA_SECP256K1
-      ✓ should be no less than 33 bytes
-      ✓ should be no longer than 33 bytes
+      ✔ should be no less than 33 bytes
+      ✔ should be no longer than 33 bytes
     BLS12_381
-      ✓ should be no less than 48 bytes
-      ✓ should be no longer than 48 bytes
+      ✔ should be no less than 48 bytes
+      ✔ should be no longer than 48 bytes
 ```
 
 ## State Transition Structure
@@ -612,129 +610,124 @@ Structure validation verifies that the content of state transition fields compli
 
 ### Identity Create Structure
 
-The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityCreateTransitionStructureFactory
-  ✓ should return valid result
+validateIdentityCreateTransitionBasicFactory
+  ✔ should return valid result
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   type
-    ✓ should be present
-    ✓ should be equal to 2
+    ✔ should be present
+    ✔ should be equal to 2
   assetLockProof
-    ✓ should be present
-    ✓ should be an object
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be an object
+    ✔ should be valid
   publicKeys
-    ✓ should be present
-    ✓ should not be empty
-    ✓ should not have more than 10 items
-    ✓ should be unique
-    ✓ should be valid
+    ✔ should be present
+    ✔ should not be empty
+    ✔ should not have more than 10 items
+    ✔ should be unique
+    ✔ should be valid
   signature
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be not shorter than 65 bytes
+    ✔ should be not longer than 65 bytes    
 ```
 
 ### Identity TopUp Structure
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionStructureFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityTopUpTransitionStructureFactory
-  ✓ should return valid result
+validateIdentityTopUpTransitionBasicFactory
+  ✔ should return valid result
   protocolVersion
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
-    ✓ should not be greater than current version (0)
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should be valid
   type
-    ✓ should be present
-    ✓ should be equal to 3
+    ✔ should be present
+    ✔ should be equal to 3
   assetLockProof
-    ✓ should be present
-    ✓ should be an object
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be an object
+    ✔ should be valid
   identityId
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be no less than 32 bytes
-    ✓ should be no longer than 32 bytes
-    ✓ should exist
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be no less than 32 bytes
+    ✔ should be no longer than 32 bytes
   signature
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should be not shorter than 65 bytes
-    ✓ should be not longer than 65 bytes
-    ✓ should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should be not shorter than 65 bytes
+    ✔ should be not longer than 65 bytes
 ```
 
 ## Asset Lock Structure
 
-The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.20.0/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
+The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/tree/v0.21.0/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
 
 ### InstantSend Asset Lock Proof Structure
 
-The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateInstantAssetLockProofStructureFactory
-  ✓ should return valid result
+  ✔ should return valid result
   type
-    ✓ should be present
-    ✓ should be equal to 0
+    ✔ should be present
+    ✔ should be equal to 0
   instantLock
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 160 bytes
-    ✓ should not be longer than 100 Kb
-    ✓ should be valid
-    ✓ should lock the same transaction
-    ✓ should have valid signature
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 160 bytes
+    ✔ should not be longer than 100 Kb
+    ✔ should be valid
+    ✔ should lock the same transaction
+    ✔ should have valid signature
   transaction
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 1 byte
-    ✓ should not be longer than 100 Kb
-    ✓ should should be valid
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 1 byte
+    ✔ should not be longer than 100 Kb
+    ✔ should should be valid
   outputIndex
-    ✓ should be present
-    ✓ should be an integer
-    ✓ should not be less than 0
+    ✔ should be present
+    ✔ should be an integer
+    ✔ should not be less than 0
 ```
 
 ### ChainLock Asset Lock Proof Structure
 
-The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateChainAssetLockProofStructureFactory
-  ✓ should return valid result
+  ✔ should return valid result
   type
-    ✓ should be present
-    ✓ should be equal to 1
+    ✔ should be present
+    ✔ should be equal to 1
   coreChainLockedHeight
-    ✓ should be preset
-    ✓ should be an integer
-    ✓ should be a number
-    ✓ should be greater than 0
-    ✓ should be less than 4294967296
-    ✓ should be less or equal to consensus core height
+    ✔ should be preset
+    ✔ should be an integer
+    ✔ should be a number
+    ✔ should be greater than 0
+    ✔ should be less than 4294967296
+    ✔ should be less or equal to consensus core height
   outPoint
-    ✓ should be present
-    ✓ should be a byte array
-    ✓ should not be shorter than 36 bytes
-    ✓ should not be longer than 36 bytes
-    ✓ should point to existing transaction
-    ✓ should point to valid transaction
-    ✓ should point to transaction from block lower than core chain locked height
+    ✔ should be present
+    ✔ should be a byte array
+    ✔ should not be shorter than 36 bytes
+    ✔ should not be longer than 36 bytes
+    ✔ should point to existing transaction
+    ✔ should point to valid transaction
+    ✔ should point to transaction from block lower than core chain locked height
 ```
 
 ## State Transition Data
@@ -743,22 +736,22 @@ Data validation verifies that the data in the state transition is valid in the c
 
 ### Identity Create Data
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/identityCreateTransition/validateIdentityCreateTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityCreateTransitionDataFactory
-  ✓ should return invalid result if identity already exists
-  ✓ should return invalid result if identity public key already exists
-  ✓ should return valid result if state transition is valid
+validateIdentityCreateTransitionStateFactory
+  ✔ should return invalid result if identity already exists
+  ✔ should return invalid result if identity public key already exists
+  ✔ should return valid result if state transition is valid
 ```
 
 ### Identity TopUp Data
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.20.0/test/integration/identity/stateTransition/identityTopUpTransition/validateIdentityTopUpTransitionDataFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/js-dpp/blob/v0.21.0/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateIdentityTopUpTransitionDataFactory
-  ✓ should return valid result
+validateIdentityTopUpTransitionStateFactory
+  ✔ should return valid result
 ```
 
 **Note:** Additional validation rules may be added in future versions.

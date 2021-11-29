@@ -21,9 +21,9 @@ defines rules for hashing and serialization of these objects.
 ## Reference Implementation
 
 The current reference implementation is the (JavaScript)
-[js-dpp](https://github.com/dashevo/js-dpp) library. The schemas and
+[js-dpp](https://github.com/dashevo/platform/tree/master/packages/js-dpp) library. The schemas and
 meta-schemas referred to in this specification can be found here in the
-reference implementation: https://github.com/dashevo/js-dpp/tree/master/schema.
+reference implementation: https://github.com/dashevo/platform/tree/master/packages/js-dpp/schema.
 
 ## Outline
 

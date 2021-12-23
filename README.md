@@ -1,4 +1,4 @@
-# Dash Platform Protocol Specification v0.21.x
+# Dash Platform Protocol Specification v0.22.x
 
 ## Introduction
 

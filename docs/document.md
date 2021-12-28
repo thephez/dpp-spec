@@ -11,7 +11,7 @@ Documents are sent to the platform by submitting the them in a document batch st
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array | Signature of state transition data (65 bytes) |
 
-Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentsBatch.json):
+Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentsBatch.json):
 
 ```json
 {
@@ -75,7 +75,7 @@ All document transitions in a document batch state transition are built on the b
 | $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | array | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (32 bytes) |
 
-Each document transition must comply with the document transition [base schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json):
+Each document transition must comply with the document transition [base schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json):
 
 ```json
 {
@@ -116,7 +116,7 @@ Each document transition must comply with the document transition [base schema](
 
 ### Document id
 
-The document `$id` is created by hashing the document's `dataContractId`, `ownerId`, `type`, and `entropy` as shown [here](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/document/generateDocumentId.js).
+The document `$id` is created by hashing the document's `dataContractId`, `ownerId`, `type`, and `entropy` as shown [here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/document/generateDocumentId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -150,7 +150,7 @@ The document create transition extends the base schema to include the following 
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -212,7 +212,7 @@ The document replace transition extends the base schema to include the following
 | $revision | integer | Document revision (=> 1) |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -300,7 +300,7 @@ The document object represents the data provided by the platform in response to 
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/documentBase.json):
+Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/documentBase.json):
 
 ```json
 {

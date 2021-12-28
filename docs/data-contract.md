@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -24,7 +24,7 @@ The following sections provide details that developers need to construct valid c
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
@@ -42,10 +42,10 @@ The data contract object consists of the following fields as defined in the Java
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L346-L352)) |
-| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L353-L359) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L346-L352)) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L357-L363) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | $defs | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
@@ -130,7 +130,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ## Data Contract id
 
-The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/dataContract/generateDataContractId.js).
+The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/generateDataContractId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -202,10 +202,10 @@ There are a variety of constraints currently defined for performance and securit
 
 | Description | Value |
 | - | - |
-| Minimum number of properties | [1](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L22) |
-| Maximum number of properties | [100](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L23) |
-| Minimum property name length | [3](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
-| Maximum property name length | [64](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
+| Minimum number of properties | [1](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L22) |
+| Maximum number of properties | [100](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L23) |
+| Minimum property name length | [3](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
+| Maximum property name length | [64](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
 | Property name first/last characters | \** First: (`A-Z`, `a-z`); Last: Alphanumeric (`A-Z`, `a-z`, `0-9`)**|
 | Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hypen (`-`) <br>Underscore (`_`) |
 
@@ -381,14 +381,14 @@ Data contracts are created on the platform by submitting the [data contract obje
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
 | type | integer | State transition type (`0` for data contract) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
+Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
 
 ```json
 {

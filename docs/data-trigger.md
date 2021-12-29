@@ -44,7 +44,7 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 executeDataTriggersFactory
@@ -56,7 +56,7 @@ executeDataTriggersFactory
   ✔ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
 
 ```text
 validateDocumentsBatchTransitionStateFactory
@@ -67,7 +67,7 @@ validateDocumentsBatchTransitionStateFactory
 
 ## DPNS Trigger Validation
 
-As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.21.5/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashevo/platform/tree/v0.21.5/packages/js-dpp/test/unit/dataTrigger/):
+As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22-dev/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashevo/platform/tree/v0.22-dev/packages/js-dpp/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger

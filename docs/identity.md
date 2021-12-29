@@ -542,7 +542,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 Identity
@@ -576,7 +576,7 @@ validateIdentityFactory
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 PublicKeys
@@ -584,6 +584,7 @@ validatePublicKeysFactory
   ✔ should return invalid result if there are duplicate key ids
   ✔ should return invalid result if there are duplicate keys
   ✔ should return invalid result if key data is not a valid DER
+  ✔ should return invalid result if key has an invalid combination of purpose and security level
   ✔ should pass valid public keys
   id
     ✔ should be present
@@ -610,7 +611,7 @@ Structure validation verifies that the content of state transition fields compli
 
 ### Identity Create Structure
 
-The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityCreateTransitionBasicFactory
@@ -632,16 +633,17 @@ validateIdentityCreateTransitionBasicFactory
     ✔ should not have more than 10 items
     ✔ should be unique
     ✔ should be valid
+    ✔ should have at least 1 master key
   signature
     ✔ should be present
     ✔ should be a byte array
     ✔ should be not shorter than 65 bytes
-    ✔ should be not longer than 65 bytes    
+    ✔ should be not longer than 65 bytes
 ```
 
 ### Identity TopUp Structure
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityTopUpTransitionBasicFactory
@@ -671,11 +673,11 @@ validateIdentityTopUpTransitionBasicFactory
 
 ## Asset Lock Structure
 
-The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
+The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
 
 ### InstantSend Asset Lock Proof Structure
 
-The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateInstantAssetLockProofStructureFactory
@@ -705,7 +707,7 @@ validateInstantAssetLockProofStructureFactory
 
 ### ChainLock Asset Lock Proof Structure
 
-The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateChainAssetLockProofStructureFactory
@@ -736,7 +738,7 @@ Data validation verifies that the data in the state transition is valid in the c
 
 ### Identity Create Data
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityCreateTransition/validation/state/validateIdentityCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityCreateTransitionStateFactory
@@ -747,7 +749,7 @@ validateIdentityCreateTransitionStateFactory
 
 ### Identity TopUp Data
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityTopUpTransition/validation/state/validateIdentityTopUpTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityTopUpTransitionStateFactory

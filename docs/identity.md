@@ -105,6 +105,9 @@ Each item in the `publicKeys` array consists an object containing:
 | id | integer | The key id (all public keys must be unique) |
 | type | integer | Type of key (default: 0 - ECDSA) |
 | data | array of bytes | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
+| purpose | integer | Public key purpose (0 - Authentication, 1 - Encryption, 2 - Decryption) |
+| securityLevel | integer | Public key security level. (0 - Master, 1 - Critical, 2 - High, 3 - Medium) |
+| readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
 
 Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/identity/publicKey.json):
 
@@ -123,12 +126,39 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "type": "integer",
       "enum": [
         0,
-        1
+        1,
+        2
       ],
-      "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381",
+      "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381, 2 - ECDSA Secp256k1 Hash160",
       "$comment": "It can't be changed after adding a key"
     },
-    "data": true
+    "purpose": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2
+      ],
+      "description": "Public key purpose. 0 - Authentication, 1 - Encryption, 2 - Decryption",
+      "$comment": "It can't be changed after adding a key"
+    },
+    "securityLevel": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "description": "Public key security level. 0 - Master, 1 - Critical, 2 - High, 3 - Medium",
+      "$comment": "It can't be changed after adding a key"
+    },
+    "data": true,
+    "readOnly": {
+      "type": "boolean",
+      "description": "Read only",
+      "$comment": "Identity public key can't be modified with readOnly set to true. It can’t be changed after adding a key"
+    }
   },
   "allOf": [
     {
@@ -172,12 +202,35 @@ Each identity public key must comply with this JSON-Schema definition establishe
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": 2
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "byteArray": true,
+            "minItems": 20,
+            "maxItems": 20,
+            "description": "ECDSA Secp256k1 public key Hash160",
+            "$comment": "It must be a valid key hash of the specified type and unique for the identity. It can’t be changed after adding a key"
+          }
+        }
+      }
     }
   ],
   "required": [
     "id",
     "type",
-    "data"
+    "data",
+    "purpose",
+    "securityLevel"
   ],
   "additionalProperties": false
 }
@@ -193,8 +246,9 @@ The `type` field indicates the algorithm used to derive the key.
 
 | Type | Description |
 | :-: | - |
-| 0 | ECDSA (default) |
-| 1 | BLS (currently unused)|
+| 0 | ECDSA Secp256k1 (default) |
+| 1 | BLS 12-381 (currently unused)|
+| 2 | ECDSA Secp256k1 Hash160 |
 
 ### Public Key `data`
 
@@ -221,6 +275,27 @@ pubKeyBase = new PublicKey({
 // validatePublicKeysFactory.js
 const dataHex = rawPublicKey.data.toString('hex');
 ```
+
+### Public Key `purpose`
+
+The `purpose` field describes which operations are supported by the key. Please refer to [DIP11 - Identities](https://github.com/dashpay/dips/blob/master/dip-0011.md#keys) for additional information regarding this.
+
+| Type | Description |
+| :-: | - |
+| 0 | Authentication |
+| 1 | Encryption
+| 2 | Decryption |
+
+### Public Key `securityLevel`
+
+The `securityLevel` field indicates how securely the key should be stored by clients. Please refer to [DIP11 - Identities](https://github.com/dashpay/dips/blob/master/dip-0011.md#keys) for additional information regarding this.
+
+| Level | Description | Security Practice |
+| :-: | - | - |
+| 0 | Master | Should always require a user to authenticate when signing a transition
+| 1 | Critical | Should always require a user to authenticate when signing a transition
+| 2 | High | Should be available as long as the user has authenticated at least once during a session
+| 3 | Medium | Should not require user authentication but must require access to the client device
 
 ## Identity balance
 

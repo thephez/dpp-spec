@@ -46,7 +46,7 @@ Entropy is included in [Data Contracts](data-contract.md#data-contract-creation)
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
-// generateEntropy.js
+// entropyGenerator.js
 function generate() {
   return crypto.randomBytes(32);
 }
@@ -90,7 +90,7 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
 
 1. The identity exists
 2. The identity has a public key
@@ -104,20 +104,20 @@ validateStateTransitionIdentitySignatureFactory
   ✔ should pass properly signed state transition
   ✔ should return invalid result if owner id doesn't exist
   ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
-  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1 and not ECDSA_HASH160
   ✔ should return InvalidStateTransitionSignatureError if signature is invalid
 ```
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.21.5/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22-dev/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
 
 ```text
 validateStateTransitionBasicFactory
   ✔ should return invalid result if ST type is missing
   ✔ should return invalid result if ST type is not valid
   ✔ should return invalid result if ST is invalid against validation function
-  ✔ should return invalid result if ST size is more than 16 kb (219ms)
+  ✔ should return invalid result if ST size is more than 16 kb
   ✔ should return valid result
 
 validateStateTransitionFeeFactory
@@ -139,7 +139,7 @@ validateStateTransitionIdentitySignatureFactory
   ✔ should pass properly signed state transition
   ✔ should return invalid result if owner id doesn't exist
   ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
-  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not ECDSA_SECP256K1 and not ECDSA_HASH160
   ✔ should return InvalidStateTransitionSignatureError if signature is invalid
 
 validateStateTransitionKeySignatureFactory

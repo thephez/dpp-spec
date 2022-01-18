@@ -80,23 +80,13 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
-### Example id creation
-
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// IdentityCreateTransition.js
-    this.identityId = new Identifier(
-      hash(this.lockedOutPoint),
-    );
-```
-
 **Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
 The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
 
-**Note:** Any public key(s) assigned to an identity must be unique (not already used by any identity).
+**Note:** Since v0.22, the same public key can be used for multiple identities. In previous versions any public key(s) assigned to an identity had to be unique (not already used by any identity).
 
 Each item in the `publicKeys` array consists an object containing:
 
@@ -818,7 +808,6 @@ The identity create state transition data must pass validation tests as defined 
 ```text
 validateIdentityCreateTransitionStateFactory
   ✔ should return invalid result if identity already exists
-  ✔ should return invalid result if identity public key already exists
   ✔ should return valid result if state transition is valid
 ```
 

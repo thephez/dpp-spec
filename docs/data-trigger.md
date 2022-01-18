@@ -89,7 +89,7 @@ createDomainDataTrigger
   ✔ should allow creating a second level domain by any identity
 
 createFeatureFlagDataTrigger
-  ✔ should return an error if heigh is lower than block height
+  ✔ should return an error if height is lower than block height
   ✔ should return an error if owner id is not equal to top level identity id
   ✔ should pass
 
@@ -99,4 +99,10 @@ getDataTriggers
 
 rejectDataTrigger
   ✔ should always fail
+
+createMasternodeRewardSharesDataTrigger
+  ✔ should return an error if percentage > 10000
+  ✔ should return an error if payToId does not exist
+  ✔ should return an error if ownerId is not a masternode identity
+  ✔ should pass
 ```

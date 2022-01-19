@@ -308,8 +308,6 @@ The following example (excerpt from the DPNS contract's `domain` document) demon
 
 ### Document Indices
 
-**Note:** The `indices` object should be excluded for documents that do not require indices.
-
 Document indices may be defined if indexing on document fields is required.
 
 The `indices` array consists of:
@@ -319,7 +317,10 @@ The `indices` array consists of:
    - A `properties` array composed of a `<field name: sort order>` object for each document field that is part of the index (sort order: `asc` or `desc`)
    - An (optional) `unique` element that determines if duplicate values are allowed for the document type
 
-**Note:** When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
+**Note:**
+
+ - The `indices` object should be excluded for documents that do not require indices.
+ - When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
 
 ```json
 "indices": [
@@ -342,7 +343,7 @@ The `indices` array consists of:
 
 #### Index Constraints
 
-**Note:** For performance and security reasons, indices have the following constraints. These constraints are subject to change over time.
+For performance and security reasons, indices have the following constraints. These constraints are subject to change over time.
 
 | Description | Value |
 | - | - |
@@ -353,6 +354,19 @@ The `indices` array consists of:
 | Maximum length of indexed string property | [1024](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
 | Maximum length of indexed byte array property | [4096](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
 | Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
+
+When creating indices for string or array properties, they must meet the relevant requirements
+below:
+
+ - An indexed string property must define `maxLength` < the maximum length for indexed strings shown
+   in the table above (1024)
+ - An indexed array property must define `maxItems` < the maximum number of indexed array items
+   shown in the table above (1024)
+ - An indexed byte array property must define `maxItems` < the maximum number of indexed byte array
+   items shown in the table above (4096)
+
+Also, the `$id` property may not be used in an index since there is no practical benefit to doing
+so.
 
 **Example**
 The following example (excerpt from the DPNS contract's `preorder` document) creates an index named `saltedHash` on the `saltedDomainHash` property that also enforces uniqueness across all documents of that type:

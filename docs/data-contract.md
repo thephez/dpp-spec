@@ -434,15 +434,16 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L360-L415).
+Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L364-L434).
 
 ## Data Contract Definitions
 
 The optional `$defs` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#defs). Items defined in `$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
 
-**Note:** Properties defined in the `$defs` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
+**Note:**
 
-**Note:** Data contracts can only use the `$ref` keyword to reference their own `$defs`. Referencing external definitions is not supported by the platform protocol.
+ - Properties defined in the `$defs` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
+ - Data contracts can only use the `$ref` keyword to reference their own `$defs`. Referencing external definitions is not supported by the platform protocol.
 
 **Example**
 The following example shows a definition for a `message` object consisting of two properties:
@@ -476,7 +477,7 @@ Data contracts are created on the platform by submitting the [data contract obje
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
-| type | integer | State transition type (`0` for data contract) |
+| type | integer | State transition type (`0` for data contract create) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |

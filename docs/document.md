@@ -287,7 +287,7 @@ The document delete transition only requires the fields found in the [base docum
 
 # Document Object
 
-The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/document/documentBase.json)):
+The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/document/documentBase.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -384,45 +384,45 @@ The platform protocol performs several forms of validation related to documents:
  - State transition basic validation - only checks the content of the state transition
  - State transition state validation - takes the overall platform state into consideration
 
-**Example:** A document state transition for an existing document could pass structure validation; however, it would fail data validation since the document already exists.
+**Example:** A document state transition for an existing document could pass basic validation; however, it would fail state validation since the document already exists.
 
 ## Document Model
 
 The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/document/validation/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDocumentFactory
-  ✔ return invalid result if a byte array exceeds `maxItems`
-  ✔ should return valid result is a document is valid
-  Base schema
-    $protocolVersion
-      ✔ should be present
-      ✔ should be an integer
-      ✔ should be valid
-    $id
-      ✔ should be present
-      ✔ should be a byte array
-      ✔ should be no less than 32 bytes
-      ✔ should be no longer than 32 bytes
-    $type
-      ✔ should be present
-      ✔ should be defined in Data Contract
-      ✔ should throw an error if getDocumentSchemaRef throws error
-    $revision
-      ✔ should be present
-      ✔ should be a number
-      ✔ should be an integer
-      ✔ should be greater or equal to one
-    $dataContractId
-      ✔ should be present
-      ✔ should be a byte array
-      ✔ should be no less than 32 bytes
-      ✔ should be no longer than 32 bytes
-    $ownerId
-      ✔ should be present
-      ✔ should be a byte array
-      ✔ should be no less than 32 bytes
-      ✔ should be no longer than 32 bytes
+  validateDocumentFactory
+    ✔ return invalid result if a byte array exceeds `maxItems`
+    ✔ should return valid result is a document is valid
+    Base schema
+      $protocolVersion
+        ✔ should be present
+        ✔ should be an integer
+        ✔ should be valid
+      $id
+        ✔ should be present
+        ✔ should be a byte array
+        ✔ should be no less than 32 bytes
+        ✔ should be no longer than 32 bytes
+      $type
+        ✔ should be present
+        ✔ should be defined in Data Contract
+        ✔ should throw an error if getDocumentSchemaRef throws error
+      $revision
+        ✔ should be present
+        ✔ should be a number
+        ✔ should be an integer
+        ✔ should be greater or equal to one
+      $dataContractId
+        ✔ should be present
+        ✔ should be a byte array
+        ✔ should be no less than 32 bytes
+        ✔ should be no longer than 32 bytes
+      $ownerId
+        ✔ should be present
+        ✔ should be a byte array
+        ✔ should be no less than 32 bytes
+        ✔ should be no longer than 32 bytes
 ```
 
 ## State Transition Basic
@@ -430,69 +430,69 @@ validateDocumentFactory
 State transition basic validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/basic/validateDocumentsBatchTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDocumentsBatchTransitionBasicFactory
-  ✔ should return valid result
-  protocolVersion
-    ✔ should be present
-    ✔ should be an integer
-    ✔ should be valid
-  type
-    ✔ should be present
-    ✔ should be equal 1
-  ownerId
-    ✔ should be present
-    ✔ should be a byte array
-    ✔ should be no less than 32 bytes
-    ✔ should be no longer than 32 bytes
-  document transitions
-    ✔ should be present
-    ✔ should be an array
-    ✔ should have at least one element
-    ✔ should have no more than 10 elements
-    ✔ should have objects as elements
-    document transition
-      ✔ should return invalid result if there are duplicate unique index values
-      ✔ should return invalid result if compound index doesn't contain all fields
-      $id
-        ✔ should be present
-        ✔ should be a byte array
-        ✔ should be no less than 32 bytes
-        ✔ should be no longer than 32 bytes
-        ✔ should no have duplicate IDs in the state transition
-      $dataContractId
-        ✔ should be present
-        ✔ should be a byte array
-        ✔ should exists in the state
-      $type
-        ✔ should be present
-        ✔ should be defined in Data Contract
-      $action
-        ✔ should be present
-        ✔ should throw InvalidDocumentTransitionActionError if action is not valid
-      create
+  validateDocumentsBatchTransitionBasicFactory
+    ✔ should return valid result
+    protocolVersion
+      ✔ should be present
+      ✔ should be an integer
+      ✔ should be valid
+    type
+      ✔ should be present
+      ✔ should be equal 1
+    ownerId
+      ✔ should be present
+      ✔ should be a byte array
+      ✔ should be no less than 32 bytes
+      ✔ should be no longer than 32 bytes
+    document transitions
+      ✔ should be present
+      ✔ should be an array
+      ✔ should have at least one element
+      ✔ should have no more than 10 elements
+      ✔ should have objects as elements
+      document transition
+        ✔ should return invalid result if there are duplicate unique index values
+        ✔ should return invalid result if compound index doesn't contain all fields
         $id
-          ✔ should be valid generated ID
-        $entropy
           ✔ should be present
           ✔ should be a byte array
           ✔ should be no less than 32 bytes
           ✔ should be no longer than 32 bytes
-      replace
-        $revision
+          ✔ should no have duplicate IDs in the state transition
+        $dataContractId
           ✔ should be present
-          ✔ should be a number
-          ✔ should be multiple of 1.0
-          ✔ should have a minimum value of 1
-      delete
-        ✔ should return invalid result if delete transaction is not valid
-  signature
-    ✔ should be present
-    ✔ should be a byte array
-    ✔ should be not less than 65 bytes
-    ✔ should be not longer than 65 bytes
-  signaturePublicKeyId
-    ✔ should be an integer
-    ✔ should not be < 0
+          ✔ should be a byte array
+          ✔ should exists in the state
+        $type
+          ✔ should be present
+          ✔ should be defined in Data Contract
+        $action
+          ✔ should be present
+          ✔ should throw InvalidDocumentTransitionActionError if action is not valid
+        create
+          $id
+            ✔ should be valid generated ID
+          $entropy
+            ✔ should be present
+            ✔ should be a byte array
+            ✔ should be no less than 32 bytes
+            ✔ should be no longer than 32 bytes
+        replace
+          $revision
+            ✔ should be present
+            ✔ should be a number
+            ✔ should be multiple of 1.0
+            ✔ should have a minimum value of 1
+        delete
+          ✔ should return invalid result if delete transaction is not valid
+    signature
+      ✔ should be present
+      ✔ should be a byte array
+      ✔ should be not less than 65 bytes
+      ✔ should be not longer than 65 bytes
+    signaturePublicKeyId
+      ✔ should be an integer
+      ✔ should not be < 0
 ```
 
 ## State Transition State
@@ -500,40 +500,40 @@ validateDocumentsBatchTransitionBasicFactory
 State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDocumentsBatchTransitionStateFactory
-  ✔ should throw DataContractNotPresentError if data contract was not found
-  ✔ should return invalid result if document transition with action "create" is already present
-  ✔ should return invalid result if document transition with action "replace" is not present
-  ✔ should return invalid result if document transition with action "delete" is not present
-  ✔ should return invalid result if document transition with action "replace" has wrong revision
-  ✔ should return invalid result if document transition with action "replace" has mismatch of ownerId with previous revision
-  ✔ should throw an error if document transition has invalid action
-  ✔ should return invalid result if there are duplicate document transitions according to unique indices
-  ✔ should return invalid result if data triggers execution failed
-  ✔ should return valid result if document transitions are valid
-  Timestamps
-    CREATE transition
-      ✔ should return invalid result if timestamps mismatch
-      ✔ should return invalid result if "$createdAt" have violated time window
-      ✔ should return invalid result if "$updatedAt" have violated time window
-    REPLACE transition
-      ✔ should return invalid result if documents with action "replace" have violated time window
+  validateDocumentsBatchTransitionStateFactory
+    ✔ should throw DataContractNotPresentError if data contract was not found
+    ✔ should return invalid result if document transition with action "create" is already present
+    ✔ should return invalid result if document transition with action "replace" is not present
+    ✔ should return invalid result if document transition with action "delete" is not present
+    ✔ should return invalid result if document transition with action "replace" has wrong revision
+    ✔ should return invalid result if document transition with action "replace" has mismatch of ownerId with previous revision
+    ✔ should throw an error if document transition has invalid action
+    ✔ should return invalid result if there are duplicate document transitions according to unique indices
+    ✔ should return invalid result if data triggers execution failed
+    ✔ should return valid result if document transitions are valid
+    Timestamps
+      CREATE transition
+        ✔ should return invalid result if timestamps mismatch
+        ✔ should return invalid result if "$createdAt" have violated time window
+        ✔ should return invalid result if "$updatedAt" have violated time window
+      REPLACE transition
+        ✔ should return invalid result if documents with action "replace" have violated time window
 ```
 
 The state transition state must also pass index validation tests as defined in [js-dpp here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsUniquenessByIndicesFactory.spec.js) and [here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/basic/validatePartialCompoundIndices.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDocumentsUniquenessByIndices
-  ✔ should return valid result if Documents have no unique indices
-  ✔ should return valid result if Document has unique indices and there are no duplicates
-  ✔ should return invalid result if Document has unique indices and there are duplicates
-  ✔ should return valid result if Document has undefined field from index
-  ✔ should return valid result if Document being created and has createdAt and updatedAt indices
+  validateDocumentsUniquenessByIndices
+    ✔ should return valid result if Documents have no unique indices
+    ✔ should return valid result if Document has unique indices and there are no duplicates
+    ✔ should return invalid result if Document has unique indices and there are duplicates
+    ✔ should return valid result if Document has undefined field from index
+    ✔ should return valid result if Document being created and has createdAt and updatedAt indices
 ```
 
 ```text
-validatePartialCompoundIndices
-  ✔ should return invalid result if compound index contains not all fields
-  ✔ should return valid result if compound index contains no fields
-  ✔ should return valid result if compound index contains all fields
+  validatePartialCompoundIndices
+    ✔ should return invalid result if compound index contains not all fields
+    ✔ should return valid result if compound index contains no fields
+    ✔ should return valid result if compound index contains all fields
 ```

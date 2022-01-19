@@ -378,17 +378,17 @@ Each document object must comply with this JSON-Schema definition established in
 
 # Document Validation
 
-The platform protocol performs several forms of validation related to documents: model validation, state transition structure validation, and state transition data validation.
+The platform protocol performs several forms of validation related to documents: model validation, state transition basic validation, and state transition state validation.
 
  - Model validation - ensures object models are correct
- - State transition structure validation - only checks the content of the state transition
- - State transition data validation - takes the overall platform state into consideration
+ - State transition basic validation - only checks the content of the state transition
+ - State transition state validation - takes the overall platform state into consideration
 
 **Example:** A document state transition for an existing document could pass structure validation; however, it would fail data validation since the document already exists.
 
 ## Document Model
 
-The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/document/validation/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
+The document model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/document/validation/validateDocumentFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDocumentFactory
@@ -425,9 +425,9 @@ validateDocumentFactory
       ✔ should be no longer than 32 bytes
 ```
 
-## State Transition Structure
+## State Transition Basic
 
-State transition structure validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/basic/validateDocumentsBatchTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+State transition basic validation verifies that the content of state transition fields complies with the requirements for the fields. The state transition `actions` and `documents` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/basic/validateDocumentsBatchTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDocumentsBatchTransitionBasicFactory
@@ -495,9 +495,9 @@ validateDocumentsBatchTransitionBasicFactory
     ✔ should not be < 0
 ```
 
-## State Transition Data
+## State Transition State
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDocumentsBatchTransitionStateFactory
@@ -520,7 +520,7 @@ validateDocumentsBatchTransitionStateFactory
       ✔ should return invalid result if documents with action "replace" have violated time window
 ```
 
-The state transition data must also pass index validation tests as defined in [js-dpp here](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsUniquenessByIndicesFactory.spec.js) and [here](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/basic/validatePartialCompoundIndices.spec.js). The test output below shows the necessary criteria:
+The state transition state must also pass index validation tests as defined in [js-dpp here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsUniquenessByIndicesFactory.spec.js) and [here](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/basic/validatePartialCompoundIndices.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDocumentsUniquenessByIndices

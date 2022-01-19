@@ -597,13 +597,13 @@ function signHash(hash, privateKey) {
 
 # Identity Validation
 
-The platform protocol performs several forms of validation related to identities: model validation, structure validation, and data validation.
+The platform protocol performs several forms of validation related to identities: model validation, basic validation, and state validation.
 
  - Model validation - ensures object models are correct
- - State transition structure validation - only checks the content of the state transition
- - State transition data validation - takes the overall platform state into consideration
+ - State transition basic validation - only checks the content of the state transition
+ - State transition state validation - takes the overall platform state into consideration
 
-**Example:** An identity create state transition for an existing identity could pass structure validation; however, it would fail data validation since the identity already exists.
+**Example:** An identity create state transition for an existing identity could pass basic validation; however, it would fail state validation since the identity already exists.
 
 ## Identity Model
 
@@ -670,11 +670,11 @@ validatePublicKeysFactory
       ✔ should be no longer than 48 bytes
 ```
 
-## State Transition Structure
+## State Transition Basic
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field.
+Basic validation verifies that the content of state transition fields complies with the requirements for the field.
 
-### Identity Create Structure
+### Identity Create Basic
 
 The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -706,7 +706,7 @@ validateIdentityCreateTransitionBasicFactory
     ✔ should be not longer than 65 bytes
 ```
 
-### Identity TopUp Structure
+### Identity TopUp Basic
 
 The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -736,11 +736,11 @@ validateIdentityTopUpTransitionBasicFactory
     ✔ should be not longer than 65 bytes
 ```
 
-## Asset Lock Structure
+## Asset Lock Basic
 
 The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
 
-### InstantSend Asset Lock Proof Structure
+### InstantSend Asset Lock Proof Basic
 
 The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -770,7 +770,7 @@ validateInstantAssetLockProofStructureFactory
     ✔ should not be less than 0
 ```
 
-### ChainLock Asset Lock Proof Structure
+### ChainLock Asset Lock Proof Basic
 
 The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -797,11 +797,11 @@ validateChainAssetLockProofStructureFactory
     ✔ should point to transaction from block lower than core chain locked height
 ```
 
-## State Transition Data
+## State Transition State
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state.
+State validation verifies that the data in the state transition is valid in the context of the current platform state.
 
-### Identity Create Data
+### Identity Create State
 
 The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityCreateTransition/validation/state/validateIdentityCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
@@ -811,7 +811,7 @@ validateIdentityCreateTransitionStateFactory
   ✔ should return valid result if state transition is valid
 ```
 
-### Identity TopUp Data
+### Identity TopUp State
 
 The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityTopUpTransition/validation/state/validateIdentityTopUpTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 

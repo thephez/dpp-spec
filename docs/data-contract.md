@@ -571,23 +571,29 @@ The process to sign a data contract state transition consists of the following s
 
 # Data Contract Validation
 
-The platform protocol performs several forms of validation related to data contracts: model validation, structure validation, and data validation.
+The platform protocol performs several forms of validation related to data contracts: model validation, basic validation, and state validation.
 
  - Model validation - ensures object models are correct
- - State transition structure validation - only checks the content of the state transition
- - State transition data validation - takes the overall platform state into consideration
+ - State transition basic validation - only checks the content of the state transition
+ - State transition state validation - takes the overall platform state into consideration
 
 **Example:** A data contract state transition for an existing application could pass structure validation; however, it would fail data validation if it used an application identity that has already created a data contract.
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
 
 ```text
 validateDataContractFactory
   ✔ should return invalid result with circular $ref pointer
-  ✔ should return invalid result if indexed property missing maxLength constraint
-  ✔ should return invalid result if indexed property have to big maxLength
+  ✔ should return invalid result if indexed string property missing maxLength constraint
+  ✔ should return invalid result if indexed string property have to big maxLength
+  ✔ should return invalid result if indexed array property missing maxItems constraint
+  ✔ should return invalid result if indexed array property have to big maxItems
+  ✔ should return invalid result if indexed array property have string item without maxItems constraint
+  ✔ should return invalid result if indexed array property have string item with maxItems bigger than 1024
+  ✔ should return invalid result if indexed byte array property missing maxItems constraint
+  ✔ should return invalid result if indexed byte array property have to big maxItems
   ✔ should return valid result if Data Contract is valid
   protocolVersion
     ✔ should be present
@@ -675,13 +681,14 @@ validateDataContractFactory
     ✔ should be an array
     ✔ should have at least one item
     ✔ should return invalid result if there are duplicated indices
+    ✔ should return invalid result if there are duplicated index names
     index
       ✔ should be an object
       ✔ should have properties definition
       ✔ should have "unique" flag to be of a boolean type
       ✔ should have no more than 10 indices
       ✔ should have no more than 3 unique indices
-      ✔ should return invalid result if index is prebuilt
+      ✔ should return invalid result if $id is specified as an indexed property
       ✔ should return invalid result if indices has undefined property
       ✔ should return invalid result if index property is object
       ✔ should return invalid result if index property is array of objects
@@ -700,6 +707,9 @@ validateDataContractFactory
           ✔ should have at least one property
           ✔ should have no more than one property
           ✔ should have property values only "asc" or "desc"
+  signatureSecurityLevelRequirement
+    ✔ should be a number
+    ✔ should be one of the available values
 ```
 
 ### Dependency Validation
@@ -714,9 +724,11 @@ validateDataContractFactory
     ✔ should have an array of unique strings
 ```
 
-## State Transition Structure
+## State Transition Basic
 
-Structure validation verifies that the content of state transition fields complies with the requirements for the field. The data contract `contractId` and `signature` fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+### Data Contract Create Basic
+
+Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract create transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDataContractCreateTransitionBasicFactory
@@ -749,25 +761,27 @@ validateDataContractCreateTransitionBasicFactory
 
 - See the [state transition document](state-transition.md) for signature validation details.
 
-## State Transition Data
+## State Transition State
 
-Data validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-validateDataContractCreateTransitionDataFactory
-  ✓ should return invalid result if Data Contract with specified contractId is already exist
+  validateDataContractCreateTransitionStateFactory
+    ✔ should return invalid result if Data Contract with specified contractId is already exist
+    ✔ should return valid result
 ```
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
 ```text
-validateDataContractMaxDepthFactory
-  ✔ should throw error if depth > MAX_DEPTH
-  ✔ should return valid result if depth = MAX_DEPTH
-  ✔ should throw error if contract contains array with depth > MAX_DEPTH
-  ✔ should return error if refParser throws an error
+  validateDataContractMaxDepthFactory
+    ✔ should throw error if depth > MAX_DEPTH
+    ✔ should return valid result if depth = MAX_DEPTH
+    ✔ should throw error if contract contains array with depth > MAX_DEPTH
+    ✔ should return error if refParser throws an error
+    ✔ should return valid result
 ```
 
 **Note:** Additional validation rules will be added in future versions.

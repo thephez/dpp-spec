@@ -20,7 +20,7 @@ All state transitions include the following fields:
 | Field | Type | Description|
 | - | - | - |
 | protocolVersion | integer | The platform protocol version (currently `1`) |
-| type | integer | State transition type:<br>`0` - [data contract](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup) |
+| type | integer | State transition type:<br>`0` - [data contract create](data-contract.md#data-contract-creation)<br>`1` - [documents batch](document.md#document-submission)<br>`2` - [identity create](identity.md#identity-creation)<br>`3` - [identity topup](identity.md#identity-topup)<br>`4` - [data contract update](data-contract.md#data-contract-update) |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
 Additionally, all state transitions except the identity create and topup state transitions include:
@@ -31,7 +31,7 @@ Additionally, all state transitions except the identity create and topup state t
 
 # State Transition Types
 
-## Data Contract
+## Data Contract Create
 
 | Field | Type | Description|
 | - | - | - |
@@ -51,6 +51,14 @@ function generate() {
   return crypto.randomBytes(32);
 }
 ```
+
+## Data Contract Update
+
+| Field | Type | Description|
+| - | - | - |
+| dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
+
+More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
 
 ## Documents Batch
 

@@ -217,6 +217,11 @@ function generateDataContractId(ownerId, entropy) {
 }
 ```
 
+## Data Contract version
+
+The data contract `version` is an integer representing the current version of the contract. This
+property must be incremented if the contract is updated.
+
 ## Data Contract Documents
 
 The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties-optional). The `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section.
@@ -558,6 +563,93 @@ Each data contract state transition must comply with this JSON-Schema definition
 }
 ```
 
+# Data Contract Update
+
+Existing data contracts can be updated in certain backwards-compatible ways. The following aspects
+of a data contract can be updated:
+
+ - Adding a new document
+ - Adding a new optional property to an existing document
+ - Adding non-unique indices for properties added in the update
+
+Data contracts are updated on the platform by submitting the modified [data contract
+object](#data-contract-object) in a data contract update state transition consisting of:
+
+| Field | Type | Description|
+| - | - | - |
+| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| type | integer | State transition type (`4` for data contract update) |
+| dataContract | [data contract object](#data-contract-object) | Object containing the updated data contract details<br>**Note:** the data contract's [`version` property](data-contract-version) must be incremented with each update
+| signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
+| signature | array of bytes | Signature of state transition data (65 bytes) |
+
+Each data contract state transition must comply with this JSON-Schema definition established in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "$comment": "Maximum is the latest protocol version"
+    },
+    "type": {
+      "type": "integer",
+      "const": 4
+    },
+    "dataContract": {
+      "type": "object"
+    },
+    "signaturePublicKeyId": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "signature": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 65,
+      "maxItems": 65
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "type",
+    "dataContract",
+    "signaturePublicKeyId",
+    "signature"
+  ]
+}
+```
+
+**Example State Transition**
+```json
+{
+  "protocolVersion": 1,
+  "type": 0,
+  "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
+  "signaturePublicKeyId": 0,
+  "dataContract": {
+    "protocolVersion": 0,
+    "$id": "AoDzJxWSb1gUi2dSmvFeUFpSsjZQRJaqCpn7vCLkwwJj",
+    "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+    "ownerId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
+    "documents": {
+      "note": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+}
+```
+
 ## Data Contract State Transition Signing
 
 Data contract state transitions must be signed by a private key associated with the contract owner's identity.
@@ -581,7 +673,7 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 3 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 4 sections for readability) shows the necessary criteria:
 
 ```text
 validateDataContractFactory
@@ -761,13 +853,77 @@ validateDataContractCreateTransitionBasicFactory
 
 - See the [state transition document](state-transition.md) for signature validation details.
 
+### Data Contract Update Basic
+
+Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract update transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateDataContractUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+
+```text
+  validateDataContractUpdateTransitionBasicFactory
+    ✔ should return valid result
+    protocolVersion
+      ✔ should be present
+      ✔ should be an integer
+      ✔ should be valid
+    type
+      ✔ should be present
+      ✔ should be equal to 4
+    dataContract
+      ✔ should be present
+      ✔ should have no existing documents removed
+      ✔ should allow making backward compatible changes to existing documents
+      ✔ should have existing documents schema backward compatible
+      ✔ should allow defining new document
+      ✔ should not have root immutable properties changed
+      ✔ should be valid
+    signature
+      ✔ should be present
+      ✔ should be a byte array
+      ✔ should be not less than 65 bytes
+      ✔ should be not longer than 65 bytes
+    signaturePublicKeyId
+      ✔ should be an integer
+      ✔ should not be < 0
+```
+
+- See the [state transition document](state-transition.md) for signature validation details.
+
+### Data Contract Update Indices Basic
+
+Basic validation also verifies that all indices comply with the requirement to remain backward
+compatible. They must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateIndicesAreBackwardCompatible.spec.js).
+The test output below shows the necessary criteria:
+
+```text
+validateIndicesAreBackwardCompatible
+  ✔ should return invalid result if some of unique indices have changed
+  ✔ should return invalid result if non-unique index update failed due to changed old properties
+  ✔ should return invalid result if non-unique index update failed due old properties used
+  ✔ should return invalid result if one of new indices contains old properties in the wrong order
+  ✔ should return invalid result if one of new indices is unique
+  ✔ should return valid result if indicies are not changed
+```
+
 ## State Transition State
+
+### Data Contract Create State
 
 State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateDataContractCreateTransitionStateFactory
     ✔ should return invalid result if Data Contract with specified contractId is already exist
+    ✔ should return valid result
+```
+
+### Data Contract Update State
+
+State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+
+```text
+  validateDataContractUpdateTransitionStateFactory
+    ✔ should return invalid result if Data Contract with specified contractId was not found
+    ✔ should return invalid result if Data Contract version is not larger by 1
     ✔ should return valid result
 ```
 

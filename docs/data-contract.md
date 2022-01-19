@@ -315,14 +315,16 @@ Document indices may be defined if indexing on document fields is required.
 The `indices` array consists of:
 
  - One or more objects that each contain:
+   - A unique `name` for the index
    - A `properties` array composed of a `<field name: sort order>` object for each document field that is part of the index (sort order: `asc` or `desc`)
-   - An (optional) `unique` element that determines if duplicate values are allowed for the document
+   - An (optional) `unique` element that determines if duplicate values are allowed for the document type
 
 **Note:** When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
 
 ```json
 "indices": [
   {
+    "name": "Index1",
     "properties": [
       { "<field name a>": "<asc"|"desc>" },
       { "<field name b>": "<asc"|"desc>" }
@@ -330,6 +332,7 @@ The `indices` array consists of:
     "unique": true|false
   },
   {
+    "name": "Index2",
     "properties": [
       { "<field name c>": "<asc"|"desc>" },
     ],
@@ -343,17 +346,21 @@ The `indices` array consists of:
 
 | Description | Value |
 | - | - |
-| Maximum number of indices | [10](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L400) |
-| Maximum number of unique indices | [3](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
-| Maximum number of properties in a single index | [10](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L390) |
-| Maximum length of indexed string property | [1024](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
+| Minimum/maximum length of index `name` | [1](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L381) / [32](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L382) |
+| Maximum number of indices | [10](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L409) |
+| Maximum number of unique indices | [3](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
+| Maximum number of properties in a single index | [10](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L399) |
+| Maximum length of indexed string property | [1024](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
+| Maximum length of indexed byte array property | [4096](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
+| Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
 
 **Example**
-The following example (excerpt from the DPNS contract's `preorder` document) creates an index on `saltedDomainHash` that also enforces uniqueness across all documents of that type:
+The following example (excerpt from the DPNS contract's `preorder` document) creates an index named `saltedHash` on the `saltedDomainHash` property that also enforces uniqueness across all documents of that type:
 
 ```json
 "indices": [
   {
+    "name": "saltedHash",
     "properties": [
       {
         "saltedDomainHash": "asc"
@@ -382,6 +389,7 @@ This example syntax shows the structure of a documents object that defines two d
     },
     "indices": [
       {
+        "name": "<index name>",
         "properties": [
           {
             "<field name c>": "<asc|desc>"

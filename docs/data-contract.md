@@ -42,20 +42,21 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
 | protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
 | $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L346-L352)) |
+| version | integer | Yes | The data contract version |
 | ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L357-L363) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | $defs | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.21.5/packages/js-dpp/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -81,6 +82,10 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "maxItems": 32,
       "contentMediaType": "application/x.dash.dpp.identifier"
     },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
     "ownerId":{
       "type": "array",
       "byteArray": true,
@@ -93,7 +98,69 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "propertyNames": {
         "pattern": "^[a-zA-Z][a-zA-Z0-9-_]{1,62}[a-zA-Z0-9]$"
       },
-      // Truncated ...
+      "additionalProperties": {
+        "type": "object",
+        "allOf": [
+          {
+            "properties": {
+              "indices": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    },
+                    "properties": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "propertyNames": {
+                          "pattern": "^[a-zA-Z$][a-zA-Z0-9-_.]{1,62}[a-zA-Z0-9]$"
+                        },
+                        "additionalProperties": {
+                          "type": "string",
+                          "enum": ["asc", "desc"]
+                        },
+                        "minProperties": 1,
+                        "maxProperties": 1
+                      },
+                      "minItems": 1,
+                      "maxItems": 10
+                    },
+                    "unique": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": ["properties", "name"],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 10
+              },
+              "type": {
+                "const": "object"
+              },
+              "signatureSecurityLevelRequirement": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3
+                ],
+                "description": "Public key security level. 0 - Master, 1 - Critical, 2 - High, 3 - Medium. If none specified, High level is used"
+              }
+            }
+          },
+          {
+            "$ref": "#/$defs/documentSchema"
+          }
+        ],
+        "unevaluatedProperties": false
+      },
       "minProperties": 1,
       "maxProperties": 100
     },
@@ -105,6 +172,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
     "protocolVersion",
     "$schema",
     "$id",
+    "version",
     "ownerId",
     "documents"
   ],

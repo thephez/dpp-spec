@@ -20,7 +20,7 @@ The following sections provide details that developers need to construct valid c
 | `$ref: <something>` | `$ref` can only reference `$defs` - <br> remote references not supported |
 | `if`, `then`, `else`, `allOf`, `anyOf`, `oneOf`, `not` | Disabled for data contracts |
 | `dependencies` | Not supported. Use `dependentRequired` and `dependentSchema` instead |
-| `additionalitems` | Not supported. Use `items: false` and `prefixItems` instead |
+| `additionalItems` | Not supported. Use `items: false` and `prefixItems` instead |
 | `patternProperties` | Restricted - cannot be used for data contracts |
 | `pattern` | Accept only [RE2](https://github.com/google/re2/wiki/Syntax) compatible regular expressions (defined in DPP logic) |
 
@@ -284,7 +284,7 @@ There are a variety of constraints currently defined for performance and securit
 | Minimum property name length | [3](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
 | Maximum property name length | [64](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
 | Property name first/last characters | \** First: (`A-Z`, `a-z`); Last: Alphanumeric (`A-Z`, `a-z`, `0-9`)**|
-| Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hypen (`-`) <br>Underscore (`_`) |
+| Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hyphen (`-`) <br>Underscore (`_`) |
 
 #### Required Properties (Optional)
 
@@ -625,6 +625,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 ```
 
 **Example State Transition**
+
 ```json
 {
   "protocolVersion": 1,

@@ -38,7 +38,7 @@ The following table details the DPNS constraints applied via data triggers. Thes
 | `domain` | `REPLACE` | Action not allowed |
 | `domain` | `DELETE` | Action not allowed |
 | `preorder` | `REPLACE` | Action not allowed |
-| `perorder` | `DELETE` | Action not allowed |
+| `preorder` | `DELETE` | Action not allowed |
 
 # Data Trigger Validation
 

@@ -650,7 +650,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 }
 ```
 
-## Data Contract State Transition Signing
+# Data Contract State Transition Signing
 
 Data contract state transitions must be signed by a private key associated with the contract owner's identity.
 

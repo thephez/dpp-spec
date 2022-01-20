@@ -1,18 +1,29 @@
 # Data Trigger Overview
 
-Although [data contracts](data-contract.md) provide much needed constraints on the structure of the data being stored on Dash Platform, there are limits to what they can do. Certain system data contracts may require server-side validation logic to operate effectively. For example, [DPNS](https://dashplatform.readme.io/docs/explanation-dpns) must enforce some rules to ensure names remain DNS compatible. Dash Platform Protocol (DPP) supports this application-specific custom logic using Data Triggers.
+Although [data contracts](data-contract.md) provide much needed constraints on the structure of the
+data being stored on Dash Platform, there are limits to what they can do. Certain system data
+contracts may require server-side validation logic to operate effectively. For example,
+[DPNS](https://dashplatform.readme.io/docs/explanation-dpns) must enforce some rules to ensure names
+remain DNS compatible. Dash Platform Protocol (DPP) supports this application-specific custom logic
+using Data Triggers.
 
 # Details
 
-Since all application data is submitted in the form of documents, data triggers are defined in the context of documents. To provide even more granularity, they also incorporate the [document transition action](document.md#document-transition-action) so separate triggers can be created for the CREATE, REPLACE, or DELETE actions.
+Since all application data is submitted in the form of documents, data triggers are defined in the
+context of documents. To provide even more granularity, they also incorporate the [document
+transition action](document.md#document-transition-action) so separate triggers can be created for
+the CREATE, REPLACE, or DELETE actions.
 
-When document state transitions are received, DPP checks if there is a trigger associated with the document transition type and action. If there is, it then executes the trigger logic.
+When document state transitions are received, DPP checks if there is a trigger associated with the
+document transition type and action. If there is, it then executes the trigger logic.
 
-**Note:** Successful execution of the trigger logic is necessary for the document to be accepted and applied to the platform state.
+**Note:** Successful execution of the trigger logic is necessary for the document to be accepted and
+applied to the platform state.
 
 ## Example
 
-As an example, DPP contains several data triggers for DPNS. The `domain` document has added constraints for creation. All DPNS document types have constraints on replacing or deleting:
+As an example, DPP contains several data triggers for DPNS. The `domain` document has added
+constraints for creation. All DPNS document types have constraints on replacing or deleting:
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
@@ -23,7 +34,8 @@ As an example, DPP contains several data triggers for DPNS. The `domain` documen
 
 **DPNS Trigger Constraints**
 
-The following table details the DPNS constraints applied via data triggers. These constraints are in addition to the ones applied directly by the DPNS data contract.
+The following table details the DPNS constraints applied via data triggers. These constraints are in
+addition to the ones applied directly by the DPNS data contract.
 
 | Document | Action | Constraint |
 | - | - | - |
@@ -44,7 +56,10 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current
+platform state. The trigger data must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js).
+The test output below shows the necessary criteria:
 
 ```text
 executeDataTriggersFactory
@@ -56,7 +71,8 @@ executeDataTriggersFactory
   ✔ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
+An additional validation occurs related to document batch state transition as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
 
 ```text
 validateDocumentsBatchTransitionStateFactory
@@ -67,7 +83,11 @@ validateDocumentsBatchTransitionStateFactory
 
 ## DPNS Trigger Validation
 
-As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/test/unit/dataTrigger/):
+As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data
+triggers are defined in
+[js-dpp](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/lib/dataTrigger). See here
+for some [validation
+tests](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger

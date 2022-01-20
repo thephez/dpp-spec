@@ -1,17 +1,24 @@
 # State Transition Overview
 
- State transitions are the means for submitting data that creates, updates, or deletes platform data and results in a change to a new state. Each one must contain:
+ State transitions are the means for submitting data that creates, updates, or deletes platform data
+ and results in a change to a new state. Each one must contain:
 
  - [Common fields](#common-fields) present in all state transitions
- - Additional fields specific to the type of action the state transition provides (e.g. [creating an identity](identity.md#identity-create-schema))
+ - Additional fields specific to the type of action the state transition provides (e.g. [creating an
+   identity](identity.md#identity-create-schema))
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/identity/creditsConverter.js#L1). The current fee rate is [1 credit/byte](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1).
+State transition fees are paid via the credits established when an identity is created. Credits are
+created at a rate of [1000
+credits/satoshi](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/identity/creditsConverter.js#L1).
+The current fee rate is [1
+credit/byte](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1).
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16
+KB](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/util/serializer.js#L5).
 
 ## Common Fields
 
@@ -38,11 +45,13 @@ Additionally, all state transitions except the identity create and topup state t
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
 | entropy | array of bytes | Entropy used to generate the data contract ID (32 bytes) |
 
-More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
+More detailed information about the `dataContract` object can be found in the [data contract
+section](data-contract.md).
 
 ### Entropy Generation
 
-Entropy is included in [Data Contracts](data-contract.md#data-contract-creation) and [Documents](document.md#document-create-transition).
+Entropy is included in [Data Contracts](data-contract.md#data-contract-creation) and
+[Documents](document.md#document-create-transition).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -58,7 +67,8 @@ function generate() {
 | - | - | - |
 | dataContract | [data contract object](data-contract.md#data-contract-object) | Object containing valid [data contract](data-contract.md) details |
 
-More detailed information about the `dataContract` object can be found in the [data contract section](data-contract.md).
+More detailed information about the `dataContract` object can be found in the [data contract
+section](data-contract.md).
 
 ## Documents Batch
 
@@ -67,7 +77,8 @@ More detailed information about the `dataContract` object can be found in the [d
 | ownerId | array of bytes | [Identity](identity.md) submitting the document(s) (32 bytes) |
 | transitions | array of transition objects | Document `create`, `replace`, or `delete` transitions (up to 10 objects) |
 
-More detailed information about the `transitions` array can be found in the [document section](document.md).
+More detailed information about the `transitions` array can be found in the [document
+section](document.md).
 
 ## Identity Create
 
@@ -76,7 +87,8 @@ More detailed information about the `transitions` array can be found in the [doc
 | lockedOutPoint | array of bytes | Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
 
-More detailed information about the `publicKeys` object can be found in the [identity section](identity.md).
+More detailed information about the `publicKeys` object can be found in the [identity
+section](identity.md).
 
 ## Identity TopUp
 
@@ -87,18 +99,25 @@ More detailed information about the `publicKeys` object can be found in the [ide
 
 # State Transition Signing
 
-State transitions must be signed by a private key associated with the identity creating the state transition.
+State transitions must be signed by a private key associated with the identity creating the state
+transition.
 
 The process to sign a state transition consists of the following steps:
 
-1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
-2. Sign the encoded data with a private key associated with the identity creating the state transition
+1. Canonical CBOR encode the state transition data - this include all ST fields except the
+   `signature` and `signaturePublicKeyId`
+2. Sign the encoded data with a private key associated with the identity creating the state
+   transition
 3. Set the state transition `signature` to the value of the signature created in the previous step
-4. For all state transitions _other than identity create or topup_, set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
+4. For all state transitions _other than identity create or topup_, set the state
+   transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id)
+   corresponding to the key used to sign
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
+The `signature` validation (see
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js))
+verifies that:
 
 1. The identity exists
 2. The identity has a public key
@@ -118,7 +137,9 @@ validateStateTransitionIdentitySignatureFactory
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/test/unit/stateTransition/validation).
+The test output below shows the necessary criteria:
 
 ```text
 validateStateTransitionBasicFactory

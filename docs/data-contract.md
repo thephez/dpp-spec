@@ -1,12 +1,20 @@
 # Data Contract Overview
 
-Data contracts define the schema (structure) of data an application will store on Dash Platform. Contracts are described using [JSON Schema](https://json-schema.org/understanding-json-schema/) which allows the platform to validate the contract-related data submitted to it.
+Data contracts define the schema (structure) of data an application will store on Dash Platform.
+Contracts are described using [JSON Schema](https://json-schema.org/understanding-json-schema/)
+which allows the platform to validate the contract-related data submitted to it.
 
-The following sections provide details that developers need to construct valid contracts: [documents](#data-contract-documents) and [definitions](#data-contract-definitions). All data contracts must define one or more documents, whereas definitions are optional and may not be used for simple contracts.
+The following sections provide details that developers need to construct valid contracts:
+[documents](#data-contract-documents) and [definitions](#data-contract-definitions). All data
+contracts must define one or more documents, whereas definitions are optional and may not be used
+for simple contracts.
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons.
+The following constraints are applicable to all aspects of data contracts. Unless otherwise noted,
+these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta
+schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -28,11 +36,16 @@ The following sections provide details that developers need to construct valid c
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16
+KB](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/util/serializer.js#L5).
 
 ## Additional Properties
 
-Although JSON Schema allows additional, undefined properties [by default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined (including within document properties of type `object`).
+Although JSON Schema allows additional, undefined properties [by
+default](https://json-schema.org/understanding-json-schema/reference/object.html?#properties), they
+are not allowed in Dash Platform data contracts. Data contract validation will fail if they are not
+explicitly forbidden using the `additionalProperties` keyword anywhere `properties` are defined
+(including within document properties of type `object`).
 
 Include the following at the same level as the `properties` keyword to ensure proper validation:
 
@@ -42,7 +55,9 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json)):
+The data contract object consists of the following fields as defined in the JavaScript reference
+client
+([js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -56,7 +71,9 @@ The data contract object consists of the following fields as defined in the Java
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [js-dpp data contract meta
+schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json).
+A truncated version is shown below for reference:
 
 ```json
 {
@@ -202,7 +219,8 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ## Data Contract id
 
-The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/generateDataContractId.js).
+The data contract `$id` is a hash of the `ownerId` and entropy as shown
+[here](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/generateDataContractId.js).
 
 ```javascript
 // From the JavaScript reference implementation (js-dpp)
@@ -224,9 +242,14 @@ property must be incremented if the contract is updated.
 
 ## Data Contract Documents
 
-The `documents` object defines each type of document required by the data contract. At a minimum, a document must consist of 1 or more properties. Documents may also define [indices](#document-indices) and a list of [required properties](#required-properties-optional). The `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section.
+The `documents` object defines each type of document required by the data contract. At a minimum, a
+document must consist of 1 or more properties. Documents may also define
+[indices](#document-indices) and a list of [required properties](#required-properties-optional). The
+`additionalProperties` properties keyword must be included as described in the
+[constraints](#additional-properties) section.
 
-The following example shows a minimal `documents` object defining a single document (`note`) that has one property (`message`).
+The following example shows a minimal `documents` object defining a single document (`note`) that
+has one property (`message`).
 
 ```json
 {
@@ -244,9 +267,14 @@ The following example shows a minimal `documents` object defining a single docum
 
 ### Document Properties
 
-The `properties` object defines each field that will be used by a document. Each field consists of an object that, at a minimum, must define its data `type` (`string`, `number`, `integer`, `boolean`, `array`, `object`). Fields may also apply a variety of optional JSON Schema constraints related to the format, range, length, etc. of the data.
+The `properties` object defines each field that will be used by a document. Each field consists of
+an object that, at a minimum, must define its data `type` (`string`, `number`, `integer`, `boolean`,
+`array`, `object`). Fields may also apply a variety of optional JSON Schema constraints related to
+the format, range, length, etc. of the data.
 
-**Note:** The `object` type is required to have properties defined either directly or via the data contract's [$defs](#data-contract-definitions).  For example, the body property shown below is an object containing a single string property (objectProperty):
+**Note:** The `object` type is required to have properties defined either directly or via the data
+contract's [$defs](#data-contract-definitions).  For example, the body property shown below is an
+object containing a single string property (objectProperty):
 
 ```javascript
 const contractDocuments = {
@@ -271,7 +299,10 @@ const contractDocuments = {
 };
 ```
 
-**Note:** A full explanation of the capabilities of JSON Schema is beyond the scope of this document. For more information regarding its data types and the constraints that can be applied, please refer to the [JSON Schema reference](https://json-schema.org/understanding-json-schema/reference/index.html) documentation.
+**Note:** A full explanation of the capabilities of JSON Schema is beyond the scope of this
+document. For more information regarding its data types and the constraints that can be applied,
+please refer to the [JSON Schema
+reference](https://json-schema.org/understanding-json-schema/reference/index.html) documentation.
 
 #### Property Constraints
 
@@ -288,7 +319,10 @@ There are a variety of constraints currently defined for performance and securit
 
 #### Required Properties (Optional)
 
-Each document may have some fields that are required for the document to be valid and other fields that are optional. Required fields are defined via the `required` array which consists of a list of the field names from the document that must be present. The `required` object should be excluded for documents without any required properties.
+Each document may have some fields that are required for the document to be valid and other fields
+that are optional. Required fields are defined via the `required` array which consists of a list of
+the field names from the document that must be present. The `required` object should be excluded for
+documents without any required properties.
 
 ```json
 "required": [
@@ -297,8 +331,8 @@ Each document may have some fields that are required for the document to be vali
 ]
 ```
 
-**Example**
-The following example (excerpt from the DPNS contract's `domain` document) demonstrates a document that has 6 required fields:
+**Example** The following example (excerpt from the DPNS contract's `domain` document) demonstrates
+a document that has 6 required fields:
 
 ```json
 "required": [
@@ -319,13 +353,18 @@ The `indices` array consists of:
 
  - One or more objects that each contain:
    - A unique `name` for the index
-   - A `properties` array composed of a `<field name: sort order>` object for each document field that is part of the index (sort order: `asc` or `desc`)
-   - An (optional) `unique` element that determines if duplicate values are allowed for the document type
+   - A `properties` array composed of a `<field name: sort order>` object for each document field
+     that is part of the index (sort order: `asc` or `desc`)
+   - An (optional) `unique` element that determines if duplicate values are allowed for the document
+     type
 
 **Note:**
 
  - The `indices` object should be excluded for documents that do not require indices.
- - When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
+ - When defining an index with multiple properties (i.e a compound index), the order in which the
+   properties are listed is important. Refer to the [mongoDB
+   documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details
+   regarding the significance of the order as it relates to querying capabilities.
 
 ```json
 "indices": [
@@ -348,7 +387,8 @@ The `indices` array consists of:
 
 #### Index Constraints
 
-For performance and security reasons, indices have the following constraints. These constraints are subject to change over time.
+For performance and security reasons, indices have the following constraints. These constraints are
+subject to change over time.
 
 | Description | Value |
 | - | - |
@@ -373,8 +413,9 @@ below:
 Also, the `$id` property may not be used in an index since there is no practical benefit to doing
 so.
 
-**Example**
-The following example (excerpt from the DPNS contract's `preorder` document) creates an index named `saltedHash` on the `saltedDomainHash` property that also enforces uniqueness across all documents of that type:
+**Example** The following example (excerpt from the DPNS contract's `preorder` document) creates an
+index named `saltedHash` on the `saltedDomainHash` property that also enforces uniqueness across all
+documents of that type:
 
 ```json
 "indices": [
@@ -392,7 +433,8 @@ The following example (excerpt from the DPNS contract's `preorder` document) cre
 
 ### Full Document Syntax
 
-This example syntax shows the structure of a documents object that defines two documents, an index, and a required field.
+This example syntax shows the structure of a documents object that defines two documents, an index,
+and a required field.
 
 ```json
 {
@@ -439,19 +481,26 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L364-L434).
+Full document schema details may be found in this section of the [js-dpp data contract meta
+schema](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L364-L434).
 
 ## Data Contract Definitions
 
-The optional `$defs` object enables definition of aspects of a schema that are used in multiple places. This is done using the JSON Schema support for [reuse](https://json-schema.org/understanding-json-schema/structuring.html#defs). Items defined in `$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
+The optional `$defs` object enables definition of aspects of a schema that are used in multiple
+places. This is done using the JSON Schema support for
+[reuse](https://json-schema.org/understanding-json-schema/structuring.html#defs). Items defined in
+`$defs` may then be referenced when defining `documents` through use of the `$ref` keyword.
 
 **Note:**
 
- - Properties defined in the `$defs` object must meet the same criteria as those defined in the `documents` object (e.g. the `additionalProperties` properties keyword must be included as described in the [constraints](#additional-properties) section).
- - Data contracts can only use the `$ref` keyword to reference their own `$defs`. Referencing external definitions is not supported by the platform protocol.
+ - Properties defined in the `$defs` object must meet the same criteria as those defined in the
+   `documents` object (e.g. the `additionalProperties` properties keyword must be included as
+   described in the [constraints](#additional-properties) section).
+ - Data contracts can only use the `$ref` keyword to reference their own `$defs`. Referencing
+   external definitions is not supported by the platform protocol.
 
-**Example**
-The following example shows a definition for a `message` object consisting of two properties:
+**Example** The following example shows a definition for a `message` object consisting of two
+properties:
 
 ```json
 {
@@ -473,15 +522,20 @@ The following example shows a definition for a `message` object consisting of tw
 }
 ```
 
-**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`). This must be done prior to broadcasting the contract for registration.
+**Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the
+`.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`). This must be
+done prior to broadcasting the contract for registration.
 
 # Data Contract State Transition Details
 
-There are two data contract-related state transitions: [data contract create](#data-contract-creation) and [data contract update](#data-contract-update). Details are provided in this section.
+There are two data contract-related state transitions: [data contract
+create](#data-contract-creation) and [data contract update](#data-contract-update). Details are
+provided in this section.
 
 ## Data Contract Creation
 
-Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract create state transition consisting of:
+Data contracts are created on the platform by submitting the [data contract
+object](#data-contract-object) in a data contract create state transition consisting of:
 
 | Field | Type | Description|
 | - | - | - |
@@ -492,7 +546,8 @@ Data contracts are created on the platform by submitting the [data contract obje
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array of bytes | Signature of state transition data (65 bytes) |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
+Each data contract state transition must comply with this JSON-Schema definition established in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
 
 ```json
 {
@@ -657,28 +712,36 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ## Data Contract State Transition Signing
 
-Data contract state transitions must be signed by a private key associated with the contract owner's identity.
+Data contract state transitions must be signed by a private key associated with the contract owner's
+identity.
 
 The process to sign a data contract state transition consists of the following steps:
 
-1. Canonical CBOR encode the state transition data - this include all ST fields except the `signature` and `signaturePublicKeyId`
+1. Canonical CBOR encode the state transition data - this include all ST fields except the
+   `signature` and `signaturePublicKeyId`
 2. Sign the encoded data with a private key associated with the `ownerId`
 3. Set the state transition `signature` to the value of the signature created in the previous step
-4. Set the state transition`signaturePublicKeyId` to the [public key `id`](identity.md#public-key-id) corresponding to the key used to sign
+4. Set the state transition`signaturePublicKeyId` to the [public key
+   `id`](identity.md#public-key-id) corresponding to the key used to sign
 
 # Data Contract Validation
 
-The platform protocol performs several forms of validation related to data contracts: model validation, basic validation, and state validation.
+The platform protocol performs several forms of validation related to data contracts: model
+validation, basic validation, and state validation.
 
  - Model validation - ensures object models are correct
  - State transition basic validation - only checks the content of the state transition
  - State transition state validation - takes the overall platform state into consideration
 
-**Example:** A data contract state transition for an existing application could pass structure validation; however, it would fail data validation if it used an application identity that has already created a data contract.
+**Example:** A data contract state transition for an existing application could pass structure
+validation; however, it would fail data validation if it used an application identity that has
+already created a data contract.
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 4 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js).
+The test output below (split into 4 sections for readability) shows the necessary criteria:
 
 ```text
 validateDataContractFactory
@@ -825,7 +888,11 @@ validateDataContractFactory
 
 ### Data Contract Create Basic
 
-Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract create transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+Basic validation verifies that the content of state transition fields complies with the requirements
+for the field. The data contract create transition fields are validated in this way and must pass
+validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js).
+The test output below shows the necessary criteria:
 
 ```text
 validateDataContractCreateTransitionBasicFactory
@@ -860,7 +927,11 @@ validateDataContractCreateTransitionBasicFactory
 
 ### Data Contract Update Basic
 
-Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract update transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateDataContractUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+Basic validation verifies that the content of state transition fields complies with the requirements
+for the field. The data contract update transition fields are validated in this way and must pass
+validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateDataContractUpdateTransitionBasicFactory.spec.js).
+The test output below shows the necessary criteria:
 
 ```text
   validateDataContractUpdateTransitionBasicFactory
@@ -913,7 +984,10 @@ validateIndicesAreBackwardCompatible
 
 ### Data Contract Create State
 
-State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the
+current platform state. The state transition data must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js).
+The test output below shows the necessary criteria:
 
 ```text
   validateDataContractCreateTransitionStateFactory
@@ -923,7 +997,10 @@ State validation verifies that the data in the state transition is valid in the 
 
 ### Data Contract Update State
 
-State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the
+current platform state. The state transition data must pass validation tests as defined in
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js).
+The test output below shows the necessary criteria:
 
 ```text
   validateDataContractUpdateTransitionStateFactory
@@ -934,7 +1011,11 @@ State validation verifies that the data in the state transition is valid in the 
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum
+([500](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9))
+(see
+[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)).
+The test output below shows the necessary criteria:
 
 ```text
   validateDataContractMaxDepthFactory

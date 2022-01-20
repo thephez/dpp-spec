@@ -475,7 +475,11 @@ The following example shows a definition for a `message` object consisting of tw
 
 **Note:** In the `js-dpp` reference implementation, definitions are added to a data contract via the `.setDefinitions()` method (e.g. `myContract.setDefinitions({\"message\": { ... }})`). This must be done prior to broadcasting the contract for registration.
 
-# Data Contract Creation
+# Data Contract State Transition Details
+
+There are two data contract-related state transitions: [data contract create](#data-contract-creation) and [data contract update](#data-contract-update). Details are provided in this section.
+
+## Data Contract Creation
 
 Data contracts are created on the platform by submitting the [data contract object](#data-contract-object) in a data contract create state transition consisting of:
 
@@ -563,7 +567,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 }
 ```
 
-# Data Contract Update
+## Data Contract Update
 
 Existing data contracts can be updated in certain backwards-compatible ways. The following aspects
 of a data contract can be updated:
@@ -651,7 +655,7 @@ Each data contract state transition must comply with this JSON-Schema definition
 }
 ```
 
-# Data Contract State Transition Signing
+## Data Contract State Transition Signing
 
 Data contract state transitions must be signed by a private key associated with the contract owner's identity.
 

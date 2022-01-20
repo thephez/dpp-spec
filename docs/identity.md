@@ -287,6 +287,11 @@ The `securityLevel` field indicates how securely the key should be stored by cli
 | 2 | High | Should be available as long as the user has authenticated at least once during a session
 | 3 | Medium | Should not require user authentication but must require access to the client device
 
+### Public Key `readOnly`
+
+The `readOnly` field indicates that the public key can't be modified if it is set to `true`. The
+value of this field cannot be changed after adding the key.
+
 ## Identity balance
 
 Each identity has a balance of credits established by value locked via a layer 1 lock transaction. This credit balance is used to pay the fees associated with state transitions.

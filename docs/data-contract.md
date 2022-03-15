@@ -356,22 +356,10 @@ For performance and security reasons, indices have the following constraints. Th
 | Maximum number of indices | [10](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L409) |
 | Maximum number of unique indices | [3](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
 | Maximum number of properties in a single index | [10](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/dataContract/dataContractMeta.json#L399) |
-| Maximum length of indexed string property | [1024](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
-| Maximum length of indexed byte array property | [4096](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
-| Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
-
-When creating indices for string or array properties, they must meet the relevant requirements
-below:
-
- - An indexed string property must define `maxLength` < the maximum length for indexed strings shown
-   in the table above (1024)
- - An indexed array property must define `maxItems` < the maximum number of indexed array items
-   shown in the table above (1024)
- - An indexed byte array property must define `maxItems` < the maximum number of indexed byte array
-   items shown in the table above (4096)
-
-Also, the `$id` property may not be used in an index since there is no practical benefit to doing
-so.
+| Maximum length of indexed string property | [63](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
+| **Note: Dash Platform v0.22. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum length of indexed byte array property | [255](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
+| **Note: Dash Platform v0.22. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
+| Usage of `$id` in an index [disallowed](https://github.com/dashevo/platform/pull/178) | N/A |
 
 **Example**
 The following example (excerpt from the DPNS contract's `preorder` document) creates an index named `saltedHash` on the `saltedDomainHash` property that also enforces uniqueness across all documents of that type:

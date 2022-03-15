@@ -2,7 +2,7 @@
 
 Identities are a low-level construct that provide the foundation for user-facing functionality on the platform. An identity is a public key (or set of public keys) recorded on the platform chain that can be used to prove ownership of data. Please see the [Identity DIP](https://github.com/dashpay/dips/blob/master/dip-0011.md) for additional information.
 
-Identities consist of three components that are described in further detail in following sections:
+Identities consist of three components that are described in further detail in the following sections:
 
 | Field | Type | Description|
 | - | - | - |
@@ -88,7 +88,7 @@ The identity `publicKeys` array stores information regarding each public key ass
 
 **Note:** Since v0.22, the same public key can be used for multiple identities. In previous versions any public key(s) assigned to an identity had to be unique (not already used by any identity).
 
-Each item in the `publicKeys` array consists an object containing:
+Each item in the `publicKeys` array consists of an object containing:
 
 | Field | Type | Description|
 | - | - | - |

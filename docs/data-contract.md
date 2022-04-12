@@ -531,27 +531,29 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ```json
 {
-  "protocolVersion": 1,
-  "type": 0,
-  "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
-  "signaturePublicKeyId": 0,
-  "dataContract": {
-    "protocolVersion": 0,
-    "$id": "AoDzJxWSb1gUi2dSmvFeUFpSsjZQRJaqCpn7vCLkwwJj",
-    "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "ownerId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
-    "documents": {
-      "note": {
-        "properties": {
-          "message": {
-            "type": "string"
+  "protocolVersion":1,
+  "type":0,
+  "signature":"IFmEb/OwyYG0yn33U4/kieH4JL63Ft25GAun+XqWOalkbDrpL9z+OH+Sb03xsyMNzoILC2T1Q8yV1q7kCmr0HuQ=",
+  "signaturePublicKeyId":0,
+  "dataContract":{
+    "protocolVersion":1,
+    "$id":"44dvUnSdVtvPPeVy6mS4vRzJ4zfABCt33VvqTWMM8VG6",
+    "$schema":"https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+    "version":1,
+    "ownerId":"6YfP6tT9AK8HPVXMK7CQrhpc8VMg7frjEnXinSPvUmZC",
+    "documents":{
+      "note":{
+        "type":"object",
+        "properties":{
+          "message":{
+            "type":"string"
           }
         },
-        "additionalProperties": false
+        "additionalProperties":false
       }
     }
   },
-  "entropy": "ahw7IvTAYkZcPaGcvh6BCVYP9rh/KyBkoeCGk28yoAw="
+  "entropy":"J2Sl/Ka9T1paYUv6f2ec5MzaaACs9lcUvOskBU0SMlo="
 }
 ```
 
@@ -620,26 +622,31 @@ Each data contract state transition must comply with this JSON-Schema definition
 
 ```json
 {
-  "protocolVersion": 1,
-  "type": 0,
-  "signature": "IG2Tr16rS2+FNoiH71eAva94H5BLV5QNl7Fg25s8ZzWvPlR4wihupdqYupvzTXGiAqPqSK3KQE1EouATMhgHPDc=",
-  "signaturePublicKeyId": 0,
-  "dataContract": {
-    "protocolVersion": 0,
-    "$id": "AoDzJxWSb1gUi2dSmvFeUFpSsjZQRJaqCpn7vCLkwwJj",
-    "$schema": "https://schema.dash.org/dpp-0-4-0/meta/data-contract",
-    "ownerId": "7NUbPf231ixt1kVBQsBvSMMBxd7AgPad8KtdtfFGhXDP",
-    "documents": {
-      "note": {
-        "properties": {
-          "message": {
-            "type": "string"
+  "protocolVersion":1,
+  "type":4,
+  "signature":"IBboAbqbGBiWzyJDyhwzs1GujR6Gb4m5Gt/QCugLV2EYcsBaQKTM/Stq7iyIm2YyqkV8VlWqOfGebW2w5Pjnfak=",
+  "signaturePublicKeyId":0,
+  "dataContract":{
+    "protocolVersion":1,
+    "$id":"44dvUnSdVtvPPeVy6mS4vRzJ4zfABCt33VvqTWMM8VG6",
+    "$schema":"https://schema.dash.org/dpp-0-4-0/meta/data-contract",
+    "version":2,
+    "ownerId":"6YfP6tT9AK8HPVXMK7CQrhpc8VMg7frjEnXinSPvUmZC",
+    "documents":{
+      "note":{
+        "type":"object",
+        "properties":{
+          "message":{
+            "type":"string"
+          },
+          "author":{
+            "type":"string"
           }
         },
-        "additionalProperties": false
+        "additionalProperties":false
       }
     }
-  },
+  }
 }
 ```
 

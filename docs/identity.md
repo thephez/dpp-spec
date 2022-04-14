@@ -240,7 +240,7 @@ The `type` field indicates the algorithm used to derive the key.
 | Type | Description |
 | :-: | - |
 | 0 | ECDSA Secp256k1 (default) |
-| 1 | BLS 12-381 (currently unused)|
+| 1 | BLS 12-381 |
 | 2 | ECDSA Secp256k1 Hash160 |
 
 ### Public Key `data`

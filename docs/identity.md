@@ -12,7 +12,7 @@ Identities consist of three components that are described in further detail in t
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/identity.json):
 
 ```json
 {
@@ -83,11 +83,13 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/identifier/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
-The identity `publicKeys` array stores information regarding each public key associated with the identity. Each identity must have at least one public key.
+The identity `publicKeys` array stores information regarding each public key associated with the identity. 
+
+**Note:** Since v0.23, each identity must have at least two public keys: a primary key (security level `0`) that is only used when updating the identity and an additional one (security level `2`) used to sign state transitions.
 
 **Note:** Since v0.22, the same public key can be used for multiple identities. In previous versions any public key(s) assigned to an identity had to be unique (not already used by any identity).
 
@@ -101,8 +103,9 @@ Each item in the `publicKeys` array consists of an object containing:
 | purpose | integer | Public key purpose (0 - Authentication, 1 - Encryption, 2 - Decryption) |
 | securityLevel | integer | Public key security level. (0 - Master, 1 - Critical, 2 - High, 3 - Medium) |
 | readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
+| disabledAt | integer | Timestamp indicating that the key was disabled at a specified time |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/publicKey.json):
 
 ```json
 {
@@ -120,9 +123,10 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "enum": [
         0,
         1,
-        2
+        2,
+        3
       ],
-      "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381, 2 - ECDSA Secp256k1 Hash160",
+      "description": "Public key type. 0 - ECDSA Secp256k1, 1 - BLS 12-381, 2 - ECDSA Secp256k1 Hash160, 3 - BIP 13 Hash160",
       "$comment": "It can't be changed after adding a key"
     },
     "purpose": {
@@ -130,9 +134,10 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "enum": [
         0,
         1,
-        2
+        2,
+        3
       ],
-      "description": "Public key purpose. 0 - Authentication, 1 - Encryption, 2 - Decryption",
+      "description": "Public key purpose. 0 - Authentication, 1 - Encryption, 2 - Decryption, 3 - Withdraw",
       "$comment": "It can't be changed after adding a key"
     },
     "securityLevel": {
@@ -151,6 +156,11 @@ Each identity public key must comply with this JSON-Schema definition establishe
       "type": "boolean",
       "description": "Read only",
       "$comment": "Identity public key can't be modified with readOnly set to true. It can’t be changed after adding a key"
+    },
+    "disabledAt": {
+      "type": "integer",
+      "description": "Timestamp indicating that the key was disabled at a specified time",
+      "minimum": 0
     }
   },
   "allOf": [
@@ -216,6 +226,27 @@ Each identity public key must comply with this JSON-Schema definition establishe
           }
         }
       }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": 3
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "type": "array",
+            "byteArray": true,
+            "minItems": 20,
+            "maxItems": 20,
+            "description": "BIP13 script public key",
+            "$comment": "It must be a valid script hash of the specified type and unique for the identity"
+          }
+        }
+      }
     }
   ],
   "required": [
@@ -242,6 +273,7 @@ The `type` field indicates the algorithm used to derive the key.
 | 0 | ECDSA Secp256k1 (default) |
 | 1 | BLS 12-381 |
 | 2 | ECDSA Secp256k1 Hash160 |
+| 3 | [BIP13](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki) pay-to-script-hash public key |
 
 ### Public Key `data`
 
@@ -295,13 +327,17 @@ The `securityLevel` field indicates how securely the key should be stored by cli
 The `readOnly` field indicates that the public key can't be modified if it is set to `true`. The
 value of this field cannot be changed after adding the key.
 
+### Public Key `disabledAt`
+
+The `disabledAt` field indicates that the key has been disabled. Its value equals the timestamp when the key was disabled.
+
 ## Identity balance
 
 Each identity has a balance of credits established by value locked via a layer 1 lock transaction. This credit balance is used to pay the fees associated with state transitions.
 
 # Identity State Transition Details
 
-There are two identity-related state transitions: [identity create](#identity-creation) and [identity topup](#identity-topup). Details are provided in this section including information about [asset locking](#asset-lock) and [signing](#identity-state-transition-signing) required for both state transitions.
+There are three identity-related state transitions: [identity create](#identity-creation), [identity topup](#identity-topup), and [identity update](#identity-update). Details are provided in this section including information about [asset locking](#asset-lock) and [signing](#identity-state-transition-signing) required for these state transitions.
 
 ## Identity Creation
 
@@ -313,9 +349,9 @@ Identities are created on the platform by submitting the identity information in
 | type | integer | State transition type (`2` for identity create) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
-| signature | array of bytes | Signature of state transition data (65 bytes) |
+| signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -343,7 +379,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "array",
       "byteArray": true,
       "minItems": 65,
-      "maxItems": 65
+      "maxItems": 65,
+      "description": "Signature made by AssetLock one time ECDSA key"
     }
   },
   "additionalProperties": false,
@@ -393,9 +430,9 @@ Identity credit balances are increased by submitting the topup information in an
 | type | integer | State transition type (`3` for identity topup) |
 | assetLockProof | object | [Asset lock proof object](#asset-lock) proving the layer 1 locking transaction exists and is locked |
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
-| signature | array of bytes | Signature of state transition data (65 bytes) |
+| signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/stateTransition/identityTopUp.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {
@@ -424,7 +461,8 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
       "type": "array",
       "byteArray": true,
       "minItems": 65,
-      "maxItems": 65
+      "maxItems": 65,
+      "description": "Signature made by AssetLock one time ECDSA key"
     }
   },
   "additionalProperties": false,
@@ -455,6 +493,112 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 }
 ```
 
+## Identity Update
+
+Identities are updated on the platform by submitting the identity information in an identity update state transition. This state transition requires either a set of new public keys to add to the identity or a list of the existing keys to disable.
+
+| Field | Type | Description|
+| - | - | - |
+| protocolVersion | integer | The protocol version (currently `1`) |
+| type | integer | State transition type (`5` for identity update) |
+| identityId | array of bytes | The identity id (32 bytes) |
+| signature | array of bytes | Signature of state transition data (65 bytes) |
+| revision | integer | Identity update revision |
+| publicKeysDisabledAt | integer | (Optional) Timestamp for key(s) being disabled. Required if disabling keys. |
+| addPublicKeys | array of public keys | (Optional) Array of up to 10 new public keys to add to the identity. Required if adding keys. |
+| disablePublicKeys | array of integers | (Optional) Array of up to 10 existing public keys to disable (key id only). Required if disabling keys. |
+| signaturePublicKeyId | integer | Id of the public key used to sign the state transition |
+
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "protocolVersion": {
+      "type": "integer",
+      "$comment": "Maximum is the latest protocol version"
+    },
+    "type": {
+      "type": "integer",
+      "const": 5
+    },
+    "identityId": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 32,
+      "maxItems": 32,
+      "contentMediaType": "application/x.dash.dpp.identifier"
+    },
+    "signature": {
+      "type": "array",
+      "byteArray": true,
+      "minItems": 65,
+      "maxItems": 96
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Identity update revision"
+    },
+    "publicKeysDisabledAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "addPublicKeys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true
+    },
+    "disablePublicKeys": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "signaturePublicKeyId": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "dependentRequired" : {
+    "disablePublicKeys": ["publicKeysDisabledAt"],
+    "publicKeysDisabledAt": ["disablePublicKeys"]
+  },
+  "anyOf": [
+    {
+      "type": "object",
+      "required": ["addPublicKeys"],
+      "properties": {
+        "addPublicKeys": true
+      }
+    },
+    {
+      "type": "object",
+      "required": ["disablePublicKeys"],
+      "properties": {
+        "disablePublicKeys": true
+      }
+    }
+  ],
+  "additionalProperties": false,
+  "required": [
+    "protocolVersion",
+    "type",
+    "identityId",
+    "signature",
+    "revision",
+    "signaturePublicKeyId"
+  ]
+}
+```
+
 ## Asset Lock
 
 The [identity create](#identity-creation) and [identity topup](#identity-topup) state transitions both include an asset lock proof object. This object references the layer 1 lock transaction and includes proof that the transaction is locked.
@@ -472,7 +616,7 @@ The InstantSend asset lock proof is used for transactions that have received an 
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
-Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
 
 ```json
 {
@@ -520,7 +664,7 @@ The ChainLock asset lock proof is used for transactions that have note received 
 | coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
 | outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
 
-Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
+Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 
 ```json
 {

@@ -330,22 +330,22 @@ The `indices` array consists of:
 **Note:**
 
  - The `indices` object should be excluded for documents that do not require indices.
- - When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities.
+ - When defining an index with multiple properties (i.e a compound index), the order in which the properties are listed is important. Refer to the [mongoDB documentation](https://docs.mongodb.com/manual/core/index-compound/#prefixes) for details regarding the significance of the order as it relates to querying capabilities. Dash uses [GroveDB](https://github.com/dashevo/grovedb) which works similarly but does requiring listing _all_ the index's fields in query order by statements.
 
 ```json
 "indices": [
   {
     "name": "Index1",
     "properties": [
-      { "<field name a>": "<asc"|"desc>" },
-      { "<field name b>": "<asc"|"desc>" }
+      { "<field name a>": "asc" },
+      { "<field name b>": "asc" }
     ],
     "unique": true|false
   },
   {
     "name": "Index2",
     "properties": [
-      { "<field name c>": "<asc"|"desc>" },
+      { "<field name c>": "asc" },
     ],
   }
 ]
@@ -362,8 +362,8 @@ For performance and security reasons, indices have the following constraints. Th
 | Maximum number of unique indices | [3](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
 | Maximum number of properties in a single index | [10](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/schema/dataContract/dataContractMeta.json#L394) |
 | Maximum length of indexed string property | [63](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
-| **Note: Dash Platform v0.22. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum length of indexed byte array property | [255](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
-| **Note: Dash Platform v0.22. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
+| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum length of indexed byte array property | [255](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
+| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashevo/platform/pull/225)**<br>Maximum number of indexed array items | [1024](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
 | Usage of `$id` in an index [disallowed](https://github.com/dashevo/platform/pull/178) | N/A |
 
 **Example**
@@ -678,17 +678,13 @@ The platform protocol performs several forms of validation related to data contr
 
 ## Data Contract Model
 
-The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 4 sections for readability) shows the necessary criteria:
+The data contract model must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/integration/dataContract/validation/validateDataContractFactory.spec.js). The test output below (split into 4 sections for readability) shows the necessary criteria:
 
 ```text
 validateDataContractFactory
-  ✔ should return invalid result with circular $ref pointer
+  - should return invalid result with circular $ref pointer
   ✔ should return invalid result if indexed string property missing maxLength constraint
   ✔ should return invalid result if indexed string property have to big maxLength
-  ✔ should return invalid result if indexed array property missing maxItems constraint
-  ✔ should return invalid result if indexed array property have to big maxItems
-  ✔ should return invalid result if indexed array property have string item without maxItems constraint
-  ✔ should return invalid result if indexed array property have string item with maxItems bigger than 1024
   ✔ should return invalid result if indexed byte array property missing maxItems constraint
   ✔ should return invalid result if indexed byte array property have to big maxItems
   ✔ should return valid result if Data Contract is valid
@@ -749,7 +745,7 @@ validateDataContractFactory
       ✔ should have items if prefixItems is used for arrays
       ✔ should not have items disabled if prefixItems is used for arrays
       ✔ should return invalid result if "default" keyword is used
-      ✔ should return invalid result if remote `$ref` is used
+      - should return invalid result if remote `$ref` is used
       ✔ should not have `propertyNames`
       ✔ should have `maxItems` if `uniqueItems` is used
       ✔ should have `maxItems` no bigger than 100000 if `uniqueItems` is used
@@ -788,11 +784,7 @@ validateDataContractFactory
       ✔ should return invalid result if $id is specified as an indexed property
       ✔ should return invalid result if indices has undefined property
       ✔ should return invalid result if index property is object
-      ✔ should return invalid result if index property is array of objects
-      ✔ should return invalid result if index property is an array of different types
-      ✔ should return invalid result if index property contained prefixItems array of arrays
-      ✔ should return invalid result if index property contained prefixItems array of objects
-      ✔ should return invalid result if index property is array of arrays
+      ✔ should return invalid result if index property is an array
       ✔ should return invalid result if index property is array with different item definitions
       ✔ should return invalid result if unique compound index contains both required and optional properties
       properties definition
@@ -825,7 +817,7 @@ validateDataContractFactory
 
 ### Data Contract Create Basic
 
-Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract create transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract create transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractCreateTransition/validation/basic/validateDataContractCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateDataContractCreateTransitionBasicFactory
@@ -850,7 +842,7 @@ validateDataContractCreateTransitionBasicFactory
     ✔ should be present
     ✔ should be a byte array
     ✔ should be not less than 65 bytes
-    ✔ should be not longer than 65 bytes
+    ✔ should be not longer than 96 bytes
   signaturePublicKeyId
     ✔ should be an integer
     ✔ should not be < 0
@@ -860,11 +852,12 @@ validateDataContractCreateTransitionBasicFactory
 
 ### Data Contract Update Basic
 
-Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract update transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateDataContractUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+Basic validation verifies that the content of state transition fields complies with the requirements for the field. The data contract update transition fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/integration/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateDataContractUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateDataContractUpdateTransitionBasicFactory
     ✔ should return valid result
+    ✔ should not check Data Contract on dry run
     protocolVersion
       ✔ should be present
       ✔ should be an integer
@@ -884,7 +877,7 @@ Basic validation verifies that the content of state transition fields complies w
       ✔ should be present
       ✔ should be a byte array
       ✔ should be not less than 65 bytes
-      ✔ should be not longer than 65 bytes
+      ✔ should be not longer than 96 bytes
     signaturePublicKeyId
       ✔ should be an integer
       ✔ should not be < 0
@@ -896,7 +889,7 @@ Basic validation verifies that the content of state transition fields complies w
 
 Basic validation also verifies that all indices comply with the requirement to remain backward
 compatible. They must pass validation tests as defined in
-[js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateIndicesAreBackwardCompatible.spec.js).
+[js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/basic/validateIndicesAreBackwardCompatible.spec.js).
 The test output below shows the necessary criteria:
 
 ```text
@@ -906,35 +899,37 @@ validateIndicesAreBackwardCompatible
   ✔ should return invalid result if non-unique index update failed due old properties used
   ✔ should return invalid result if one of new indices contains old properties in the wrong order
   ✔ should return invalid result if one of new indices is unique
-  ✔ should return valid result if indicies are not changed
+  ✔ should return valid result if indices are not changed
 ```
 
 ## State Transition State
 
 ### Data Contract Create State
 
-State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractCreateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateDataContractCreateTransitionStateFactory
     ✔ should return invalid result if Data Contract with specified contractId is already exist
     ✔ should return valid result
+    ✔ should return valid result on dry run
 ```
 
 ### Data Contract Update State
 
-State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/state/validateDataContractCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+State validation verifies that the data in the state transition is valid in the context of the current platform state. The state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/unit/dataContract/stateTransition/DataContractUpdateTransition/validation/state/validateDataContractUpdateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateDataContractUpdateTransitionStateFactory
     ✔ should return invalid result if Data Contract with specified contractId was not found
     ✔ should return invalid result if Data Contract version is not larger by 1
     ✔ should return valid result
+    ✔ should return valid result on dry run
 ```
 
 ## Contract Depth
 
-Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
+Verifies that the data contract's JSON-Schema depth is not greater than the maximum ([500](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/errors/consensus/basic/dataContract/DataContractMaxDepthExceedError.js#L9)) (see [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/unit/dataContract/validation/validateDataContractMaxDepthFactory.spec.js)). The test output below shows the necessary criteria:
 
 ```text
   validateDataContractMaxDepthFactory

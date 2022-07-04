@@ -16,10 +16,10 @@ As an example, DPP contains several data triggers for DPNS. The `domain` documen
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | ---- | ----| ---- | ---- |
-| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
-| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
+| DPNS | All Document Types | [`REPLACE`](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
+| DPNS | All Document Types| [`DELETE`](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
 
 **DPNS Trigger Constraints**
 
@@ -44,19 +44,19 @@ The following table details the DPNS constraints applied via data triggers. Thes
 
 ## State Transition Data
 
-Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
+Data validation verifies that the data in the data trigger is valid in the context of the current platform state. The trigger data must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/integration/document/stateTransition/DocumentsBatchTransition/validation/state/executeDataTriggersFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-executeDataTriggersFactory
-  ✔ should return an array of DataTriggerExecutionResult
-  ✔ should execute multiple data triggers if there is more than one data trigger for the same document and action in the contract
-  ✔ should return a result for each passed document with success or error
-  ✔ should not call any triggers if documents have no triggers associated with it's type or action
-  ✔ should call only one trigger if there's one document with a trigger and one without
-  ✔ should not call any triggers if there's no triggers in the contract
+  executeDataTriggersFactory
+    ✔ should return an array of DataTriggerExecutionResult
+    ✔ should execute multiple data triggers if there is more than one data trigger for the same document and action in the contract
+    ✔ should return a result for each passed document with success or error
+    ✔ should not call any triggers if documents have no triggers associated with it's type or action
+    ✔ should call only one trigger if there's one document with a trigger and one without
+    ✔ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L385):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L408):
 
 ```text
 validateDocumentsBatchTransitionStateFactory
@@ -67,13 +67,14 @@ validateDocumentsBatchTransitionStateFactory
 
 ## DPNS Trigger Validation
 
-As of DPP v0.21, only DPNS, DashPay, and Feature Flags are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashevo/platform/tree/v0.22.0/packages/js-dpp/test/unit/dataTrigger/):
+As of DPP v0.21, only DPNS, DashPay, Feature Flags, and Reward Shares are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.23-dev/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashevo/platform/tree/v0.23-dev/packages/js-dpp/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger
   ✔ should successfully execute if document is valid
   ✔ should successfully execute if document has no `coreHeightCreatedAt` field
   ✔ should fail with out of window error
+  ✔ should successfully execute on dry run
 
 createDomainDataTrigger
   ✔ should successfully execute if document is valid
@@ -87,11 +88,13 @@ createDomainDataTrigger
   ✔ should fail with disallowed domain creation
   ✔ should fail with allowing subdomains for non top level domain
   ✔ should allow creating a second level domain by any identity
+  ✔ should return DataTriggerExecutionResult om dry run
 
 createFeatureFlagDataTrigger
   ✔ should return an error if height is lower than block height
   ✔ should return an error if owner id is not equal to top level identity id
   ✔ should pass
+  ✔ should pass on dry run
 
 getDataTriggers
   ✔ should return matching triggers
@@ -105,4 +108,6 @@ createMasternodeRewardSharesDataTrigger
   ✔ should return an error if payToId does not exist
   ✔ should return an error if ownerId is not a masternode identity
   ✔ should pass
+  ✔ should pass on dry run
+  ✔ should return an error if there are 16 stored shares
 ```

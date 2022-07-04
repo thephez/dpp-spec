@@ -98,7 +98,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
     "documents": {
       "type": "object",
       "propertyNames": {
-        "pattern": "^[a-zA-Z][a-zA-Z0-9-_]{1,62}[a-zA-Z0-9]$"
+        "pattern": "^[a-zA-Z0-9-_]{1,64}$"
       },
       "additionalProperties": {
         "type": "object",
@@ -120,11 +120,11 @@ Details regarding the data contract object may be found in the [js-dpp data cont
                       "items": {
                         "type": "object",
                         "propertyNames": {
-                          "pattern": "^[a-zA-Z$][a-zA-Z0-9-_.]{1,62}[a-zA-Z0-9]$"
+                          "maxLength": 256
                         },
                         "additionalProperties": {
                           "type": "string",
-                          "enum": ["asc", "desc"]
+                          "enum": ["asc"]
                         },
                         "minProperties": 1,
                         "maxProperties": 1
@@ -148,12 +148,11 @@ Details regarding the data contract object may be found in the [js-dpp data cont
               "signatureSecurityLevelRequirement": {
                 "type": "integer",
                 "enum": [
-                  0,
                   1,
                   2,
                   3
                 ],
-                "description": "Public key security level. 0 - Master, 1 - Critical, 2 - High, 3 - Medium. If none specified, High level is used"
+                "description": "Public key security level. 1 - Critical, 2 - High, 3 - Medium. If none specified, High level is used"
               }
             }
           },
@@ -796,6 +795,9 @@ validateDataContractFactory
           ✔ should have at least one property
           ✔ should have no more than one property
           ✔ should have property values only "asc" or "desc"
+      property names
+        ✔ should have valid property names (indices)
+        ✔ should return an invalid result if a property (indices) has invalid format
   signatureSecurityLevelRequirement
     ✔ should be a number
     ✔ should be one of the available values

@@ -87,7 +87,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 ## Identity publicKeys
 
-The identity `publicKeys` array stores information regarding each public key associated with the identity. 
+The identity `publicKeys` array stores information regarding each public key associated with the identity.
 
 **Note:** Since v0.23, each identity must have at least two public keys: a primary key (security level `0`) that is only used when updating the identity and an additional one (security level `2`) used to sign state transitions.
 
@@ -99,8 +99,8 @@ Each item in the `publicKeys` array consists of an object containing:
 | - | - | - |
 | id | integer | The key id (all public keys must be unique) |
 | type | integer | Type of key (default: 0 - ECDSA) |
-| data | array of bytes | Public key (ECDSA: 33 bytes; BLS: 48 bytes) |
-| purpose | integer | Public key purpose (0 - Authentication, 1 - Encryption, 2 - Decryption) |
+| data | array of bytes | Public key (0 - ECDSA: 33 bytes, 1 - BLS: 48 bytes, 2 - ECDSA Hash160: 20 bytes, 3 - [BIP13](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki) Hash160: 20 bytes) |
+| purpose | integer | Public key purpose (0 - Authentication, 1 - Encryption, 2 - Decryption, 3 - Withdraw) |
 | securityLevel | integer | Public key security level. (0 - Master, 1 - Critical, 2 - High, 3 - Medium) |
 | readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
 | disabledAt | integer | Timestamp indicating that the key was disabled at a specified time |
@@ -310,6 +310,7 @@ The `purpose` field describes which operations are supported by the key. Please 
 | 0 | Authentication |
 | 1 | Encryption
 | 2 | Decryption |
+| 3 | Withdraw |
 
 ### Public Key `securityLevel`
 
@@ -317,9 +318,9 @@ The `securityLevel` field indicates how securely the key should be stored by cli
 
 | Level | Description | Security Practice |
 | :-: | - | - |
-| 0 | Master | Should always require a user to authenticate when signing a transition
+| 0 | Master | Should always require a user to authenticate when signing a transition. Can only be used to update an identity.
 | 1 | Critical | Should always require a user to authenticate when signing a transition
-| 2 | High | Should be available as long as the user has authenticated at least once during a session
+| 2 | High | Should be available as long as the user has authenticated at least once during a session. Typically used to sign state transitions, but cannot be used for identity update transitions.
 | 3 | Medium | Should not require user authentication but must require access to the client device
 
 ### Public Key `readOnly`
@@ -495,7 +496,7 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ## Identity Update
 
-Identities are updated on the platform by submitting the identity information in an identity update state transition. This state transition requires either a set of new public keys to add to the identity or a list of the existing keys to disable.
+Identities are updated on the platform by submitting the identity information in an identity update state transition. This state transition requires either a set of one or more new public keys to add to the identity or a list of existing keys to disable.
 
 | Field | Type | Description|
 | - | - | - |
@@ -800,7 +801,7 @@ The public key model must pass validation tests as defined in [js-dpp](https://g
 ```text
 PublicKeys
 validatePublicKeysFactory
-  ✔ should return invalid result if there are duplicate key ids (46ms)
+  ✔ should return invalid result if there are duplicate key ids
   ✔ should return invalid result if there are duplicate keys
   ✔ should return invalid result if key data is not a valid DER
   ✔ should return invalid result if key has an invalid combination of purpose and security level

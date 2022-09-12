@@ -101,9 +101,18 @@ Each item in the `publicKeys` array consists of an object containing:
 | type | integer | Type of key (default: 0 - ECDSA) |
 | data | array of bytes | Public key (0 - ECDSA: 33 bytes, 1 - BLS: 48 bytes, 2 - ECDSA Hash160: 20 bytes, 3 - [BIP13](https://github.com/bitcoin/bips/blob/master/bip-0013.mediawiki) Hash160: 20 bytes) |
 | purpose | integer | Public key purpose (0 - Authentication, 1 - Encryption, 2 - Decryption, 3 - Withdraw) |
-| securityLevel | integer | Public key security level. (0 - Master, 1 - Critical, 2 - High, 3 - Medium) |
+| securityLevel | integer | Public key security level (0 - Master, 1 - Critical, 2 - High, 3 - Medium) |
 | readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
 | disabledAt | integer | Timestamp indicating that the key was disabled at a specified time |
+
+Keys for some purposes must meet certain [security level criteria](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/lib/identity/IdentityPublicKey.js#L345-L359) as detailed below:
+
+| Key Purpose | Allowed Security Level(s) |
+| - | - |
+| Authentication | Any security level |
+| Encryption | Medium |
+| Decryption | Medium |
+| Withdraw | Critical |
 
 Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/schema/identity/publicKey.json):
 

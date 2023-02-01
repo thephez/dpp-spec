@@ -774,6 +774,7 @@ validateDataContractFactory
     ✔ should have at least one item
     ✔ should return invalid result if there are duplicated indices
     ✔ should return invalid result if there are duplicated index names
+    ✔ should return invalid result if there are unique indices with partially required properties
     index
       ✔ should be an object
       ✔ should have properties definition
@@ -897,10 +898,11 @@ The test output below shows the necessary criteria:
 ```text
 validateIndicesAreBackwardCompatible
   ✔ should return invalid result if some of unique indices have changed
-  ✔ should return invalid result if non-unique index update failed due to changed old properties
-  ✔ should return invalid result if non-unique index update failed due old properties used
+  ✔ should return invalid result if already defined properties are changed in existing index
+  ✔ should return invalid result if already indexed properties are added to existing index
   ✔ should return invalid result if one of new indices contains old properties in the wrong order
   ✔ should return invalid result if one of new indices is unique
+  ✔ should return invalid result if existing property was used in a new index
   ✔ should return valid result if indices are not changed
 ```
 

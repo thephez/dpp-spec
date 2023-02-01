@@ -7,13 +7,13 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/lib/stateTransition/fee/constants.js).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/stateTransition/fee/constants.js).
 
-**Note:** Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashevo/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
+**Note:** Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/util/serializer.js#L5).
 
 ## Common Fields
 
@@ -112,7 +112,7 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashevo/platform/blob/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
 
 1. The identity exists
 2. The identity has a public key
@@ -140,7 +140,7 @@ validateStateTransitionIdentitySignatureFactory
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashevo/platform/tree/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
 
 ```text
 validateStateTransitionBasicFactory

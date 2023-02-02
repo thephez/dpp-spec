@@ -75,6 +75,8 @@ createContactRequestDataTrigger
   ✔ should successfully execute if document has no `coreHeightCreatedAt` field
   ✔ should fail with out of window error
   ✔ should successfully execute on dry run
+  ✔ should fail if ownerId equals toUserId
+  ✔ should fail if toUserId does not exist
 
 createDomainDataTrigger
   ✔ should successfully execute if document is valid

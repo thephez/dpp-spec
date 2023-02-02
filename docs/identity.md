@@ -519,7 +519,7 @@ Identities are updated on the platform by submitting the identity information in
 | disablePublicKeys | array of integers | (Optional) Array of up to 10 existing identity public key ID(s) to disable for the identity. Required if disabling keys. |
 | signaturePublicKeyId | integer | The ID of public key used to sign the state transition |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/identityUpdate.json):
 
 ```json
 {
@@ -1062,6 +1062,7 @@ The identity update state transition data must pass validation tests as defined 
   validateIdentityUpdateTransitionStateFactory
     ✔ should return InvalidIdentityRevisionError if new revision is not incremented by 1
     ✔ should return IdentityPublicKeyIsReadOnlyError if disabling public key is readOnly
+    ✔ should return IdentityPublicKeyIsDisabledError if disabling public key is already disabled
     ✔ should return invalid result if disabledAt has violated time window
     ✔ should throw InvalidIdentityPublicKeyIdError if identity does not contain public key with disabling ID
     ✔ should pass when disabling public key

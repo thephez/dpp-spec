@@ -171,9 +171,19 @@ validateStateTransitionFeeFactory
 validateStateTransitionKeySignatureFactory
   ✔ should return invalid result if signature is not valid
   ✔ should return valid result if signature is valid
+  ✔ should return IdentityNotFoundError if identity not exist on topup transaction
 
 validateStateTransitionStateFactory
   ✔ should return invalid result if State Transition type is invalid
   ✔ should return invalid result if Data Contract State Transition is not valid
   ✔ should return valid result
+```
+
+The state transition schema must also pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/stateTransition/calculateStateTransitionFeeFactory.spec.js). The test output below shows the necessary criteria:
+
+```text
+  calculateStateTransitionFeeFactory
+    ✔ should throw an error if more than two identities have refunds
+    ✔ should throw an error if refunded identity is not owner of state transition
+    ✔ should calculate fee based on executed operations
 ```

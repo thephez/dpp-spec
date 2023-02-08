@@ -56,7 +56,7 @@ Data validation verifies that the data in the data trigger is valid in the conte
     ✔ should not call any triggers if there's no triggers in the contract
 ```
 
-An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L408):
+An additional validation occurs related to document batch state transition as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/unit/document/stateTransition/DocumetsBatchTransition/validation/state/validateDocumentsBatchTransitionStateFactory.spec.js#L401):
 
 ```text
 validateDocumentsBatchTransitionStateFactory

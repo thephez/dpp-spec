@@ -168,6 +168,21 @@ validateStateTransitionFeeFactory
     ✔ should return valid result
     ✔ should not increase balance on dry run
 
+validateStateTransitionIdentitySignatureFactory
+  ✔ should pass properly signed state transition
+  ✔ should return invalid result if owner id doesn't exist
+  ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not exist
+  ✔ should return InvalidStateTransitionSignatureError if signature is invalid
+  Consensus errors
+    ✔ should return InvalidSignaturePublicKeySecurityLevelConsensusError if InvalidSignaturePublicKeySecurityLevelError was thrown
+    ✔ should return PublicKeySecurityLevelNotMetConsensusError if PublicKeySecurityLevelNotMetError was thrown
+    ✔ should return WrongPublicKeyPurposeConsensusError if WrongPublicKeyPurposeError was thrown
+    ✔ should return PublicKeyIsDisabledConsensusError if PublicKeyIsDisabledError was thrown
+    ✔ should return InvalidStateTransitionSignatureError if DPPError was thrown
+    ✔ should throw unknown error
+    ✔ should not verify signature on dry run
+
 validateStateTransitionKeySignatureFactory
   ✔ should return invalid result if signature is not valid
   ✔ should return valid result if signature is valid
@@ -179,11 +194,9 @@ validateStateTransitionStateFactory
   ✔ should return valid result
 ```
 
-The state transition schema must also pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/stateTransition/calculateStateTransitionFeeFactory.spec.js). The test output below shows the necessary criteria:
+The state transition schema must also pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/stateTransition/calculateStateTransitionFeeFromOperationsFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
-  calculateStateTransitionFeeFactory
-    ✔ should throw an error if more than two identities have refunds
-    ✔ should throw an error if refunded identity is not owner of state transition
+  calculateStateTransitionFeeFromOperationsFactory
     ✔ should calculate fee based on executed operations
 ```

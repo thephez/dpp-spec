@@ -7,13 +7,13 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/stateTransition/fee/constants.js).
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/stateTransition/fee/constants.js).
 
-**Note:** Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
+Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/util/serializer.js#L5).
 
 ## Common Fields
 
@@ -112,7 +112,7 @@ The process to sign a state transition consists of the following steps:
 
 ## Signature Validation
 
-The `signature` validation (see [js-dpp](https://github.com/dashpay/platform/blob/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
+The `signature` validation (see [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/unit/stateTransition/validation/validateStateTransitionIdentitySignatureFactory.spec.js)) verifies that:
 
 1. The identity exists
 2. The identity has a public key
@@ -140,7 +140,7 @@ validateStateTransitionIdentitySignatureFactory
 
 # State Transition Validation
 
-The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.23.0/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
+The state transition schema must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/test/unit/stateTransition/validation). The test output below shows the necessary criteria:
 
 ```text
 validateStateTransitionBasicFactory
@@ -168,12 +168,35 @@ validateStateTransitionFeeFactory
     ✔ should return valid result
     ✔ should not increase balance on dry run
 
+validateStateTransitionIdentitySignatureFactory
+  ✔ should pass properly signed state transition
+  ✔ should return invalid result if owner id doesn't exist
+  ✔ should return MissingPublicKeyError if the identity doesn't have a matching public key
+  ✔ should return InvalidIdentityPublicKeyTypeError if type is not exist
+  ✔ should return InvalidStateTransitionSignatureError if signature is invalid
+  Consensus errors
+    ✔ should return InvalidSignaturePublicKeySecurityLevelConsensusError if InvalidSignaturePublicKeySecurityLevelError was thrown
+    ✔ should return PublicKeySecurityLevelNotMetConsensusError if PublicKeySecurityLevelNotMetError was thrown
+    ✔ should return WrongPublicKeyPurposeConsensusError if WrongPublicKeyPurposeError was thrown
+    ✔ should return PublicKeyIsDisabledConsensusError if PublicKeyIsDisabledError was thrown
+    ✔ should return InvalidStateTransitionSignatureError if DPPError was thrown
+    ✔ should throw unknown error
+    ✔ should not verify signature on dry run
+
 validateStateTransitionKeySignatureFactory
   ✔ should return invalid result if signature is not valid
   ✔ should return valid result if signature is valid
+  ✔ should return IdentityNotFoundError if identity not exist on topup transaction
 
 validateStateTransitionStateFactory
   ✔ should return invalid result if State Transition type is invalid
   ✔ should return invalid result if Data Contract State Transition is not valid
   ✔ should return valid result
+```
+
+The state transition schema must also pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/stateTransition/calculateStateTransitionFeeFromOperationsFactory.spec.js). The test output below shows the necessary criteria:
+
+```text
+  calculateStateTransitionFeeFromOperationsFactory
+    ✔ should calculate fee based on executed operations
 ```

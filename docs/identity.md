@@ -12,7 +12,7 @@ Identities consist of three components that are described in further detail in t
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/identity.json):
 
 ```json
 {
@@ -83,7 +83,7 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/lib/identifier/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identifier/Identifier.js).
 
 ## Identity publicKeys
 
@@ -105,7 +105,7 @@ Each item in the `publicKeys` array consists of an object containing:
 | readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
 | disabledAt | integer | Timestamp indicating that the key was disabled at a specified time |
 
-Keys for some purposes must meet certain [security level criteria](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/lib/identity/IdentityPublicKey.js#L345-L359) as detailed below:
+Keys for some purposes must meet certain [security level criteria](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identity/IdentityPublicKey.js#L345-L359) as detailed below:
 
 | Key Purpose | Allowed Security Level(s) |
 | - | - |
@@ -114,7 +114,7 @@ Keys for some purposes must meet certain [security level criteria](https://githu
 | Decryption | Medium |
 | Withdraw | Critical |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/publicKey.json):
 
 ```json
 {
@@ -361,7 +361,7 @@ Identities are created on the platform by submitting the identity information in
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -442,7 +442,7 @@ Identity credit balances are increased by submitting the topup information in an
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 | signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/identityTopUp.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {
@@ -519,7 +519,7 @@ Identities are updated on the platform by submitting the identity information in
 | disablePublicKeys | array of integers | (Optional) Array of up to 10 existing identity public key ID(s) to disable for the identity. Required if disabling keys. |
 | signaturePublicKeyId | integer | The ID of public key used to sign the state transition |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/identityUpdate.json):
+Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityUpdate.json):
 
 ```json
 {
@@ -626,7 +626,7 @@ The InstantSend asset lock proof is used for transactions that have received an 
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
-Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
 
 ```json
 {
@@ -674,7 +674,7 @@ The ChainLock asset lock proof is used for transactions that have note received 
 | coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
 | outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
 
-Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
+Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 
 ```json
 {
@@ -772,7 +772,7 @@ The platform protocol performs several forms of validation related to identities
 
 ## Identity Model
 
-The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
+The identity model must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/validation/validateIdentityFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 Identity
@@ -805,7 +805,7 @@ validateIdentityFactory
 
 ## Public Key Model
 
-The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
+The public key model must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/validation/validatePublicKeysFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 PublicKeys
@@ -859,7 +859,7 @@ Basic validation verifies that the content of state transition fields complies w
 
 ### Identity Create Basic
 
-The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityCreateTransition/validation/basic/validateIdentityCreateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityCreateTransitionBasicFactory
@@ -892,7 +892,7 @@ validateIdentityCreateTransitionBasicFactory
 
 ### Identity TopUp Basic
 
-The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityTopUpTransition/validation/basic/validateIdentityTopUpTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityTopUpTransitionBasicFactory
@@ -922,7 +922,7 @@ validateIdentityTopUpTransitionBasicFactory
 
 ### Identity Update Basic
 
-The identity update fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/basic/validateIdentityUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
+The identity update fields are validated in this way and must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/basic/validateIdentityUpdateTransitionBasicFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateIdentityUpdateTransitionBasicFactory
@@ -971,11 +971,11 @@ The identity update fields are validated in this way and must pass validation te
 
 ## Asset Lock Basic
 
-The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
+The asset lock fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof). The specific tests are dependent on the type of proof as shown in the sections below.
 
 ### InstantSend Asset Lock Proof Basic
 
-The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The InstantSend asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/instant/validateInstantAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateInstantAssetLockProofStructureFactory
@@ -1005,7 +1005,7 @@ validateInstantAssetLockProofStructureFactory
 
 ### ChainLock Asset Lock Proof Basic
 
-The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
+The ChainLock asset lock proof fields must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/assetLockProof/chain/validateChainAssetLockProofStructureFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateChainAssetLockProofStructureFactory
@@ -1036,7 +1036,7 @@ State validation verifies that the data in the state transition is valid in the 
 
 ### Identity Create State
 
-The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityCreateTransition/validation/state/validateIdentityCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+The identity create state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/unit/identity/stateTransition/IdentityCreateTransition/validation/state/validateIdentityCreateTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityCreateTransitionStateFactory
@@ -1047,7 +1047,7 @@ validateIdentityCreateTransitionStateFactory
 
 ### Identity TopUp State
 
-The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/unit/identity/stateTransition/IdentityTopUpTransition/validation/state/validateIdentityTopUpTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
+The identity topup state transition data must pass validation tests as defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/unit/identity/stateTransition/IdentityTopUpTransition/validation/state/validateIdentityTopUpTransitionStateFactory.spec.js). The test output below shows the necessary criteria:
 
 ```text
 validateIdentityTopUpTransitionStateFactory
@@ -1056,7 +1056,7 @@ validateIdentityTopUpTransitionStateFactory
 
 ### Identity Update State
 
-The identity update state transition data must pass validation tests as defined in [js-dpp for transition state](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/state/validateIdentityUpdateTransitionStateFactory.spec.js) and [public key state](https://github.com/dashpay/platform/blob/v0.24-dev/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/state/validatePublicKeysState.spec.js). The test output below shows the necessary criteria:
+The identity update state transition data must pass validation tests as defined in [js-dpp for transition state](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/state/validateIdentityUpdateTransitionStateFactory.spec.js) and [public key state](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/test/integration/identity/stateTransition/IdentityUpdateTransition/validation/state/validatePublicKeysState.spec.js). The test output below shows the necessary criteria:
 
 ```text
   validateIdentityUpdateTransitionStateFactory

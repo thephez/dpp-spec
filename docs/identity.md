@@ -87,11 +87,10 @@ The identity `id` is calculated by Base58 encoding the double sha256 hash of the
 
 ## Identity publicKeys
 
-The identity `publicKeys` array stores information regarding each public key associated with the identity.
+The identity `publicKeys` array stores information regarding each public key associated with the identity. Multiple identities may use the same public key.
 
 **Note:** Since v0.23, each identity must have at least two public keys: a primary key (security level `0`) that is only used when updating the identity and an additional one (security level `2`) used to sign state transitions.
 
-**Note:** Since v0.22, the same public key can be used for multiple identities. In previous versions any public key(s) assigned to an identity had to be unique (not already used by any identity).
 
 Each item in the `publicKeys` array consists of an object containing:
 

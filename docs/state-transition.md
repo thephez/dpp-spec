@@ -9,7 +9,7 @@
 
 State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/stateTransition/fee/constants.js).
 
-**Note:** Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
+Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
 
 ## Size
 

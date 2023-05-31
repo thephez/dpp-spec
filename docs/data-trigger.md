@@ -67,7 +67,7 @@ validateDocumentsBatchTransitionStateFactory
 
 ## DPNS Trigger Validation
 
-As of DPP v0.21, only DPNS, DashPay, Feature Flags, and Reward Shares are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/test/unit/dataTrigger/):
+Only DPNS, DashPay, Feature Flags, and Reward Shares are able to use data triggers. Their data triggers are defined in [js-dpp](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/lib/dataTrigger). See here for some [validation tests](https://github.com/dashpay/platform/tree/v0.24.5/packages/js-dpp/test/unit/dataTrigger/):
 
 ```text
 createContactRequestDataTrigger

@@ -79,7 +79,7 @@ Each identity must comply with this JSON-Schema definition established in [rs-dp
 
 ## Identity id
 
-The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) used to fund the identity creation.
+The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) used to fund the identity creation.
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
@@ -621,7 +621,7 @@ The InstantSend asset lock proof is used for transactions that have received an 
 | Field | Type | Description|
 | - | - | - |
 | type | integer | The asset lock proof type (`0` for InstantSend locks) |
-| instantLock | array of bytes | The InstantSend lock ([`islock`](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
+| instantLock | array of bytes | The InstantSend lock ([`islock`](https://docs.dash.org/projects/core/en/stable/docs/reference/p2p-network-instantsend-messages.html#islock)) |
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
@@ -671,7 +671,7 @@ The ChainLock asset lock proof is used for transactions that have note received 
 | - | - | - |
 | type | array of bytes | The type of asset lock proof (`1` for ChainLocks) |
 | coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
-| outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
+| outPoint | object | The  [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) being used as the asset lock |
 
 Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 

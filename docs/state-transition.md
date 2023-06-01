@@ -44,11 +44,13 @@ More detailed information about the `dataContract` object can be found in the [d
 
 Entropy is included in [Data Contracts](data-contract.md#data-contract-creation) and [Documents](document.md#document-create-transition).
 
-```javascript
-// From the JavaScript reference implementation (js-dpp)
+```rust
+// From the Rust reference implementation (rs-dpp)
 // entropyGenerator.js
-function generate() {
-  return crypto.randomBytes(32);
+fn generate(&self) -> anyhow::Result<[u8; 32]> {
+  let mut buffer = [0u8; 32];
+  getrandom(&mut buffer).context("generating entropy failed")?;
+  Ok(buffer)
 }
 ```
 

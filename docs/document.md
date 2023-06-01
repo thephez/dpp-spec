@@ -11,7 +11,7 @@ Documents are sent to the platform by submitting the them in a document batch st
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array | Signature of state transition data (65 or 96 bytes) |
 
-Each document batch state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentsBatch.json):
+Each document batch state transition must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentsBatch.json):
 
 ```json
 {
@@ -75,7 +75,7 @@ All document transitions in a document batch state transition are built on the b
 | $action | array of integers | [Action](#document-transition-action) the platform should take for the associated document |
 | $dataContractId | array | Data contract ID [generated](data-contract.md#data-contract-id) from the data contract's `ownerId` and `entropy` (32 bytes) |
 
-Each document transition must comply with the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json):
+Each document transition must comply with the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentTransition/base.json):
 
 ```json
 {
@@ -116,18 +116,25 @@ Each document transition must comply with the document transition [base schema](
 
 ### Document id
 
-The document `$id` is created by hashing the document's `dataContractId`, `ownerId`, `type`, and `entropy` as shown [here](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/document/generateDocumentId.js).
+The document `$id` is created by hashing the document's `dataContractId`, `ownerId`, `type`, and `entropy` as shown in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/document/generate_document_id.rs).
 
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// generateDocumentId.js
-function generateDocumentId(contractId, ownerId, type, entropy) {
-  return hash(Buffer.concat([
-    contractId,
-    ownerId,
-    Buffer.from(type),
-    entropy,
-  ]));
+```rust
+// From the Rust reference implementation (rs-dpp)
+// generate_document_id.rs
+pub fn generate_document_id(
+    contract_id: &Identifier,
+    owner_id: &Identifier,
+    document_type: &str,
+    entropy: &[u8],
+) -> Identifier {
+    let mut buf: Vec<u8> = vec![];
+
+    buf.extend_from_slice(&contract_id.to_buffer());
+    buf.extend_from_slice(&owner_id.to_buffer());
+    buf.extend_from_slice(document_type.as_bytes());
+    buf.extend_from_slice(entropy);
+
+    Identifier::from_bytes(&hash(&buf)).unwrap()
 }
 ```
 
@@ -150,7 +157,7 @@ The document create transition extends the base schema to include the following 
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document create transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document create transition must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentTransition/create.json) (in addition to the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -212,7 +219,7 @@ The document replace transition extends the base schema to include the following
 | $revision | integer | Document revision (=> 1) |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document replace transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
+Each document replace transition must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentTransition/replace.json) (in addition to the document transition [base schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/document/stateTransition/documentTransition/base.json)) that is required for all document transitions):
 
 ```json
 {
@@ -287,7 +294,7 @@ The document delete transition only requires the fields found in the [base docum
 
 # Document Object
 
-The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/documentBase.json)):
+The document object represents the data provided by the platform in response to a query. Responses consist of an array of these objects containing the following fields as defined in the Rust reference client ([rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/schema/document/documentExtended.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
@@ -300,7 +307,7 @@ The document object represents the data provided by the platform in response to 
 | $createdAt | integer | (Optional)  | Time (in milliseconds) the document was created |
 | $updatedAt | integer | (Optional)  | Time (in milliseconds) the document was last updated |
 
-Each document object must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/document/documentBase.json):
+Each document object must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/schema/document/documentExtended.json):
 
 ```json
 {

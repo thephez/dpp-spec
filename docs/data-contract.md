@@ -6,7 +6,7 @@ The following sections provide details that developers need to construct valid c
 
 # General Constraints
 
-**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [js-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json)).
+**Note:** There are a variety of constraints currently defined for performance and security reasons. The following constraints are applicable to all aspects of data contracts. Unless otherwise noted, these constraints are defined in the platform's JSON Schema rules (e.g. [rs-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json)).
 
 ## Keyword
 
@@ -30,7 +30,7 @@ The following sections provide details that developers need to construct valid c
 
 **Note:** These constraints are defined in the Dash Platform Protocol logic (not in JSON Schema).
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/util/serializer.rs#L8).
 
 ## Additional Properties
 
@@ -44,21 +44,21 @@ Include the following at the same level as the `properties` keyword to ensure pr
 
 # Data Contract Object
 
-The data contract object consists of the following fields as defined in the JavaScript reference client ([js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json)):
+The data contract object consists of the following fields as defined in the JavaScript reference client ([rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json)):
 
 | Property | Type | Required | Description |
 | - | - | - | - |
-| protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | Yes | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/version/mod.rs#L9)) |
 | $schema | string | Yes  | A valid URL (default: https://schema.dash.org/dpp-0-4-0/meta/data-contract)
-| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L341-L347)) |
+| $id | array of bytes| Yes | Contract ID generated from `ownerId` and entropy ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L378-L384)) |
 | version | integer | Yes | The data contract version |
-| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L352-L358) |
+| ownerId | array of bytes | Yes | [Identity](identity.md) that registered the data contract defining the document ([32 bytes; content media type: `application/x.dash.dpp.identifier`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L389-L395) |
 | documents | object | Yes | Document definitions (see [Documents](#data-contract-documents) for details) |
 | $defs | object | No | Definitions for `$ref` references used in the `documents` object (if present, must be a non-empty object with <= 100 valid properties) |
 
 ## Data Contract Schema
 
-Details regarding the data contract object may be found in the [js-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json). A truncated version is shown below for reference:
+Details regarding the data contract object may be found in the [rs-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json). A truncated version is shown below for reference:
 
 ```json
 {
@@ -71,13 +71,14 @@ Details regarding the data contract object may be found in the [js-dpp data cont
   "properties": {
     "protocolVersion": {
       "type": "integer",
+      "minimum": 0,
       "$comment": "Maximum is the latest protocol version"
     },
     "$schema": {
       "type": "string",
       "const": "https://schema.dash.org/dpp-0-4-0/meta/data-contract"
     },
-    "$id":{
+    "$id": {
       "type": "array",
       "byteArray": true,
       "minItems": 32,
@@ -88,7 +89,7 @@ Details regarding the data contract object may be found in the [js-dpp data cont
       "type": "integer",
       "minimum": 1
     },
-    "ownerId":{
+    "ownerId": {
       "type": "array",
       "byteArray": true,
       "minItems": 32,
@@ -124,7 +125,9 @@ Details regarding the data contract object may be found in the [js-dpp data cont
                         },
                         "additionalProperties": {
                           "type": "string",
-                          "enum": ["asc"]
+                          "enum": [
+                            "asc"
+                          ]
                         },
                         "minProperties": 1,
                         "maxProperties": 1
@@ -136,7 +139,10 @@ Details regarding the data contract object may be found in the [js-dpp data cont
                       "type": "boolean"
                     }
                   },
-                  "required": ["properties", "name"],
+                  "required": [
+                    "properties",
+                    "name"
+                  ],
                   "additionalProperties": false
                 },
                 "minItems": 1,
@@ -148,11 +154,12 @@ Details regarding the data contract object may be found in the [js-dpp data cont
               "signatureSecurityLevelRequirement": {
                 "type": "integer",
                 "enum": [
+                  0,
                   1,
                   2,
                   3
                 ],
-                "description": "Public key security level. 1 - Critical, 2 - High, 3 - Medium. If none specified, High level is used"
+                "description": "Public key security level. 0 - Master, 1 - Critical, 2 - High, 3 - Medium. If none specified, High level is used"
               }
             }
           },
@@ -203,18 +210,17 @@ Details regarding the data contract object may be found in the [js-dpp data cont
 
 ## Data Contract id
 
-The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataContract/generateDataContractId.js).
+The data contract `$id` is a hash of the `ownerId` and entropy as shown [here](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_contract/generate_data_contract.rs).
 
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// generateDataContractId.js
-function generateDataContractId(ownerId, entropy) {
-  return hash(
-    Buffer.concat([
-      ownerId,
-      entropy,
-    ]),
-  );
+```rust
+// From the Rust reference implementation (rs-dpp)
+// generate_data_contract.rs
+/// Generate data contract id based on owner id and entropy
+pub fn generate_data_contract_id(owner_id: impl AsRef<[u8]>, entropy: impl AsRef<[u8]>) -> Vec<u8> {
+    let mut b: Vec<u8> = vec![];
+    let _ = b.write(owner_id.as_ref());
+    let _ = b.write(entropy.as_ref());
+    hash(b)
 }
 ```
 
@@ -280,13 +286,13 @@ There are a variety of constraints currently defined for performance and securit
 
 | Description | Value |
 | - | - |
-| Minimum number of properties | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L22) |
-| Maximum number of properties | [100](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L23) |
-| Minimum property name length | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) (Note: minimum length was 3 prior to v0.23) |
-| Maximum property name length | [64](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L9) |
+| Minimum number of properties | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L22) |
+| Maximum number of properties | [100](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L23) |
+| Minimum property name length | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L20) (Note: minimum length was 3 prior to v0.23) |
+| Maximum property name length | [64](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L20) |
 | Property name characters | Alphanumeric (`A-Z`, `a-z`, `0-9`)<br>Hyphen (`-`) <br>Underscore (`_`) |
 
-**Note:** Prior to Dash Platform v0.23 there were stricter limitations on minimum property name length and the characters that could be used in property names.
+Prior to Dash Platform v0.23 there were stricter limitations on minimum property name length and the characters that could be used in property names.
 
 #### Required Properties (Optional)
 
@@ -356,13 +362,13 @@ For performance and security reasons, indices have the following constraints. Th
 
 | Description | Value |
 | - | - |
-| Minimum/maximum length of index `name` | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L376) / [32](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L377) |
-| Maximum number of indices | [10](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L404) |
-| Maximum number of unique indices | [3](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/errors/consensus/basic/dataContract/UniqueIndicesLimitReachedError.js#L22) |
-| Maximum number of properties in a single index | [10](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L394) |
-| Maximum length of indexed string property | [63](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L22) |
-| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashpay/platform/pull/225)**<br>Maximum length of indexed byte array property | [255](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L23) |
-| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashpay/platform/pull/225)**<br>Maximum number of indexed array items | [1024](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataContract/validation/validateDataContractFactory.js#L24) |
+| Minimum/maximum length of index `name` | [1](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L413) / [32](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L414) |
+| Maximum number of indices | [10](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L446) |
+| Maximum number of unique indices | [3](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_contract/validation/data_contract_validator.rs#L40) |
+| Maximum number of properties in a single index | [10](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L433) |
+| Maximum length of indexed string property | [63](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_contract/validation/data_contract_validator.rs#L39) |
+| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashpay/platform/pull/225)**<br>Maximum length of indexed byte array property | [255](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_contract/validation/data_contract_validator.rs#L43) |
+| **Note: Dash Platform v0.22+. [does not allow indices for arrays](https://github.com/dashpay/platform/pull/225)**<br>Maximum number of indexed array items | [1024](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_contract/validation/data_contract_validator.rs#L44) |
 | Usage of `$id` in an index [disallowed](https://github.com/dashpay/platform/pull/178) | N/A |
 
 **Example**
@@ -431,7 +437,7 @@ This example syntax shows the structure of a documents object that defines two d
 
 ### Document Schema
 
-Full document schema details may be found in this section of the [js-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/dataContractMeta.json#L359-L428).
+Full document schema details may be found in this section of the [rs-dpp data contract meta schema](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/dataContractMeta.json#L368-L471).
 
 ## Data Contract Definitions
 
@@ -477,14 +483,14 @@ Data contracts are created on the platform by submitting the [data contract obje
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/version/mod.rs#L9)) |
 | type | integer | State transition type (`0` for data contract create) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the data contract details
 | entropy | array of bytes | Entropy used to generate the data contract ID. Generated as [shown here](state-transition.md#entropy-generation). (32 bytes) |
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array of bytes | Signature of state transition data (65 or 96 bytes) |
 
-Each data contract state transition must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/stateTransition/dataContractCreate.json):
+Each data contract state transition must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/stateTransition/dataContractCreate.json):
 
 ```json
 {
@@ -575,14 +581,14 @@ object](#data-contract-object) in a data contract update state transition consis
 
 | Field | Type | Description|
 | - | - | - |
-| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/version/protocolVersion.js#L2)) |
+| protocolVersion | integer | The platform protocol version ([currently `1`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/version/mod.rs#L9)) |
 | type | integer | State transition type (`4` for data contract update) |
 | dataContract | [data contract object](#data-contract-object) | Object containing the updated data contract details<br>**Note:** the data contract's [`version` property](data-contract-version) must be incremented with each update
 | signaturePublicKeyId | number | The `id` of the [identity public key](identity.md#identity-publickeys) that signed the state transition |
 | signature | array of bytes | Signature of state transition data (65 or 96 bytes) |
 
 Each data contract state transition must comply with this JSON-Schema definition established in
-[js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/dataContract/stateTransition/dataContractUpdate.json):
+[rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/data_contract/stateTransition/dataContractUpdate.json):
 
 ```json
 {

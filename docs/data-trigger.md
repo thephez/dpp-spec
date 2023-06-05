@@ -12,14 +12,14 @@ When document state transitions are received, DPP checks if there is a trigger a
 
 ## Example
 
-As an example, DPP contains several data triggers for DPNS. The `domain` document has added constraints for creation. All DPNS document types have constraints on replacing or deleting:
+As an example, DPP contains several data triggers for DPNS as defined in the [data triggers factory](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_trigger/get_data_triggers_factory.rs). The `domain` document has added constraints for creation. All DPNS document types have constraints on replacing or deleting:
 
 | Data Contract | Document | Action(s) | Trigger Description |
 | - | - | - | - |
-| DPNS | `domain` | [`CREATE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
+| DPNS | `domain` | [`CREATE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/lib/dataTrigger/dpnsTriggers/createDomainDataTrigger.js) | Enforces DNS compatibility, validates provided hashes, and restricts top-level domain (TLD) registration |
 | ---- | ----| ---- | ---- |
-| DPNS | All Document Types | [`REPLACE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents updates to existing documents |
-| DPNS | All Document Types| [`DELETE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/dataTrigger/rejectDataTrigger.js) | Prevents deletion of existing documents |
+| DPNS | All Document Types | [`REPLACE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_trigger/reject_data_trigger.rs) | Prevents updates to existing documents |
+| DPNS | All Document Types| [`DELETE`](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/data_trigger/reject_data_trigger.rs) | Prevents deletion of existing documents |
 
 **DPNS Trigger Constraints**
 

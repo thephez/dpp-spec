@@ -12,7 +12,7 @@ Identities consist of three components that are described in further detail in t
 | balance | integer | Credit balance associated with the identity |
 | revision | integer | Identity update revision |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/identity.json):
+Each identity must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/identity.json):
 
 ```json
 {
@@ -79,11 +79,11 @@ Each identity must comply with this JSON-Schema definition established in [js-dp
 
 ## Identity id
 
-The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) used to fund the identity creation.
+The identity `id` is calculated by Base58 encoding the double sha256 hash of the [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) used to fund the identity creation.
 
 `id = base58(sha256(sha256(<identity create funding output>)))`
 
-**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [Identifier.js](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identifier/Identifier.js).
+**Note:** The identity `id` uses the Dash Platform specific `application/x.dash.dpp.identifier` content media type. For additional information, please refer to the [js-dpp PR 252](https://github.com/dashevo/js-dpp/pull/252) that introduced it and [identifier.rs](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-platform-value/src/types/identifier.rs).
 
 ## Identity publicKeys
 
@@ -104,7 +104,7 @@ Each item in the `publicKeys` array consists of an object containing:
 | readonly | boolean | Identity public key can't be modified with `readOnly` set to `true`. This can’t be changed after adding a key. |
 | disabledAt | integer | Timestamp indicating that the key was disabled at a specified time |
 
-Keys for some purposes must meet certain [security level criteria](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identity/IdentityPublicKey.js#L345-L359) as detailed below:
+Keys for some purposes must meet certain [security level criteria](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/identity/identity_public_key/security_level.rs#L62-L77) as detailed below:
 
 | Key Purpose | Allowed Security Level(s) |
 | - | - |
@@ -113,7 +113,7 @@ Keys for some purposes must meet certain [security level criteria](https://githu
 | Decryption | Medium |
 | Withdraw | Critical |
 
-Each identity public key must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/publicKey.json):
+Each identity public key must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/publicKey.json):
 
 ```json
 {
@@ -287,28 +287,6 @@ The `type` field indicates the algorithm used to derive the key.
 
 The `data` field contains the compressed public key.
 
-#### Example data encode/decode
-
-**Encode**
-
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// AbstractStateTransitionIdentitySigned.js
-pubKeyBase = new PublicKey({
-  ...privateKeyModel.toPublicKey().toObject(),
-  compressed: true,
-})
-  .toBuffer();
-```
-
-**Decode**
-
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// validatePublicKeysFactory.js
-const dataHex = rawPublicKey.data.toString('hex');
-```
-
 ### Public Key `purpose`
 
 The `purpose` field describes which operations are supported by the key. Please refer to [DIP11 - Identities](https://github.com/dashpay/dips/blob/master/dip-0011.md#keys) for additional information regarding this.
@@ -360,7 +338,7 @@ Identities are created on the platform by submitting the identity information in
 | publicKeys | array of keys | [Public key(s)](#identity-publickeys) associated with the identity |
 | signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityCreate.json):
+Each identity must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/identityCreate.json):
 
 ```json
 {
@@ -441,7 +419,7 @@ Identity credit balances are increased by submitting the topup information in an
 | identityId | array of bytes | An [Identity ID](#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 | signature | array of bytes | Signature of state transition data by the single-use key from the asset lock (65 bytes) |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityTopUp.json):
+Each identity must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/identityTopUp.json):
 
 ```json
 {
@@ -518,7 +496,7 @@ Identities are updated on the platform by submitting the identity information in
 | disablePublicKeys | array of integers | (Optional) Array of up to 10 existing identity public key ID(s) to disable for the identity. Required if disabling keys. |
 | signaturePublicKeyId | integer | The ID of public key used to sign the state transition |
 
-Each identity must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/identityUpdate.json):
+Each identity must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/identityUpdate.json):
 
 ```json
 {
@@ -621,11 +599,11 @@ The InstantSend asset lock proof is used for transactions that have received an 
 | Field | Type | Description|
 | - | - | - |
 | type | integer | The asset lock proof type (`0` for InstantSend locks) |
-| instantLock | array of bytes | The InstantSend lock ([`islock`](https://dashcore.readme.io/docs/core-ref-p2p-network-instantsend-messages#islock)) |
+| instantLock | array of bytes | The InstantSend lock ([`islock`](https://docs.dash.org/projects/core/en/stable/docs/reference/p2p-network-instantsend-messages.html#islock)) |
 | transaction | array of bytes | The asset lock transaction |
 | outputIndex | integer | Index of the transaction output to be used |
 
-Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
+Asset locks using an InstantSend lock as proof must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/assetLockProof/instantAssetLockProof.json):
 
 ```json
 {
@@ -671,9 +649,9 @@ The ChainLock asset lock proof is used for transactions that have note received 
 | - | - | - |
 | type | array of bytes | The type of asset lock proof (`1` for ChainLocks) |
 | coreChainLockedHeight | integer | Height of the ChainLocked Core block containing the transaction  |
-| outPoint | object | The  [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#outpoint) being used as the asset lock |
+| outPoint | object | The  [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) being used as the asset lock |
 
-Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
+Asset locks using a ChainLock as proof must comply with this JSON-Schema definition established in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/schema/identity/stateTransition/assetLockProof/chainAssetLockProof.json):
 
 ```json
 {
@@ -717,45 +695,59 @@ The process to sign an identity create state transition consists of the followin
 
 ### Code snipits related to signing
 
-```javascript
-// From js-dpp
-// AbstractStateTransition.js
-// toBuffer encodes the object (excluding the signature-related fields) with canonical CBOR
-const data = this.toBuffer({ skipSignature: true });
-const privateKeyModel = new PrivateKey(privateKey);
+```rust
+/// From rs-dpp
+/// abstract_state_transition.rs
+/// Signs data with the private key
+fn sign_by_private_key(
+    &mut self,
+    private_key: &[u8],
+    key_type: KeyType,
+    bls: &impl BlsModule,
+) -> Result<(), ProtocolError> {
+    let data = self.to_buffer(true)?;
+    match key_type {
+        KeyType::BLS12_381 => self.set_signature(bls.sign(&data, private_key)?.into()),
 
-this.setSignature(sign(data, privateKeyModel));
+        // https://github.com/dashevo/platform/blob/9c8e6a3b6afbc330a6ab551a689de8ccd63f9120/packages/js-dpp/lib/stateTransition/AbstractStateTransition.js#L169
+        KeyType::ECDSA_SECP256K1 | KeyType::ECDSA_HASH160 => {
+            let signature = signer::sign(&data, private_key)?;
+            self.set_signature(signature.to_vec().into());
+        }
 
-// From dashcore-lib
-// signer.js
-/**
-* @param {Buffer} data
-* @param {string|PrivateKey} privateKey
-* @return {Buffer}
-*/
-function sign(data, privateKey) {
-	var hash = doubleSha(data);
-	return signHash(hash, privateKey);
+        // the default behavior from
+        // https://github.com/dashevo/platform/blob/6b02b26e5cd3a7c877c5fdfe40c4a4385a8dda15/packages/js-dpp/lib/stateTransition/AbstractStateTransition.js#L187
+        // is to return the error for the BIP13_SCRIPT_HASH
+        KeyType::BIP13_SCRIPT_HASH => {
+            return Err(ProtocolError::InvalidIdentityPublicKeyTypeError(
+                InvalidIdentityPublicKeyTypeError::new(key_type),
+            ))
+        }
+    };
+    Ok(())
 }
 
-/**
-* Sign hash.
-* @param {Buffer} hash
-* @param {string|PrivateKey} privateKey
-* @return {Buffer} - 65-bit compact signature
-*/
-function signHash(hash, privateKey) {
-	if (typeof privateKey === 'string') {
-		privateKey = new PrivateKey(privateKey);
-	}
 
-	var ecdsa = new ECDSA();
-	ecdsa.hashbuf = hash;
-	ecdsa.privkey = privateKey;
-	ecdsa.pubkey = privateKey.toPublicKey();
-	ecdsa.signRandomK();
-	ecdsa.calci();
-	return ecdsa.sig.toCompact();
+/// From rust-dashcore
+/// signer.rs
+/// sign and get the ECDSA signature
+pub fn sign(data: &[u8], private_key: &[u8]) -> Result<[u8; 65], anyhow::Error> {
+    let data_hash = double_sha(data);
+    sign_hash(&data_hash, private_key)
+}
+
+/// signs the hash of data and get the ECDSA signature
+pub fn sign_hash(data_hash: &[u8], private_key: &[u8]) -> Result<[u8; 65], anyhow::Error> {
+    let pk = SecretKey::from_slice(private_key)
+        .map_err(|e| anyhow!("Invalid ECDSA private key: {}", e))?;
+
+    let secp = Secp256k1::new();
+    let msg = Message::from_slice(data_hash).map_err(anyhow::Error::msg)?;
+
+    let signature = secp
+        .sign_ecdsa_recoverable(&msg, &pk)
+        .to_compact_signature(true);
+    Ok(signature)
 }
 ```
 

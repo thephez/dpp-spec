@@ -7,13 +7,11 @@
 
 ## Fees
 
-State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/identity/creditsConverter.js#L1). Fees for actions vary based on parameters related to storage and computational effort that are defined in [js-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/stateTransition/fee/constants.js).
-
-Prior to Dash Platform v0.23 a rudimentary fee system charged a flat rate rate of [1 credit/byte](https://github.com/dashpay/platform/blob/v0.22.0/packages/js-dpp/lib/stateTransition/calculateStateTransitionFee.js#L1) for all actions.
+State transition fees are paid via the credits established when an identity is created. Credits are created at a rate of [1000 credits/satoshi](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/identity/credits_converter.rs#L3). Fees for actions vary based on parameters related to storage and computational effort that are defined in [rs-dpp](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/state_transition/fee/constants.rs).
 
 ## Size
 
-All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.24.5/packages/js-dpp/lib/util/serializer.js#L5).
+All serialized data (including state transitions) is limited to a maximum size of [16 KB](https://github.com/dashpay/platform/blob/v0.24.5/packages/rs-dpp/src/util/serializer.rs#L8).
 
 ## Common Fields
 
@@ -46,11 +44,13 @@ More detailed information about the `dataContract` object can be found in the [d
 
 Entropy is included in [Data Contracts](data-contract.md#data-contract-creation) and [Documents](document.md#document-create-transition).
 
-```javascript
-// From the JavaScript reference implementation (js-dpp)
+```rust
+// From the Rust reference implementation (rs-dpp)
 // entropyGenerator.js
-function generate() {
-  return crypto.randomBytes(32);
+fn generate(&self) -> anyhow::Result<[u8; 32]> {
+  let mut buffer = [0u8; 32];
+  getrandom(&mut buffer).context("generating entropy failed")?;
+  Ok(buffer)
 }
 ```
 
@@ -75,7 +75,7 @@ More detailed information about the `transitions` array can be found in the [doc
 
 | Field | Type | Description|
 | - | - | - |
-| assetLockProof | array of bytes | Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (36 bytes) |
+| assetLockProof | array of bytes | Lock [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) from the layer 1 locking transaction (36 bytes) |
 | publicKeys | array of keys | [Public key(s)](identity.md#identity-publickeys) associated with the identity (maximum number of keys: `10`)|
 
 More detailed information about the `publicKeys` object can be found in the [identity section](identity.md).
@@ -84,7 +84,7 @@ More detailed information about the `publicKeys` object can be found in the [ide
 
 | Field | Type | Description|
 | - | - | - |
-| assetLockProof | array of bytes | Lock [outpoint](https://dashcore.readme.io/docs/core-additional-resources-glossary#section-outpoint) from the layer 1 locking transaction (36 bytes) |
+| assetLockProof | array of bytes | Lock [outpoint](https://docs.dash.org/projects/core/en/stable/docs/resources/glossary.html#outpoint) from the layer 1 locking transaction (36 bytes) |
 | identityId | array of bytes | An [Identity ID](identity.md#identity-id) for the identity receiving the topup (can be any identity) (32 bytes) |
 
 ## Identity Update
@@ -99,9 +99,7 @@ More detailed information about the `publicKeys` object can be found in the [ide
 
 # State Transition Signing
 
-State transitions must be signed by a private key associated with the identity creating the state transition.
-
-**Note:** Since v0.23, each identity must have at least two keys: a primary key (security level `0`) that is only used when signing identity update state transitions and an additional key (security level `2`) that is used to sign all other state transitions.
+State transitions must be signed by a private key associated with the identity creating the state transition. Since v0.23, each identity must have at least two keys: a primary key (security level `0`) that is only used when signing identity update state transitions and an additional key (security level `2`) that is used to sign all other state transitions.
 
 The process to sign a state transition consists of the following steps:
 

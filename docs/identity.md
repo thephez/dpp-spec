@@ -287,28 +287,6 @@ The `type` field indicates the algorithm used to derive the key.
 
 The `data` field contains the compressed public key.
 
-#### Example data encode/decode
-
-**Encode**
-
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// AbstractStateTransitionIdentitySigned.js
-pubKeyBase = new PublicKey({
-  ...privateKeyModel.toPublicKey().toObject(),
-  compressed: true,
-})
-  .toBuffer();
-```
-
-**Decode**
-
-```javascript
-// From the JavaScript reference implementation (js-dpp)
-// validatePublicKeysFactory.js
-const dataHex = rawPublicKey.data.toString('hex');
-```
-
 ### Public Key `purpose`
 
 The `purpose` field describes which operations are supported by the key. Please refer to [DIP11 - Identities](https://github.com/dashpay/dips/blob/master/dip-0011.md#keys) for additional information regarding this.
@@ -763,13 +741,11 @@ pub fn sign_hash(data_hash: &[u8], private_key: &[u8]) -> Result<[u8; 65], anyho
     let pk = SecretKey::from_slice(private_key)
         .map_err(|e| anyhow!("Invalid ECDSA private key: {}", e))?;
 
-    // TODO enable support for features in rust-dpp and allow to use global objects (SECP256K1)
     let secp = Secp256k1::new();
     let msg = Message::from_slice(data_hash).map_err(anyhow::Error::msg)?;
 
     let signature = secp
         .sign_ecdsa_recoverable(&msg, &pk)
-        // TODO the compression flag should be obtained from the private key type
         .to_compact_signature(true);
     Ok(signature)
 }
